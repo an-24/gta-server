@@ -1,5 +1,7 @@
 package biz.gelicon.gta.server;
 
+import java.util.Date;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -10,11 +12,11 @@ public class PingSession {
 	
 	  // This method is called if TEXT_PLAIN is request
 	  @GET
-	  @Produces(MediaType.TEXT_PLAIN)
-	  public String sayPlainTextHello() {
-	    return "ping";
+	  @Produces(MediaType.APPLICATION_JSON)
+	  public Date sayPlainTextHello() {
+	    return new Date();
 	  }
-
+/*
 	  // This method is called if XML is request
 	  @GET
 	  @Produces(MediaType.TEXT_XML)
@@ -29,6 +31,6 @@ public class PingSession {
 	    return "<html> " + "<title>" + "Hello 2" + "</title>"
 	        + "<body><h1>" + "Hello Jersey" + "</body></h1>" + "</html> ";
 	  }
-	
+*/	
 
 }
