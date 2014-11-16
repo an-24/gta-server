@@ -29,3 +29,5 @@ local.properties
 # PDT-specific
 .buildpath
 
+
+target/m2e-wtp/web-resources/META-INF/maven/biz.gelicon/gta-server/pom.properties
