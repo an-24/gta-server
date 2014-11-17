@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -23,6 +24,7 @@ import biz.gelicon.gta.server.data.User;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class Login {
+	final private static Logger log = Logger.getLogger("gta");
 
 	@GET
 	@Path("{name}/{password}")
@@ -44,8 +46,10 @@ public class Login {
     		q.setString("name", userName);
     		User u = (User) q.uniqueResult();
     		if(u==null) return "";
-    		System.out.println(hashPassword(u,password));
+    		log.info("User "+userName+" is found");
+    		//System.out.println(hashPassword(u,password));
     		if(!u.getPassword().equals(hashPassword(u,password)))  return "";
+    		log.info("User "+userName+" login succ. Token ");
     	} finally {
     		session.close();
     	}
