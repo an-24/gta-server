@@ -44,11 +44,11 @@ public class Login {
     	try{
     		Query q = session.createQuery("from User u where u.name=:name");
     		q.setString("name", userName);
-    		User u = (User) q.uniqueResult();
-    		if(u==null) return "";
+    		user = (User) q.uniqueResult();
+    		if(user==null) return "";
     		log.info("User "+userName+" is found");
     		//System.out.println(hashPassword(u,password));
-    		if(!u.getPassword().equals(hashPassword(u,password)))  return "";
+    		if(!user.getPassword().equals(hashPassword(user,password)))  return "";
     		log.info("User "+userName+" login succ. Token ");
     	} finally {
     		session.close();
