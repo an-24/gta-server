@@ -6,13 +6,19 @@
     <session-factory>
         <property name="hibernate.dialect">org.hibernate.dialect.FirebirdDialect</property>
         <property name="hibernate.connection.driver_class">org.firebirdsql.jdbc.FBDriver</property>
-        <property name="hibernate.connection.url">jdbc:firebirdsql:localhost:C:\WORK\GELICON\gta-server\database\gta.fdb</property>
+        
+<property name="hibernate.connection.url">jdbc:firebirdsql:localhost:/Users/andrej/Documents/gta-server/database/gta.fdb</property>
+<!--        <property name="hibernate.connection.url">jdbc:firebirdsql:localhost:C:\WORK\GELICON\gta-server\database\gta.fdb</property>
+-->
 <!--
 	<property name="hibernate.connection.provider_class">com.cantor.ipplan.server.UserProfilePoolConnection</property>
 -->
 
-        <property name="hibernate.connection.username">sysdba</property>
+        <property name="hibernate.connection.username">SYSDBA</property>
+<!--
         <property name="hibernate.connection.password">masterkey</property>
+ -->
+        <property name="hibernate.connection.password">rolling</property>
  
 	<!-- Echo all executed SQL to stdout -->
 	<property name="show_sql">true</property>
@@ -20,5 +26,7 @@
 	<property name="hibernate.hbm2ddl.auto">update</property>
 
         <mapping class="biz.gelicon.gta.server.data.User"/>
+        <mapping class="biz.gelicon.gta.server.data.Team"/>
+        <mapping class="biz.gelicon.gta.server.data.Person"/>
     </session-factory>
 </hibernate-configuration>
