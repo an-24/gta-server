@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
@@ -78,7 +79,7 @@ public class Team  implements Serializable {
 		this.limit = limit;
 	}
 
-	@Column(name = "TEAM_WOFD", nullable = true)
+	@Transient
 	public Integer getWorkedOfDay() {
 		return workedOfDay;
 	}
@@ -86,7 +87,7 @@ public class Team  implements Serializable {
 		this.workedOfDay = workedOfDay;
 	}
 	
-	@Column(name = "TEAM_WOFW", nullable = true)
+	@Transient
 	public Integer getWorkedOfWeek() {
 		return workedOfWeek;
 	}
@@ -94,7 +95,7 @@ public class Team  implements Serializable {
 		this.workedOfWeek = workedOfWeek;
 	}
 	
-	@Column(name = "TEAM_WOFM", nullable = true)
+	@Transient
 	public Integer getWorkedOfMonth() {
 		return workedOfMonth;
 	}
@@ -103,7 +104,7 @@ public class Team  implements Serializable {
 		this.workedOfMonth = workedOfMonth;
 	}
 	
-	@Column(name = "TEAM_WOFSTART", nullable = true)
+	@Transient
 	public Integer getWorkedOfBeginProject() {
 		return workedOfBeginProject;
 	}

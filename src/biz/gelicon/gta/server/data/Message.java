@@ -87,7 +87,7 @@ public class Message implements Serializable {
 	}
 
 	@Column(name = "TIMING_DTBEGIN", nullable = false)
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getDtBegin() {
 		return dtBegin;
 	}
@@ -97,7 +97,7 @@ public class Message implements Serializable {
 	}
 
 	@Column(name = "TIMING_DTFINISH", nullable = false)
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getDtFinish() {
 		return dtFinish;
 	}

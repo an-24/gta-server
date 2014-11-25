@@ -25,6 +25,7 @@ public class Person implements Serializable {
 	private String nic;
 	private String post;
 	private Boolean active;
+	private Integer limit;
 	private Team team;
 	private User user;
 	
@@ -62,6 +63,14 @@ public class Person implements Serializable {
 	public void setActive(Boolean active) {
 		this.active = active;
 	}
+
+	@Column(name = "PERSON_LIMIT", nullable = true)
+	public Integer getLimit() {
+		return limit;
+	}
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
 	
 	@XmlTransient
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -83,5 +92,6 @@ public class Person implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
 
 }
