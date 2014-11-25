@@ -19,8 +19,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import biz.gelicon.gta.server.data.User;
+import biz.gelicon.gta.server.utils.WebException;
 
-@Path("/login")
+@Path("login")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class Login {
@@ -33,8 +34,12 @@ public class Login {
 	}
 	
 	@POST
-	public String loginPOST(List<String> params) throws NoSuchAlgorithmException {
-		return login(params.get(0),params.get(1));
+	public String loginPOST(List<String> params) throws WebException {
+		try {
+			return login(params.get(0),params.get(1));
+		} catch (NoSuchAlgorithmException e) {
+			throw new WebException(e.getMessage());
+		}
 	}
 	
 	private String login(String userName, String password) throws NoSuchAlgorithmException {

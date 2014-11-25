@@ -28,5 +28,8 @@
         <mapping class="biz.gelicon.gta.server.data.User"/>
         <mapping class="biz.gelicon.gta.server.data.Team"/>
         <mapping class="biz.gelicon.gta.server.data.Person"/>
+        <mapping class="biz.gelicon.gta.server.data.Message"/>
+        <mapping class="biz.gelicon.gta.server.data.ScreenShot"/>
+        
     </session-factory>
 </hibernate-configuration>

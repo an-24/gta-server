@@ -15,10 +15,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 
 @Entity
 @Table(name = "TEAM")
+@XmlRootElement
 public class Team  implements Serializable {
 	private static final long serialVersionUID = -3155318672624022555L;
 	private Integer id;
@@ -115,6 +117,15 @@ public class Team  implements Serializable {
 	}
 	public void setPersons(Set<Person> persons) {
 		this.persons = persons;
+	}
+	
+	@Override
+	public String toString() {
+		return "Team [id=" + id + ", name=" + name + ", active=" + active
+				+ ", createDate=" + createDate + ", limit=" + limit
+				+ ", workedOfDay=" + workedOfDay + ", workedOfWeek="
+				+ workedOfWeek + ", workedOfMonth=" + workedOfMonth
+				+ ", workedOfBeginProject=" + workedOfBeginProject + "]";
 	}
 
 }

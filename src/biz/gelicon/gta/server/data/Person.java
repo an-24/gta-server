@@ -12,10 +12,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "PERSON",
 	   uniqueConstraints = @UniqueConstraint(columnNames = {"TEAM_ID", "PERSON_NIC"}))
+@XmlRootElement
 public class Person implements Serializable {
 	private static final long serialVersionUID = -3868288445640424189L;
 	private Integer id;
@@ -60,6 +63,7 @@ public class Person implements Serializable {
 		this.active = active;
 	}
 	
+	@XmlTransient
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "TEAM_ID", nullable = false)	
 	public Team getTeam() {
@@ -69,6 +73,8 @@ public class Person implements Serializable {
 		this.team = team;
 	}
 	
+	
+	@XmlTransient
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID", nullable = false)	
 	public User getUser() {
