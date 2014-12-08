@@ -9,12 +9,17 @@
 	<title>Gelicon Team Application</title>
     <link type="text/css" rel="stylesheet" href="resources/css/main.css">
     <link rel="shortcut icon" href="resources/images/favicon.png" type="image/png">
+
+	<script src="resources/js/lib/jquery-min.js"></script>
+	<script src="resources/js/lib/jquery.cookie.js"></script>
+	<script src="resources/js/utils.js"></script>
+
 </head>
 <body>
 	<div class="top">
 		<div class="user">
 			<c:if test="${user==null}"><a href="login">Log in</a></c:if>
-			<c:if test="${user!=null}"><span style="margin-right:20px">${user.name}</span><a href="logout">Log out</a></c:if>
+			<c:if test="${user!=null}"><span style="margin-right:10px;font-size:large">[${user}]</span><a href="action/logout" onclick="$.removeCookie('token')">Log out</a></c:if>
 		</div>
 		<a href="."><img alt="GTA" src="resources/images/logo.png"></a>
 		<div class="mainmenu">

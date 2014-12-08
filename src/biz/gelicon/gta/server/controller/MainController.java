@@ -20,7 +20,6 @@ import biz.gelicon.gta.server.utils.SpringException;
 public class MainController {
 
     @RequestMapping(method=RequestMethod.GET)
-    @ExceptionHandler({SpringException.class})
     public String main(Model ui, HttpServletRequest request) {
     	HttpSession session = request.getSession();
     	ui.addAttribute("user",session.getAttribute("user"));
@@ -29,20 +28,29 @@ public class MainController {
         return "index";
     }
 
+    @RequestMapping(method=RequestMethod.POST)
+    public String mainPost(Model ui, HttpServletRequest request) {
+        return main(ui,request);
+    }
+    
     @RequestMapping(value = "/login", method=RequestMethod.GET)
-    @ExceptionHandler({SpringException.class})
     public String login(Model ui, HttpServletRequest request) {
     	ui.addAttribute("menu","login");
     	ui.addAttribute("base",getBaseURL(request));
         return "index";
     }
 
+    @RequestMapping(value = "/login", method=RequestMethod.POST)
+    public String loginPost(Model ui, HttpServletRequest request) {
+        return login(ui,request);
+    }
+    
     @RequestMapping(value = "inner/home", method=RequestMethod.GET)
     public String homeInner(Model ui, HttpServletRequest request) {
     	return "inner/home";
     }
 
-    public class UserInput {
+    static public class UserInput {
     	private String name = "";
     	private String password = "";
 

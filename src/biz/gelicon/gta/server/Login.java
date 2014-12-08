@@ -42,7 +42,7 @@ public class Login {
 		}
 	}
 	
-	private String login(String userName, String password) throws NoSuchAlgorithmException {
+	public String login(String userName, String password) throws NoSuchAlgorithmException {
 		User user = null;
 		SessionFactory dbSession = Sessions.getHibernateSession();
     	Session session = dbSession.openSession();

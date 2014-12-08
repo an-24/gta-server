@@ -4,7 +4,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 
-<form:form class="central" style="margin-left: -100px;margin-top:-78px;" method="POST" action="/action/login">
+<form:form id="frmlogin" class="central" style="margin-left: -150px;margin-top:-78px;" method="POST">
    <table>
    <tr>
    	<th colspan="2"><h2>Log in</h2></th>
@@ -20,9 +20,20 @@
    <tfoot>
    <tr>
    <td colspan="2">
-   <input type="submit" value="Submit"/>
+   <input id="default" onclick="submitLogin();return false;" type="button" value="Submit"/>
    </td>
    </tr>
    </tfoot>
    </table>  
 </form:form>
+
+<script type="text/javascript">
+	var form = $('#frmlogin');
+	initForm(form);
+    function submitLogin() {
+        submitFunc("action/login","../web/",form,function(data){
+        	$.cookie("token", data);
+        	//alert($.cookie("user"));
+        });
+    };
+</script>

@@ -20,7 +20,8 @@
             http://www.springframework.org/schema/util/spring-util.xsd
             http://www.springframework.org/schema/mvc
             http://www.springframework.org/schema/mvc/spring-mvc.xsd">
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven/> 
+    
     <context:component-scan base-package="biz.gelicon.gta.server.controller"/>
     <mvc:resources mapping="/resources/**" location="/WEB-INF/resources/"/>
 
@@ -28,4 +29,5 @@
         <property name="prefix" value="/WEB-INF/views/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
+    
 </beans>

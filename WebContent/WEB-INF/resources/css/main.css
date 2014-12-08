@@ -51,7 +51,8 @@ a:hover {
 form {
 	padding: 10px;
 	background-color: #FFF;
-	width: 300px;	
+	width: 300px;
+	border-radius: 5px;	
 }
 
 form table {
@@ -74,7 +75,19 @@ form table tr td:first-child {
 }
 
 .central {
-	position: relative;
+	position: absolute;
 	left:50%;
 	top:50%;
+}
+
+input {
+	padding: 5px;
+	border-color: #333333;
+	border-radius: 5px;	
+}
+
+input[type="button"] {
+  background-color: #007000;
+  padding: 5px 10px;
+  color: white;
 }
