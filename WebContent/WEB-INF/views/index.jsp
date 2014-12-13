@@ -8,10 +8,12 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Gelicon Team Application</title>
     <link type="text/css" rel="stylesheet" href="resources/css/main.css">
+    <link type="text/css" rel="stylesheet" href="resources/css/jquery-ui.css">
     <link rel="shortcut icon" href="resources/images/favicon.png" type="image/png">
 
 	<script src="resources/js/lib/jquery-min.js"></script>
 	<script src="resources/js/lib/jquery.cookie.js"></script>
+	<script src="resources/js/lib/jquery-ui.js"></script>
 	<script src="resources/js/utils.js"></script>
 
 </head>

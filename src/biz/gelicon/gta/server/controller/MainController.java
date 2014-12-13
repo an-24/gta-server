@@ -32,6 +32,15 @@ public class MainController {
     public String mainPost(Model ui, HttpServletRequest request) {
         return main(ui,request);
     }
+
+    @RequestMapping(value = "/proj",method=RequestMethod.GET)
+    public String proj(Model ui, HttpServletRequest request) {
+    	HttpSession session = request.getSession();
+    	ui.addAttribute("user",session.getAttribute("user"));
+    	ui.addAttribute("menu","projects");
+    	ui.addAttribute("base",getBaseURL(request));
+        return "index";
+    }
     
     @RequestMapping(value = "/login", method=RequestMethod.GET)
     public String login(Model ui, HttpServletRequest request) {
@@ -50,6 +59,11 @@ public class MainController {
     	return "inner/home";
     }
 
+    @RequestMapping(value = "inner/projects", method=RequestMethod.GET)
+    public String projInner(Model ui, HttpServletRequest request) {
+    	return "inner/projects";
+    }
+   
     static public class UserInput {
     	private String name = "";
     	private String password = "";
