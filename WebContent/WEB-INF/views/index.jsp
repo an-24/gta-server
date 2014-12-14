@@ -7,9 +7,9 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Gelicon Team Application</title>
-    <link type="text/css" rel="stylesheet" href="resources/css/main.css">
     <link type="text/css" rel="stylesheet" href="resources/css/jquery-ui.css">
     <link rel="shortcut icon" href="resources/images/favicon.png" type="image/png">
+    <link type="text/css" rel="stylesheet" href="resources/css/main.css">
 
 	<script src="resources/js/lib/jquery-min.js"></script>
 	<script src="resources/js/lib/jquery.cookie.js"></script>
@@ -31,7 +31,11 @@
 	</div>
 	<div class="content">
 		<c:choose>
-			<c:when test="${user!=null}"><c:url var="innerurl" value="${base}/inner/${menu}"/></c:when>
+			<c:when test="${user!=null}">
+				<c:url var="innerurl" value="${base}/inner/${menu}">
+					<c:param name="token" value="${token}"/>
+				</c:url>
+			</c:when>
 			<c:when test="${user==null}">
 				<c:if test="${menu!='home'}"><c:url var="innerurl" value="${base}/inner/login"/></c:if>
 				<c:if test="${menu=='home'}"><c:url var="innerurl" value="${base}/inner/home"/></c:if>

@@ -3,16 +3,21 @@ package biz.gelicon.gta.server.controller;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import biz.gelicon.gta.server.Teams;
+import biz.gelicon.gta.server.utils.NetUtils;
 import biz.gelicon.gta.server.utils.SpringException;
 
 @Controller
@@ -39,6 +44,10 @@ public class MainController {
     	ui.addAttribute("user",session.getAttribute("user"));
     	ui.addAttribute("menu","projects");
     	ui.addAttribute("base",getBaseURL(request));
+    	String token = NetUtils.getTokenFromCookie(request);
+    	if(token==null)
+    		throw new SpringException("token not found");
+    	ui.addAttribute("token",token);
         return "index";
     }
     
@@ -55,12 +64,14 @@ public class MainController {
     }
     
     @RequestMapping(value = "inner/home", method=RequestMethod.GET)
-    public String homeInner(Model ui, HttpServletRequest request) {
+    public String homeInner(Model ui) {
     	return "inner/home";
     }
 
     @RequestMapping(value = "inner/projects", method=RequestMethod.GET)
-    public String projInner(Model ui, HttpServletRequest request) {
+    public String projInner(Model ui,
+    		@RequestParam String token) {
+    	ui.addAttribute("teams",new Teams().getTeams(token));
     	return "inner/projects";
     }
    
@@ -83,7 +94,7 @@ public class MainController {
     }
     
     @RequestMapping(value = "inner/login", method=RequestMethod.GET)
-    public ModelAndView loginInner(Model ui, HttpServletRequest request) {
+    public ModelAndView loginInner(Model ui) {
     	return new ModelAndView("inner/login","command",new UserInput());
     }
     

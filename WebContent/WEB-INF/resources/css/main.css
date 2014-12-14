@@ -93,7 +93,7 @@ input[type="button"] {
 }
 
 .list-view .ui-selecting { 
-	background: #FECA40; 
+	background: #AA0000; 
 }
 
 .list-view .ui-selected { 
@@ -118,4 +118,52 @@ input[type="button"] {
 	background-color: white;
 	position: relative;
 	border-radius: 5px;
+	float:left;
+	min-height: 380px;
+}
+
+#team-propertys {
+	float: left;
+	position: relative;
+	top: 20px;
+	margin-left: 20px;
+	border-radius: 5px;
+	background-color: white;
+	min-height: 372px;
+	min-width: 700px;
+	padding:14px;
+}
+
+#team-propertys h2 {
+}
+
+.ui-widget-header {
+	border: 1px solid #007000;
+	color: #ffffff;
+	font-weight: bold;
+	background-color: #007000;
+}
+
+.ui-tabs .ui-tabs-panel {
+	background-color: white;
+}
+
+
+.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited {
+	color:#333333;
+}
+
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {
+	color:#AA0000;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+	border-color:#AA0000;
+}
+.ui-state-focus {
+	border-color:#AA0000;
+}
+
+.ui-tabs-anchor {
+	outline:0;
 }

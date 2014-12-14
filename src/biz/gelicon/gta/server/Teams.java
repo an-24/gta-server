@@ -37,6 +37,21 @@ public class Teams {
 	public List<Team> getTeamsGET(@PathParam("token") String token) {
 		return getTeams(token);
 	}
+
+	@GET
+	@Path("{token}/{teamId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Team getTeamGET(
+			@PathParam("token") String token,
+			@PathParam("teamId") int teamId) {
+		
+		List<Team> teams = getTeams(token);
+		for (Team team : teams) {
+			if(team.getId()==teamId)
+				return team;
+		}
+		return null;
+	}
 	
 	@POST
 	public List<Team> getTeamsPOST(String token) {
