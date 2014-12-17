@@ -47,8 +47,10 @@ public class Teams {
 		
 		List<Team> teams = getTeams(token);
 		for (Team team : teams) {
-			if(team.getId()==teamId)
+			if(team.getId()==teamId) {
+				Hibernate.initialize(team.getPersons());
 				return team;
+			}	
 		}
 		return null;
 	}

@@ -21,16 +21,17 @@
         <property name="hibernate.connection.password">masterkey</property>
  -->
  
-	<!-- Echo all executed SQL to stdout -->
-	<property name="show_sql">true</property>
+		<!-- Echo all executed SQL to stdout -->
+		<property name="show_sql">true</property>
 
-	<property name="hibernate.hbm2ddl.auto">update</property>
+		<property name="hibernate.hbm2ddl.auto">update</property>
 
-        <mapping class="biz.gelicon.gta.server.data.User"/>
-        <mapping class="biz.gelicon.gta.server.data.Team"/>
-        <mapping class="biz.gelicon.gta.server.data.Person"/>
+    	<mapping class="biz.gelicon.gta.server.data.User"/>
+    	<mapping class="biz.gelicon.gta.server.data.Team"/>
+    	<mapping class="biz.gelicon.gta.server.data.Person"/>
         <mapping class="biz.gelicon.gta.server.data.Message"/>
         <mapping class="biz.gelicon.gta.server.data.ScreenShot"/>
+        <mapping class="biz.gelicon.gta.server.data.Post"/>
         
     </session-factory>
 </hibernate-configuration>

@@ -26,6 +26,10 @@ public class Sessions {
 		return token;
 	}
 	
+	public static Object getSessionAttr(String name) {
+		return sessions.get(name);
+	}
+	
 	public static SessionFactory getHibernateSession() {
 		if(sessionFactory==null) {
 	    	Configuration cfg = new Configuration().configure();

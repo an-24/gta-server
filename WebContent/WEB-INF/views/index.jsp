@@ -9,11 +9,13 @@
 	<title>Gelicon Team Application</title>
     <link type="text/css" rel="stylesheet" href="resources/css/jquery-ui.css">
     <link rel="shortcut icon" href="resources/images/favicon.png" type="image/png">
+    <link type="text/css" rel="stylesheet" href="resources/css/jquery.dataTables.css">
     <link type="text/css" rel="stylesheet" href="resources/css/main.css">
 
 	<script src="resources/js/lib/jquery-min.js"></script>
 	<script src="resources/js/lib/jquery.cookie.js"></script>
 	<script src="resources/js/lib/jquery-ui.js"></script>
+	<script src="resources/js/lib/jquery.dataTables.js"></script>
 	<script src="resources/js/utils.js"></script>
 
 </head>

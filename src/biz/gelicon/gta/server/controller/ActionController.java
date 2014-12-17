@@ -12,13 +12,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import biz.gelicon.gta.server.Login;
+import biz.gelicon.gta.server.Sessions;
+import biz.gelicon.gta.server.data.User;
 import biz.gelicon.gta.server.utils.SpringException;
 
 @Controller
 @RequestMapping("/action")
 public class ActionController {
 
-	@RequestMapping(value = "/login", method=RequestMethod.POST)
+	@RequestMapping(value = "/login", method=RequestMethod.POST, produces = "application/json")
  	@ResponseBody
     public String login(Model ui, MainController.UserInput in, HttpServletRequest request) {
 		if(in.getName().isEmpty())
@@ -28,8 +30,9 @@ public class ActionController {
 			if(token.isEmpty())
 				throw new Exception("The username or password you entered is incorrect");
 	    	HttpSession session = request.getSession();
-			session.setAttribute("user",in.getName());
-			return "\""+token+"\"";
+			User u = (User) Sessions.getSessionAttr(token);
+			session.setAttribute("user",u.getName());
+			return "{\"token\":\""+token+"\",\"userId\":"+u.getId()+",\"userName\":\""+u.getName()+"\"}";
 		} catch (Throwable e) {
 			throw new SpringException(e.getMessage());
 		}

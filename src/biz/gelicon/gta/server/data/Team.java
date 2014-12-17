@@ -3,6 +3,7 @@ package biz.gelicon.gta.server.data;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -118,6 +119,13 @@ public class Team  implements Serializable {
 	}
 	public void setPersons(Set<Person> persons) {
 		this.persons = persons;
+	}
+	
+	@Transient
+	public Person getManager() {
+		Optional<Person> opt = getPersons().stream().filter(p->p.getPostDict()!=null?
+															p.getPostDict().getId()==1:false).findFirst();
+		return opt.isPresent()?opt.get():null;
 	}
 	
 	@Override

@@ -12,11 +12,6 @@
     		$("#team-propertys h2").text("Project: "+ui.selected.innerHTML);
     		var teamId = $(ui.selected).attr("team-id");
     		loadProjectSheet(teamId,$.cookie("token"));
-    	    $("#person-list").selectable({
-    	    	selected : function(event, ui) {
-    	    		
-    	    	}
-    	    });
     	}
     });
     $("#tabs").tabs({
@@ -70,7 +65,15 @@
 		   </table>  
   		</div>
   		<div id="tabs-2">
-			<ol id="person-list" class="list-view"></ol>
+			<table id="person-list" class="display" cellspacing="0">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Post</th>
+						<th>Limit</th>
+					</tr>
+				</thead>
+			</table>
   		</div>
 	</div>
 </div>

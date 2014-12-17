@@ -39,12 +39,27 @@ function loadProjectSheet(id,token) {
         	tab1.find("#workedOfWeek").text(obj.workedOfWeek ||"");
         	tab1.find("#workedOfMonth").text(obj.workedOfMonth ||"");
         	tab1.find("#workedOfBeginProject").text(obj.workedOfBeginProject ||"");
-        	var plist = $("#person-list");
-        	$(plist).empty();
+        	var table = $("#person-list");
+        	if(!window._dataTablePersons) {
+        		window._dataTablePersons = table.dataTable({
+	        		pageLength:4,
+	        		lengthChange:false,
+	        		info: false
+	        	});
+        	}
+        	window._dataTablePersons.DataTable().clear();
         	for(var i=0, len = data.persons.length;i<len;i++) {
         		var p = data.persons[i];
-        		$(plist).append($('<li>').addClass("ui-widget-content").text(p.nic+'#'+p.post));
+        		var s = p.nic;
+        		if(p.manager) s = '<b>'+s+'</b>';
+        		var alink = "<a href='#"+p.id+"'>"+s+"</a>";
+        		window._dataTablePersons
+        			.DataTable()
+        			.row.add([alink,p.postDict?p.postDict.name:p.post,(p.limit||""),p]);
         	}
+    		window._dataTablePersons
+					.DataTable().draw();
+        	
         }
 		
 	});

@@ -32,7 +32,9 @@
 	initForm(form);
     function submitLogin() {
         submitFunc("action/login","../web/",form,function(data){
-        	$.cookie("token", eval(data));
+        	$.cookie("token", data.token);
+        	$.cookie("userId", data.userId);
+        	$.cookie("userName", data.userName);
         	//alert($.cookie("user"));
         });
     };

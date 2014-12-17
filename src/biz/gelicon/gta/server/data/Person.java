@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -28,6 +29,7 @@ public class Person implements Serializable {
 	private Integer limit;
 	private Team team;
 	private User user;
+	private Post postDict;
 	
 	@Id
 	@javax.persistence.SequenceGenerator(name="newRec", sequenceName="NEWRECORDID")	
@@ -38,6 +40,15 @@ public class Person implements Serializable {
 	}
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "POST_ID", nullable = true)	
+	public Post getPostDict() {
+		return postDict;
+	}
+	public void setPostDict(Post postdict) {
+		this.postDict = postdict;
 	}
 	
 	@Column(name = "PERSON_NIC", length = 100, nullable = false)
@@ -93,5 +104,9 @@ public class Person implements Serializable {
 		this.user = user;
 	}
 	
+	@Transient
+	public boolean isManager() {
+		return postDict==null?false:postDict.getId()==1;
+	}
 
 }
