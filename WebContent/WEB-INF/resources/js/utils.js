@@ -48,14 +48,16 @@ function loadProjectSheet(id,token) {
 	        	});
         	}
         	window._dataTablePersons.DataTable().clear();
+        	window._personList = {};
         	for(var i=0, len = data.persons.length;i<len;i++) {
         		var p = data.persons[i];
         		var s = p.nic;
         		if(p.manager) s = '<b>'+s+'</b>';
-        		var alink = "<a href='#"+p.id+"'>"+s+"</a>";
+        		var alink = "<a onclick='openPerson(this,"+p.id+");return false;' href='#"+p.id+"'>"+s+"</a>";
         		window._dataTablePersons
         			.DataTable()
         			.row.add([alink,p.postDict?p.postDict.name:p.post,(p.limit||""),p]);
+        		window._personList[p.id] = p;
         	}
     		window._dataTablePersons
 					.DataTable().draw();
@@ -63,4 +65,35 @@ function loadProjectSheet(id,token) {
         }
 		
 	});
+}
+
+function openPerson(alink, id) {
+	var p = window._personList[id];
+	var tabs = $("#tabs");
+	var tabContentHtml = "<input value='back' type='button' onclick='backFormPerson()'/><p><div id='personForm'></div>";
+	$(tabs).find("ul").append(
+            "<li><a href='#tabs-3'>"+p.nic+"</a></li>"
+        );
+	tabs.append( "<div id='tabs-3'><p>" + tabContentHtml + "</p></div>");
+	// скрыть
+	$(tabs).find("ul li a[href='#tabs-1']").css("display","none");
+	$(tabs).find("ul li a[href='#tabs-2']").css("display","none");
+	
+	tabs.tabs("refresh");
+	tabs.tabs({active:2});
+	
+	$("#personForm").load("inner/person/"+id);
+}
+
+function backFormPerson() {
+	var tabs = $("#tabs");
+	// открыть
+	$(tabs).find("ul li a[href='#tabs-1']").css("display","block");
+	$(tabs).find("ul li a[href='#tabs-2']").css("display","block");
+	// удалим
+	$(tabs).find("ul li a[href='#tabs-3']").parent().remove();
+	$(tabs).find("div#tabs-3").remove();
+	
+	tabs.tabs("refresh");
+	tabs.tabs({active:1});
 }

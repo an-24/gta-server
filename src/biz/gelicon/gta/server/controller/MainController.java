@@ -3,6 +3,7 @@ package biz.gelicon.gta.server.controller;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -17,13 +18,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import biz.gelicon.gta.server.Teams;
+import biz.gelicon.gta.server.data.Person;
+import biz.gelicon.gta.server.repo.PersonRepository;
 import biz.gelicon.gta.server.utils.NetUtils;
 import biz.gelicon.gta.server.utils.SpringException;
 
 @Controller
 @RequestMapping("/")
 public class MainController {
-
+	
     @RequestMapping(method=RequestMethod.GET)
     public String main(Model ui, HttpServletRequest request) {
     	HttpSession session = request.getSession();
@@ -74,7 +77,7 @@ public class MainController {
     	ui.addAttribute("teams",new Teams().getTeams(token));
     	return "inner/projects";
     }
-   
+    
     static public class UserInput {
     	private String name = "";
     	private String password = "";
