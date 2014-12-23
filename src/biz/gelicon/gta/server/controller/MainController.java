@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import biz.gelicon.gta.server.Teams;
 import biz.gelicon.gta.server.data.Person;
 import biz.gelicon.gta.server.repo.PersonRepository;
+import biz.gelicon.gta.server.service.UserService;
 import biz.gelicon.gta.server.utils.NetUtils;
 import biz.gelicon.gta.server.utils.SpringException;
 
@@ -42,16 +43,16 @@ public class MainController {
     }
 
     @RequestMapping(value = "/proj",method=RequestMethod.GET)
-    public String proj(Model ui, HttpServletRequest request) {
+    public String projGET(Model ui, HttpServletRequest request) {
     	HttpSession session = request.getSession();
     	ui.addAttribute("user",session.getAttribute("user"));
     	ui.addAttribute("menu","projects");
     	ui.addAttribute("base",getBaseURL(request));
-    	String token = NetUtils.getTokenFromCookie(request);
-    	if(token==null)
-    		throw new SpringException("token not found");
-    	ui.addAttribute("token",token);
         return "index";
+    }
+    @RequestMapping(value = "/proj",method=RequestMethod.POST)
+    public String projPOST(Model ui, HttpServletRequest request) {
+    	return projGET(ui, request);
     }
     
     @RequestMapping(value = "/login", method=RequestMethod.GET)
@@ -72,9 +73,8 @@ public class MainController {
     }
 
     @RequestMapping(value = "inner/projects", method=RequestMethod.GET)
-    public String projInner(Model ui,
-    		@RequestParam String token) {
-    	ui.addAttribute("teams",new Teams().getTeams(token));
+    public String projInner(Model ui) {
+    	ui.addAttribute("teams",new Teams().getTeams(UserService.getCurrentUser()));
     	return "inner/projects";
     }
     

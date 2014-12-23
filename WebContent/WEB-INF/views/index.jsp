@@ -10,12 +10,17 @@
     <link type="text/css" rel="stylesheet" href="resources/css/jquery-ui.css">
     <link rel="shortcut icon" href="resources/images/favicon.png" type="image/png">
     <link type="text/css" rel="stylesheet" href="resources/css/jquery.dataTables.css">
+    <link type="text/css" rel="stylesheet" href="resources/css/jquery.multiselect.css">
     <link type="text/css" rel="stylesheet" href="resources/css/main.css">
 
 	<script src="resources/js/lib/jquery-min.js"></script>
 	<script src="resources/js/lib/jquery.cookie.js"></script>
 	<script src="resources/js/lib/jquery-ui.js"></script>
 	<script src="resources/js/lib/jquery.dataTables.js"></script>
+	<script src="resources/js/lib/jquery.multiselect.js"></script>
+	<script src="resources/js/lib/jquery.multiselect.ru.js"></script>
+	<script src="resources/js/lib/jquery.form-validator.min.js"></script>
+	
 	<script src="resources/js/utils.js"></script>
 
 </head>
@@ -32,17 +37,7 @@
 		</div>
 	</div>
 	<div class="content">
-		<c:choose>
-			<c:when test="${user!=null}">
-				<c:url var="innerurl" value="${base}/inner/${menu}">
-					<c:param name="token" value="${token}"/>
-				</c:url>
-			</c:when>
-			<c:when test="${user==null}">
-				<c:if test="${menu!='home'}"><c:url var="innerurl" value="${base}/inner/login"/></c:if>
-				<c:if test="${menu=='home'}"><c:url var="innerurl" value="${base}/inner/home"/></c:if>
-			</c:when>
-		</c:choose>
+		<c:url var="innerurl" value="${base}/inner/${menu}"/>
 		<c:import url="${innerurl}"/>
 	</div>
 	<div class="footer">

@@ -7,7 +7,8 @@ function submitFunc(url,redirect,frm,cb) {
         	var obj = eval(data);
         	if(obj.error) this.error({responseText:obj.message});else {
         		cb(data);
-                frm.attr("action",redirect);
+        		if(redirect)
+        			frm.attr("action",redirect);
                 frm.submit();
         	}
         },
@@ -61,6 +62,7 @@ function loadProjectSheet(id,token) {
         	}
     		window._dataTablePersons
 					.DataTable().draw();
+    		backFormPerson(0);
         	
         }
 		
@@ -70,7 +72,7 @@ function loadProjectSheet(id,token) {
 function openPerson(alink, id) {
 	var p = window._personList[id];
 	var tabs = $("#tabs");
-	var tabContentHtml = "<input value='back' type='button' onclick='backFormPerson()'/><p><div id='personForm'></div>";
+	var tabContentHtml = "<input value='back' type='button' onclick='backFormPerson(1)'/><p><div id='personForm'></div>";
 	$(tabs).find("ul").append(
             "<li><a href='#tabs-3'>"+p.nic+"</a></li>"
         );
@@ -85,7 +87,7 @@ function openPerson(alink, id) {
 	$("#personForm").load("inner/person/"+id);
 }
 
-function backFormPerson() {
+function backFormPerson(tabid) {
 	var tabs = $("#tabs");
 	// открыть
 	$(tabs).find("ul li a[href='#tabs-1']").css("display","block");
@@ -95,5 +97,9 @@ function backFormPerson() {
 	$(tabs).find("div#tabs-3").remove();
 	
 	tabs.tabs("refresh");
-	tabs.tabs({active:1});
+	tabs.tabs({active:tabid});
+}
+
+function submitPerson(form) {
+	
 }

@@ -61,11 +61,9 @@ public class Teams {
 		
 	}
 	
-	public List<Team> getTeams(String token) {
+	public List<Team> getTeams(User u) {
 		List<Team> list = new ArrayList<>();
 		List<Object[]> agglist = new ArrayList<>();
-		User u = Sessions.findSession(token);
-		if(u==null) return list;
 		SessionFactory dbSession = Sessions.getHibernateSession();
     	Session session = dbSession.openSession();
     	try{
@@ -183,4 +181,12 @@ public class Teams {
 		return list;
 		
 	}
+	
+	public List<Team> getTeams(String token) {
+		List<Team> list = new ArrayList<>();
+		User u = Sessions.findSession(token);
+		if(u==null) return list;
+		return getTeams(u);
+	}
+
 }

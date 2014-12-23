@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import biz.gelicon.gta.server.Login;
 import biz.gelicon.gta.server.Sessions;
 import biz.gelicon.gta.server.data.User;
+import biz.gelicon.gta.server.service.UserService;
 import biz.gelicon.gta.server.utils.SpringException;
 
 @Controller
@@ -32,7 +33,8 @@ public class ActionController {
 	    	HttpSession session = request.getSession();
 			User u = (User) Sessions.getSessionAttr(token);
 			session.setAttribute("user",u.getName());
-			return "{\"token\":\""+token+"\",\"userId\":"+u.getId()+",\"userName\":\""+u.getName()+"\"}";
+			return "{\"token\":\""+token+"\",\"userId\":"+u.getId()+",\"userName\":\""+u.getName()
+					+"\",\"redirect\":\""+request.getHeader("referer")+"\"}";
 		} catch (Throwable e) {
 			throw new SpringException(e.getMessage());
 		}
@@ -42,6 +44,7 @@ public class ActionController {
 	public String logout(Model ui, HttpServletRequest request) {
     	HttpSession session = request.getSession();
 		session.removeAttribute("user");
+		UserService.setCurrentUser(null);
 		return "redirect:../../web/";
 	}
 }

@@ -80,17 +80,41 @@ form table tr td:first-child {
 	top:50%;
 }
 
-input {
+input,select {
 	padding: 5px;
 	border-color: #333333;
 	border-radius: 5px;	
 }
 
-input[type="button"] {
+input[type="button"],button {
   padding: 5px 10px;
   color: #FFF;
   border: 1px solid #111;
   background: linear-gradient(to bottom, #00A000 0%, #007000 100%) repeat scroll 0% 0% transparent;
+}
+
+button.ui-multiselect {
+	border: 2px inset !important;
+	border-color: #333333 !important;	
+	padding: 5px;
+	color: #333333 !important;
+}
+
+button.ui-multiselect .ui-icon{
+	background-image: url("images/ui-icons_222222_256x240.png") !important;
+}
+
+a.ui-multiselect-close .ui-icon {
+	background-image: url("images/ui-icons_ffffff_256x240.png") !important;
+}
+
+a.ui-multiselect-close .ui-icon:hover {
+	background-image: url("images/ui-icons_ef8c08_256x240.png") !important;
+}
+
+.ui-multiselect-menu {
+	background:#FFFFFF !important;
+	box-shadow: rgba(0, 0, 0, 0.498039) 0px 0px 10px;
 }
 
 .list-view .ui-selecting { 
@@ -142,7 +166,7 @@ input[type="button"] {
 	border: 1px solid #007000;
 	color: #ffffff;
 	font-weight: bold;
-	background-color: #007000;
+	background: #007000 !important;
 }
 
 .ui-tabs .ui-tabs-panel {
@@ -187,3 +211,28 @@ input[type="button"] {
   /* W3C */
 }
 
+/* hack for multiselect plugin*/
+button span.ui-label-text {
+	white-space: nowrap;
+	float:left;
+}
+
+input.error {
+	background: url(../images/icon-fail.png) no-repeat right center #ffebef;
+	color: #480000;
+}
+
+input.valid {
+	background: url(../images/icon-ok.png) no-repeat right center #e3ffe5;
+	color: #002f00;
+	border-color: #96b796 !important;
+}
+
+div.form-error {
+    padding: 6px 12px;
+    line-height: 180%;
+    background: #ffe5ed;
+    border-radius: 4px;
+    margin-bottom: 22px;
+    color: darkred;
+}

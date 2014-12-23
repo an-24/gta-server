@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 public class NetUtils {
 	
 	static public String getTokenFromCookie(HttpServletRequest request) {
+		if(request.getCookies()!=null)
     	for (Cookie cookie : request.getCookies()) {
     		if(cookie.getName().equals("token")) 
     			return cookie.getValue();

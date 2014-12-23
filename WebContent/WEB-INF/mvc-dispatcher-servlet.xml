@@ -28,8 +28,12 @@
     <context:component-scan base-package="biz.gelicon.gta.server.controller"/>
     <mvc:resources mapping="/resources/**" location="/WEB-INF/resources/"/>
 
-
 	<jpa:repositories base-package="biz.gelicon.gta.server.repo"/>
+
+    <context:component-scan base-package="biz.gelicon.gta.server.service"/>
+    
+    <tx:annotation-driven/>
+
 	
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"/>
@@ -62,4 +66,8 @@
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 	</bean>
     
+    <mvc:interceptors>
+		<bean class="biz.gelicon.gta.server.SystemInterceptor" />
+	</mvc:interceptors>
+
 </beans>

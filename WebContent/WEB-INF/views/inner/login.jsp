@@ -31,10 +31,15 @@
 	var form = $('#frmlogin');
 	initForm(form);
     function submitLogin() {
-        submitFunc("action/login","../web/",form,function(data){
+        submitFunc("action/login",undefined,form,function(data){
         	$.cookie("token", data.token);
         	$.cookie("userId", data.userId);
         	$.cookie("userName", data.userName);
+        	if(data.redirect) {
+        		form.attr("action",data.redirect);
+        	} else {
+        		form.attr("action","../web/");
+        	}
         	//alert($.cookie("user"));
         });
     };
