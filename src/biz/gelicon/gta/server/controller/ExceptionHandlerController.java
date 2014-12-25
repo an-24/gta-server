@@ -4,18 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import jersey.repackaged.com.google.common.collect.Lists;
-
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
-import biz.gelicon.gta.server.utils.SpringException;
-
 @ControllerAdvice
 public class ExceptionHandlerController {
 
-	
+/*	
 	public class ErrorInfo {
 		private String message;
 
@@ -23,9 +19,9 @@ public class ExceptionHandlerController {
 			this.message = ex.getMessage();
 		}
 	}
-	
-	@ExceptionHandler(SpringException.class)
-	public ModelAndView handle(Exception ex) {
+*/	
+	@ExceptionHandler(Throwable.class)
+	public ModelAndView handle(Throwable ex) {
         
        ModelAndView mav = new ModelAndView("exception");
        mav.addObject("name", ex.getClass().getName());

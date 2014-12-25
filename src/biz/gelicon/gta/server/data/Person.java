@@ -16,6 +16,8 @@ import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import biz.gelicon.gta.server.dto.PersonDTO;
+
 @Entity
 @Table(name = "PERSON",
 	   uniqueConstraints = @UniqueConstraint(columnNames = {"TEAM_ID", "PERSON_NIC"}))
@@ -25,12 +27,15 @@ public class Person implements Serializable {
 	private Integer id;
 	private String nic;
 	private String post;
-	private Boolean active;
+	private Boolean active = false;
 	private Integer limit;
 	private Team team;
 	private User user;
 	private Post postDict;
-	
+
+	public Person() {
+	}
+
 	@Id
 	@javax.persistence.SequenceGenerator(name="newRec", sequenceName="NEWRECORDID")	
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "newRec")

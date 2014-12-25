@@ -3,6 +3,13 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
+<style>
+	#addPerson {
+		position: absolute;
+		top:70px;
+		z-index:200;
+	}
+</style>
 
 <script>
   $(function() {
@@ -17,8 +24,13 @@
     $("#tabs").tabs({
     	active:0
     });
+	$("#addPerson").click(function(){
+		openPerson();
+	});	
   });
 </script>
+
+<div style="white-space:nowrap;">
 
 <ol id="project-list" class="list-view">
 	<c:forEach var="t" items="${teams}">
@@ -31,7 +43,7 @@
 	<div id="tabs" style="display:none">
 		<ul>
 			<li><a href="#tabs-1">Common</a></li>
-			<li><a href="#tabs-2">Team</a></li>
+			<li><a href="#tabs-2">Members</a></li>
 		</ul>
 		<div id="tabs-1">
 		   <table style="width:100%;">
@@ -65,6 +77,7 @@
 		   </table>  
   		</div>
   		<div id="tabs-2">
+  			<button id="addPerson">Add</button>
 			<table id="person-list" class="display" cellspacing="0">
 				<thead>
 					<tr>
@@ -76,4 +89,6 @@
 			</table>
   		</div>
 	</div>
+</div>
+
 </div>

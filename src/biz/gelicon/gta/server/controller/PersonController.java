@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import biz.gelicon.gta.server.GtaSystem;
 import biz.gelicon.gta.server.data.Person;
 import biz.gelicon.gta.server.data.User;
 import biz.gelicon.gta.server.dto.PersonDTO;
@@ -34,14 +35,28 @@ public class PersonController {
 	@Inject
 	private UserService userService;
 	
-    @RequestMapping(value = "{id}", method=RequestMethod.GET)
+    @RequestMapping(value = "/edit/{id}", method=RequestMethod.GET)
     @Transactional(readOnly=true)
-    public ModelAndView personInner(Model ui, HttpServletRequest request,
+    public ModelAndView personEdit(Model ui,
     		@PathVariable Integer id) {
     	Person person = personRepository.findOne(id);
-    	ModelAndView mv = new ModelAndView("inner/getperson","command",new PersonDTO(person));
+    	ModelAndView mv = new ModelAndView("inner/getperson","command",new PersonDTO(person, GtaSystem.MODE_EDIT));
     	boolean manager = userService.isCurrentPM(person.getTeam());
     	mv.getModelMap().addAttribute("manager", manager);
+    	mv.getModelMap().addAttribute("teamId", person.getTeam().getId());
+    	mv.getModelMap().addAttribute("posts", postRepository.findAll());
+    	return mv;
+    }
+
+    @RequestMapping(value = "/add/{teamId}", method=RequestMethod.GET)
+    @Transactional(readOnly=true)
+    public ModelAndView personAdd(Model ui, @PathVariable Integer teamId) {
+    	Person person = new Person();
+    	person.setTeam(userService.findTeam(teamId));
+    	ModelAndView mv = new ModelAndView("inner/getperson","command",new PersonDTO(person, GtaSystem.MODE_ADD));
+    	boolean manager = userService.isCurrentPM(person.getTeam());
+    	mv.getModelMap().addAttribute("manager", manager);
+    	mv.getModelMap().addAttribute("teamId", person.getTeam().getId());
     	mv.getModelMap().addAttribute("posts", postRepository.findAll());
     	return mv;
     }

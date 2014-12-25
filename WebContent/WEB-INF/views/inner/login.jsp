@@ -4,14 +4,15 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 
-<form:form id="frmlogin" class="central" style="margin-left: -150px;margin-top:-78px;" method="POST">
+<form:form id="frmlogin" class="central" style="margin-left: -150px;margin-top:-78px;">
    <table>
    <tr>
    	<th colspan="2"><h2>Log in</h2></th>
    </tr>
+   <tr><td colspan="2"><div style="text-align: center" id="error-place" class="form-error"></div></td></tr>
    <tr>
    <td><form:label path="name">Name</form:label></td>
-   <td><form:input path="name"/></td>
+   <td><form:input path="name" data-validation="required" data-validation-error-msg="You must enter the user name"/></td>
    </tr>
    <tr>
    <td><form:label path="password">Password</form:label></td>
@@ -20,7 +21,7 @@
    <tfoot>
    <tr>
    <td colspan="2">
-   <input id="default" onclick="submitLogin();return false;" type="button" value="Submit"/>
+   <input id="default" type="submit" value="Submit"/>
    </td>
    </tr>
    </tfoot>
@@ -28,19 +29,13 @@
 </form:form>
 
 <script type="text/javascript">
-	var form = $('#frmlogin');
-	initForm(form);
-    function submitLogin() {
-        submitFunc("action/login",undefined,form,function(data){
-        	$.cookie("token", data.token);
-        	$.cookie("userId", data.userId);
-        	$.cookie("userName", data.userName);
-        	if(data.redirect) {
-        		form.attr("action",data.redirect);
-        	} else {
-        		form.attr("action","../web/");
-        	}
-        	//alert($.cookie("user"));
-        });
-    };
+	
+	$(function() {
+		initForm($('#frmlogin'),"action/login",function(data){
+	    	$.cookie("token", data.token);
+	    	$.cookie("userId", data.userId);
+	    	$.cookie("userName", data.userName);
+	    });
+	});
+
 </script>

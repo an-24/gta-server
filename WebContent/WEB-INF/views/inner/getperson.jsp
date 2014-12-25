@@ -32,26 +32,22 @@
         	}
         }
     });
-    $.validate({
-    	validateOnBlur : false,
-    	errorMessagePosition : 'top',
-    	scrollToTopOnError : false
+    initForm($("#frmPerson"),"action/updatePerson",function(data){
+    	toastr["success"](data.message, "Success");
+    	//TODO refresh members
     });
-    $("#default").click(function(){
-    	debugger;
-    	var r = $("#frmPerson").trigger('submit.validation');
-    	submitPerson($("#frmPerson")[0]);
-    	return false;
-    });
-    $('form:first *:input[type!=hidden]:first').focus();
+    
   });
 </script>
 
-<form:form id="frmPerson" action="" style="width:auto" method="POST">
+<form:form id="frmPerson" style="width:auto">
+   <form:input path="mode" type="hidden"/>
+   <input name="teamId" type="hidden" value="${teamId}"/>
    <table>
    <tr>
    	<td><form:label path="user.name">User<em>*</em></form:label></td>
-   	<td><form:input id="user-name" path="user.name"/><form:input id="user-id" path="user.id" type="hidden" data-validation="required" data-validation-error-msg="You must select a user"/></td>
+   	<td><form:input id="user-name" path="user.name"/>
+   	    <form:input id="user-id" path="user.id" type="hidden" data-validation="key" data-validation-error-msg="You must select a user"/></td>
    	<td><form:label path="nic">Nic name<em>*</em></form:label></td>
    	<td><form:input path="nic" data-validation="required" data-validation-error-msg="You must enter the nic name"/></td>
    </tr>
@@ -78,7 +74,7 @@
    
    <c:if test="${manager}">
    	<td colspan="4">
-   		<input id="default" type="button" value="Submit"/>
+   		<input id="default" type="submit" value="Submit"/>
    	</td>
    </c:if>
    

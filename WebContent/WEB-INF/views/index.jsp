@@ -11,6 +11,7 @@
     <link rel="shortcut icon" href="resources/images/favicon.png" type="image/png">
     <link type="text/css" rel="stylesheet" href="resources/css/jquery.dataTables.css">
     <link type="text/css" rel="stylesheet" href="resources/css/jquery.multiselect.css">
+    <link type="text/css" rel="stylesheet" href="resources/css/toastr.css">
     <link type="text/css" rel="stylesheet" href="resources/css/main.css">
 
 	<script src="resources/js/lib/jquery-min.js"></script>
@@ -19,8 +20,10 @@
 	<script src="resources/js/lib/jquery.dataTables.js"></script>
 	<script src="resources/js/lib/jquery.multiselect.js"></script>
 	<script src="resources/js/lib/jquery.multiselect.ru.js"></script>
-	<script src="resources/js/lib/jquery.form-validator.min.js"></script>
+	<script src="resources/js/lib/jquery.form-validator.js"></script>
+	<script src="resources/js/lib/toastr.js"></script>
 	
+	<script src="resources/js/main.js"></script>
 	<script src="resources/js/utils.js"></script>
 
 </head>

@@ -9,9 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import biz.gelicon.gta.server.data.Person;
+import biz.gelicon.gta.server.data.Post;
 import biz.gelicon.gta.server.data.Team;
 import biz.gelicon.gta.server.data.User;
 import biz.gelicon.gta.server.repo.PersonRepository;
+import biz.gelicon.gta.server.repo.PostRepository;
+import biz.gelicon.gta.server.repo.TeamRepository;
 import biz.gelicon.gta.server.repo.UserRepository;
 
 @Service
@@ -20,6 +23,10 @@ public class UserService {
 	private UserRepository userRepository;
 	@Inject
 	private PersonRepository personRepository;
+	@Inject
+	private PostRepository postRepository;
+	@Inject
+	private TeamRepository teamRepository;
 	
 	static private User currentUser;
 
@@ -51,6 +58,17 @@ public class UserService {
 		return opt.isPresent();
 	}
 
+	public User findUser(int id) {
+		return userRepository.findOne(id);
+	}
+	
+	public Post findPost(int id) {
+		return postRepository.findOne(id);
+	}
+
+	public Team findTeam(int id) {
+		return teamRepository.findOne(id);
+	}
 
 	
 }
