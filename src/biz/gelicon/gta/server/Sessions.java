@@ -23,11 +23,16 @@ public class Sessions {
 	public static String newSession(User user) {
 		String token = newToken();
 		sessions.put(token,user);
+		sessions.put("currentUser", user);
 		return token;
 	}
 	
 	public static Object getSessionAttr(String name) {
 		return sessions.get(name);
+	}
+	
+	public static User getCurrentUser() {
+		return (User) getSessionAttr("currentUser");
 	}
 	
 	public static SessionFactory getHibernateSession() {

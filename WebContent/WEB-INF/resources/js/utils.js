@@ -56,6 +56,15 @@ function loadProjectSheet(teamId,token) {
         	tab1.find("#workedOfWeek").text(obj.workedOfWeek ||"");
         	tab1.find("#workedOfMonth").text(obj.workedOfMonth ||"");
         	tab1.find("#workedOfBeginProject").text(obj.workedOfBeginProject ||"");
+        	if(obj.managerCurrentUser) {
+        		tab1.find("#limit").removeAttr("readonly");
+            	tab1.find("#updTeamBtn button").click(function(){
+            		updateTeam(obj.id,tab1.find("#limit").val());
+            		console.log("test");
+            	});
+        	} else
+        		tab1.find("#updTeamBtn").remove();
+        	
         	var table = $("#person-list");
         	if(!window._dataTablePersons) {
         		window._dataTablePersons = table.dataTable({
@@ -124,3 +133,7 @@ function backFormPerson(tabid) {
 function isInt(n){
     return Number(n)===n && n%1===0;
 };
+
+function updateTeam(id,limit) {
+	
+}

@@ -19,6 +19,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import biz.gelicon.gta.server.Sessions;
+
 
 @Entity
 @Table(name = "TEAM")
@@ -126,6 +128,12 @@ public class Team  implements Serializable {
 		Optional<Person> opt = getPersons().stream().filter(p->p.getPostDict()!=null?
 															p.getPostDict().getId()==1:false).findFirst();
 		return opt.isPresent()?opt.get():null;
+	}
+	
+	@Transient
+	public boolean isManagerCurrentUser() {
+		User curr = Sessions.getCurrentUser();
+		return (getManager()!=null && curr!=null)?getManager().getUser().getId()==curr.getId():false;
 	}
 	
 	@Override

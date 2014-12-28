@@ -74,6 +74,9 @@
 		   		<td><label>Worked from the beginning of the project</label></td>
 		   		<td id="workedOfBeginProject">340<span> hours</span></td>
 		   	</tr>
+		   	<tr>
+		   		<td id="updTeamBtn" style="text-align: right;" colspan="2"><button>Update</button></td>
+		   	</tr>
 		   </table>  
   		</div>
   		<div id="tabs-2">
