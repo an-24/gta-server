@@ -4,7 +4,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 
-<form:form id="frmlogin" class="central" style="margin-left: -150px;margin-top:-78px;">
+<form:form id="frmlogin" class="central" style="margin-left: -150px;top:260px;position:absolute;">
    <table>
    <tr>
    	<th colspan="2"><h2>Log in</h2></th>

@@ -9,6 +9,10 @@
 		top:70px;
 		z-index:200;
 	}
+	
+	#frmTeam td{
+		text-align:left;
+	}
 </style>
 
 <script>
@@ -26,8 +30,15 @@
     });
 	$("#addPerson").click(function(){
 		openPerson();
-	});	
+	});
+	
+    initForm($("#frmTeam"),"inner/team/update",function(data){
+    	toastr["success"](data.message, "Success");
+    	refreshProjectSheet(0);
+    });
+	
   });
+  
 </script>
 
 <div style="white-space:nowrap;">
@@ -46,6 +57,8 @@
 			<li><a href="#tabs-2">Members</a></li>
 		</ul>
 		<div id="tabs-1">
+		   <form id="frmTeam" style="width:100%;">
+		   <input id="id" name="id" type="hidden"/>
 		   <table style="width:100%;">
 		   	<tr>
 		   		<td style="width:400px;"><label>Project starting date</label></td>
@@ -53,7 +66,7 @@
 		   	</tr>
 		   	<tr>
 		   		<td><label>Weekly limit</label></td>
-		   		<td><input id="limit" readonly type="text"/></td>
+		   		<td><input id="limit" name="limit" data-validation="number" data-validation-optional="true" readonly type="text"/></td>
 		   	</tr>
 		   	<tr>
 		   		<td colspan="2">Statistics<hr></td>
@@ -74,10 +87,13 @@
 		   		<td><label>Worked from the beginning of the project</label></td>
 		   		<td id="workedOfBeginProject">340<span> hours</span></td>
 		   	</tr>
-		   	<tr>
-		   		<td id="updTeamBtn" style="text-align: right;" colspan="2"><button>Update</button></td>
-		   	</tr>
-		   </table>  
+		   	<tfoo>
+		   		<tr>
+		   			<td id="updTeamBtn" style="text-align: right;" colspan="2"><input value="Update" type="submit"/></td>
+		   		</tr>
+		   	</tfoo>
+		   </table>
+		   </form>  
   		</div>
   		<div id="tabs-2">
   			<button id="addPerson">Add</button>

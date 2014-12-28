@@ -74,7 +74,7 @@ public class Team  implements Serializable {
 		this.createDate = createDate;
 	}
 	
-	@Column(name = "TEAM_LIMIT", nullable = false)
+	@Column(name = "TEAM_LIMIT", nullable = true)
 	public Integer getLimit() {
 		return limit;
 	}

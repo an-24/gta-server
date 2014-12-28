@@ -16,6 +16,8 @@ import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import biz.gelicon.gta.server.dto.PersonDTO;
 
 @Entity
@@ -89,6 +91,7 @@ public class Person implements Serializable {
 	}
 	
 	@XmlTransient
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "TEAM_ID", nullable = false)	
 	public Team getTeam() {
@@ -100,6 +103,7 @@ public class Person implements Serializable {
 	
 	
 	@XmlTransient
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID", nullable = false)	
 	public User getUser() {

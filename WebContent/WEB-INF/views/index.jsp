@@ -25,6 +25,8 @@
 	
 	<script src="resources/js/main.js"></script>
 	<script src="resources/js/utils.js"></script>
+	<script src="resources/js/projects.js"></script>
+	<script src="resources/js/person.js"></script>
 
 </head>
 <body>

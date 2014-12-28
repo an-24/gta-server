@@ -12,8 +12,12 @@ $.validate = function(conf) {
 		$.validate._lastmessage = mess;
 		conf.errorMessagePosition.append(mess);
 	};
-	$.formUtils.reset = function() {
+	$.formUtils.reset = function(frm) {
 		$(conf.errorMessagePosition).empty();
+	};
+	
+	$.formUtils.clean = function(frm) {
+		$(frm).trigger('reset.validation');
 	};
 	
     $.formUtils.addValidator({

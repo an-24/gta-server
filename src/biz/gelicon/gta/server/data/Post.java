@@ -12,6 +12,8 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "POST")
 @XmlRootElement
@@ -37,6 +39,7 @@ public class Post {
 		this.name = name;
 	}
 
+	@JsonIgnore
 	@XmlTransient
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "postDict")
 	public Set<Person> getPersons() {

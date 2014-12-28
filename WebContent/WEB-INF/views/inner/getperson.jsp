@@ -32,9 +32,9 @@
         	}
         }
     });
-    initForm($("#frmPerson"),"action/updatePerson",function(data){
+    initForm($("#frmPerson"),"inner/person/update",function(data){
     	toastr["success"](data.message, "Success");
-    	//TODO refresh members
+    	refreshProjectSheet(1);
     });
     
   });
@@ -43,6 +43,7 @@
 <form:form id="frmPerson" style="width:auto">
    <form:input path="mode" type="hidden"/>
    <input name="teamId" type="hidden" value="${teamId}"/>
+   <form:input path="id" type="hidden"/>
    <table>
    <tr>
    	<td><form:label path="user.name">User<em>*</em></form:label></td>
