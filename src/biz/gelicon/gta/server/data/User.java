@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.springframework.transaction.annotation.Transactional;
 
 @Entity
 @Table(name = "PROGUSER")
@@ -16,6 +19,7 @@ public class User implements Serializable {
 	private Integer id;
 	private String name;
 	private String password;
+	private String email;
 	
 	@Id
 	@javax.persistence.SequenceGenerator(name="newRec", sequenceName="NEWRECORDID")	
@@ -44,8 +48,23 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	@Column(name = "PROGUSER_EMAIL", length = 200, nullable = true)
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	@Transient
+	public boolean isSysAdmin() {
+		return id==1;
+	}
+	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + "]";
 	}
+
 }

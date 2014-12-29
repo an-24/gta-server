@@ -249,3 +249,28 @@ div.form-error {
     margin-bottom: 0px !important;
 }	
 
+#admin-menu {
+	top: 20px;
+	width: 200px;
+	background-color: white;
+	position: relative;
+	border-radius: 5px;
+	float: left;
+	min-height: 422px;
+}
+
+#admin-content {
+	top: 20px;
+	width: 800px;
+	background-color: white;
+	position: relative;
+	border-radius: 5px;
+	float: left;
+	margin-left: 20px;
+	min-height: 422px;
+	padding:10px;
+}
+
+#users-table {
+	width:100%;
+}

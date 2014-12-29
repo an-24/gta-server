@@ -27,6 +27,7 @@
 	<script src="resources/js/utils.js"></script>
 	<script src="resources/js/projects.js"></script>
 	<script src="resources/js/person.js"></script>
+	<script src="resources/js/admin.js"></script>
 
 </head>
 <body>
@@ -39,6 +40,9 @@
 		<div class="mainmenu">
 			<a href=".">Home</a>
 			<a href="proj">Projects</a>
+			<c:if test="${user!=null && userObj.sysAdmin}">
+			<a href="admin">Administrator</a>
+			</c:if>
 		</div>
 	</div>
 	<div class="content">

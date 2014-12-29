@@ -1,5 +1,6 @@
 package biz.gelicon.gta.server.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,7 @@ import biz.gelicon.gta.server.data.Person;
 import biz.gelicon.gta.server.data.Post;
 import biz.gelicon.gta.server.data.Team;
 import biz.gelicon.gta.server.data.User;
+import biz.gelicon.gta.server.dto.UserDTO;
 import biz.gelicon.gta.server.repo.PersonRepository;
 import biz.gelicon.gta.server.repo.PostRepository;
 import biz.gelicon.gta.server.repo.TeamRepository;
@@ -68,6 +70,14 @@ public class UserService {
 
 	public Team findTeam(int id) {
 		return teamRepository.findOne(id);
+	}
+	
+	public List<Team> getMemebersOfTeam(User u) {
+		return userRepository.findMemebers(u.getId());
+	}
+
+	public List<User> findAll() {
+		return userRepository.findAll();
 	}
 
 	

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import biz.gelicon.gta.server.Sessions;
 import biz.gelicon.gta.server.Teams;
 import biz.gelicon.gta.server.data.Person;
 import biz.gelicon.gta.server.repo.PersonRepository;
@@ -32,6 +33,7 @@ public class MainController {
     public String main(Model ui, HttpServletRequest request) {
     	HttpSession session = request.getSession();
     	ui.addAttribute("user",session.getAttribute("user"));
+    	ui.addAttribute("userObj",UserService.getCurrentUser());
     	ui.addAttribute("menu","home");
     	ui.addAttribute("base",getBaseURL(request));
         return "index";
@@ -46,10 +48,23 @@ public class MainController {
     public String projGET(Model ui, HttpServletRequest request) {
     	HttpSession session = request.getSession();
     	ui.addAttribute("user",session.getAttribute("user"));
+    	ui.addAttribute("userObj",UserService.getCurrentUser());
     	ui.addAttribute("menu","projects");
     	ui.addAttribute("base",getBaseURL(request));
         return "index";
     }
+    
+    @RequestMapping(value = "/admin",method=RequestMethod.GET)
+    public String adminGET(Model ui, HttpServletRequest request) {
+    	HttpSession session = request.getSession();
+    	ui.addAttribute("user",session.getAttribute("user"));
+    	ui.addAttribute("userObj",UserService.getCurrentUser());
+    	ui.addAttribute("menu","admin");
+    	ui.addAttribute("base",getBaseURL(request));
+        return "index";
+    }
+    
+    
     @RequestMapping(value = "/proj",method=RequestMethod.POST)
     public String projPOST(Model ui, HttpServletRequest request) {
     	return projGET(ui, request);
