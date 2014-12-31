@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import biz.gelicon.gta.server.GtaSystem;
 import biz.gelicon.gta.server.data.Team;
 import biz.gelicon.gta.server.utils.DateUtils;
 
@@ -18,6 +19,8 @@ public class TeamDTO {
 	private Integer limit;
 	private Integer workerCount;
 	private Integer mode;
+	
+	private PersonDTO manager;
 
 	public TeamDTO() {
 	}
@@ -28,12 +31,15 @@ public class TeamDTO {
 		this.active = t.isActive();
 		this.createDate = t.getCreateDate();
 		this.limit = t.getLimit();
+		if(t.getManager()!=null) this.manager = new PersonDTO(t.getManager(),0);else
+			this.manager = new PersonDTO();
 	}
 
 	public TeamDTO(Integer mode) {
 		this.mode = mode;
-		setCreateDate(DateUtils.cleanTime(new Date()));
-		
+		this.createDate = DateUtils.cleanTime(new Date());
+		this.manager = new PersonDTO();
+		this.active = mode == GtaSystem.MODE_ADD;
 	}
 
 	public TeamDTO(Team t, Integer mode) {
@@ -95,6 +101,14 @@ public class TeamDTO {
 
 	public void setMode(Integer mode) {
 		this.mode = mode;
+	}
+
+	public PersonDTO getManager() {
+		return manager;
+	}
+
+	public void setManager(PersonDTO manager) {
+		this.manager = manager;
 	}
 
 }

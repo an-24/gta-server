@@ -9,6 +9,10 @@
     	toastr["success"](data.message, "Success");
     	selectSelectableElement($("#admin-menu"),$("#admin-menu li[href='inner/admin/users']"));
     });
+    $("#frmUser #cancel").click(function() {
+    	selectSelectableElement($("#admin-menu"),$("#admin-menu li[href='inner/admin/users']"));
+    });
+    
   });
 </script>
 
@@ -56,6 +60,7 @@
    <tfoot>
    <tr>
    	<td colspan="2">
+   		<input id="cancel" type="button" value="Cancel"/>
    		<input id="default" type="submit" value="Submit"/>
    	</td>
    </tr>

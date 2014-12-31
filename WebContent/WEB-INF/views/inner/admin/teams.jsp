@@ -6,7 +6,7 @@
 <script type="text/javascript">
 $(function() {
 	$("#teams-table").dataTable({
-		pageLength:7,
+		pageLength:6,
 		lengthChange:false,
 		info: false
 	});
@@ -21,6 +21,7 @@ $(function() {
 	<thead>
 		<tr>
 			<th>Name</th>
+			<th>Manager</th>
 			<th>Active</th>
 			<th>Date of start</th>
 			<th>Limit</th>
@@ -31,6 +32,7 @@ $(function() {
 		<c:forEach var="t" items="${teams}">
 			<tr>
 		  		<td><a onclick="openTeam(${t.id});return false;" href="#${t.id}">${t.name}</a></td>
+		  		<td>${t.manager.nic}</td>
 		  		<td>${t.active}</td>
 		  		<td>${t.createDate}</td>
 		  		<td>${t.limit}</td>

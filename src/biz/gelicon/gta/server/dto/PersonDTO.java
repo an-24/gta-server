@@ -81,4 +81,12 @@ public class PersonDTO {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
+	public Boolean getManager() {
+		return manager;
+	}
+
+	public void setManager(Boolean manager) {
+		this.manager = manager;
+	}
 }

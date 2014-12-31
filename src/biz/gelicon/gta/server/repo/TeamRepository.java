@@ -6,4 +6,6 @@ import biz.gelicon.gta.server.data.Team;
 
 public interface TeamRepository extends JpaRepository<Team, Integer> {
 
+	public Team findByName(String name);
+
 }

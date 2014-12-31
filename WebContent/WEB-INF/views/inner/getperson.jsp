@@ -53,7 +53,7 @@
    	<td><form:input path="nic" data-validation="required" data-validation-error-msg="You must enter the nic name"/></td>
    </tr>
    <tr>
-   	<td><form:label path="post">Post (from reference book)</form:label></td>
+   	<td><form:label path="post">Post (from RB)</form:label></td>
    	<td>
    			<!--<form:input path="post"/>-->
    			<select id="post" name="post">
@@ -67,7 +67,7 @@
    	<td><form:input path="postName" id="postName" data-validation="required" data-validation-error-msg="You must enter the post name"/></td>
    </tr>
    <tr>
-   <td><form:label path="limit">Limit (in hours per week)</form:label></td>
+   <td><form:label path="limit">Limit</form:label></td>
    <td><form:input path="limit" data-validation="number" data-validation-optional="true"/></td>
    </tr>
    <tfoot>

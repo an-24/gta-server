@@ -18,6 +18,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "POST")
 @XmlRootElement
 public class Post {
+	
+	public static final int MANAGERID = 1;
+	
 	private Integer id;
 	private String name;
 	private Set<Person> persons = new HashSet<>();

@@ -94,6 +94,11 @@ input[type="button"],input[type="submit"],button {
   border-radius: 5px;	
 }
 
+input#cancel[type="button"] {
+	color: #007700;
+	background: white;
+}
+
 button.ui-multiselect {
 	border: 2px inset !important;
 	border-color: #333333 !important;	
@@ -149,15 +154,15 @@ a.ui-multiselect-close .ui-icon:hover {
 }
 
 #team-propertys {
-	display:inline-block;
 	position: relative;
 	top: 20px;
-	margin-left: 20px;
+	left: 20px;
+	margin-right: 20px;
 	border-radius: 5px;
 	background-color: white;
-	min-height: 415px;
-	min-width: 700px;
-	padding:14px;
+	min-height: 402px;
+	padding: 20px;
+	overflow: hidden;
 }
 
 #team-propertys h2 {
@@ -261,14 +266,14 @@ div.form-error {
 
 #admin-content {
 	top: 20px;
-	width: 800px;
 	background-color: white;
 	position: relative;
 	border-radius: 5px;
-	float: left;
-	margin-left: 20px;
-	min-height: 422px;
-	padding:10px;
+	min-height: 402px;
+	padding: 20px;
+	overflow: hidden;
+	left: 20px;
+	margin-right: 20px;
 }
 
 #users-table {

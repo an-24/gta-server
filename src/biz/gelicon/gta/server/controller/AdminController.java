@@ -1,6 +1,7 @@
 package biz.gelicon.gta.server.controller;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,16 +15,24 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import biz.gelicon.gta.server.GtaSystem;
 import biz.gelicon.gta.server.Login;
+import biz.gelicon.gta.server.data.Person;
+import biz.gelicon.gta.server.data.Post;
+import biz.gelicon.gta.server.data.Team;
 import biz.gelicon.gta.server.data.User;
+import biz.gelicon.gta.server.dto.PersonDTO;
 import biz.gelicon.gta.server.dto.TeamDTO;
 import biz.gelicon.gta.server.dto.UserDTO;
+import biz.gelicon.gta.server.repo.PersonRepository;
+import biz.gelicon.gta.server.repo.PostRepository;
 import biz.gelicon.gta.server.repo.TeamRepository;
 import biz.gelicon.gta.server.service.UserService;
+import biz.gelicon.gta.server.utils.DateUtils;
 import biz.gelicon.gta.server.utils.SpringException;
 
 
@@ -35,6 +44,10 @@ public class AdminController {
 	private UserService userService;
 	@Inject
 	private TeamRepository teamRepository;
+	@Inject
+	private PostRepository postRepository;
+	@Inject
+	private PersonRepository personRepository;
 	
 
     @RequestMapping(method=RequestMethod.GET)
@@ -44,6 +57,14 @@ public class AdminController {
     	ui.addAttribute("menu","admin");
         return "inner/admin/index";
     }
+
+    @RequestMapping(value = "/getusers", params={"term"},method=RequestMethod.GET, produces="application/json")
+    @ResponseBody
+    public String getUsers(@RequestParam(value = "term") String term) {
+    	List<User> ulist = userService.findByNameLike(term+"%");
+    	List<String> suser = ulist.stream().map(u->"{\"label\":\""+u.getName()+"\",\"id\":"+u.getId()+"}").collect(Collectors.toList());
+    	return suser.toString();
+    } 
     
     @RequestMapping(value = "/users", method=RequestMethod.GET)
     @Transactional(readOnly=true)
@@ -119,7 +140,7 @@ public class AdminController {
     public String teams(Model ui) {
     	List<TeamDTO> list = teamRepository.findAll().stream().map(t->{
     		TeamDTO dto = new TeamDTO(t);
-    		dto.setWorkerCount(t.getPersons().size());;
+    		dto.setWorkerCount(t.getPersons().size());
     		return dto;
     	}).collect(Collectors.toList());
     	ui.addAttribute("teams", list);
@@ -129,14 +150,62 @@ public class AdminController {
     @RequestMapping(value = "/teams/add", method=RequestMethod.GET)
     public ModelAndView addTeam(Model ui) {
     	ModelAndView mv = new ModelAndView("inner/admin/team","team",new TeamDTO(GtaSystem.MODE_ADD));
-    	mv.getModelMap().addAttribute("pswd_confirmation", "");
         return mv;
     }
     
     @RequestMapping(value = "/teams/edit/{id}", method=RequestMethod.GET)
+    @Transactional
     public ModelAndView editTeam(Model ui,
     		@PathVariable Integer id) {
     	ModelAndView mv = new ModelAndView("inner/admin/team","team",new TeamDTO(teamRepository.findOne(id),GtaSystem.MODE_EDIT));
         return mv;
+    }
+    
+    
+    @RequestMapping(value = "/teams/update", method=RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    @Transactional
+    public String updateTeam(Model ui,TeamDTO dto) {
+    	Team team;
+    	if(dto.getMode()==GtaSystem.MODE_ADD) {
+    		Team t = teamRepository.findByName(dto.getName());
+    		if(t!=null)
+    			throw new SpringException("A team with the same name already exists");
+        	team = new Team();
+        	team.setId(dto.getId());
+    	} else {
+    		team = teamRepository.findOne(dto.getId());
+    	}
+    	team.setName(dto.getName());
+    	team.setActive(dto.getActive());
+    	team.setLimit(dto.getLimit());
+    	team.setCreateDate(DateUtils.cleanTime(new Date()));
+    	
+    	Person manager;
+    	PersonDTO manDto = dto.getManager();
+    	if(dto.getMode()==GtaSystem.MODE_ADD 
+    			|| (dto.getMode()==GtaSystem.MODE_EDIT && dto.getManager().getId()==null)) {
+        	manager = new Person();
+        	manager.setNic(manDto.getNic());
+        	manager.setPostDict(postRepository.findOne(Post.MANAGERID));
+        	manager.setPost("Project Manager");
+        	manager.setUser(userService.findUser(manDto.getUser().getId()));
+    	} else {
+        	manager = personRepository.findOne(dto.getManager().getId());
+        	team.getPersons().remove(manager);
+        	manager.setNic(manDto.getNic());
+        	manager.setUser(userService.findUser(manDto.getUser().getId()));
+    	}
+    	manager.setTeam(team);
+    	team.getPersons().add(manager);
+    	
+    	teamRepository.save(team);
+    	personRepository.save(manager);
+    	
+		String result;
+		if(dto.getMode()==GtaSystem.MODE_EDIT)
+			result = "Team successfully changed";else
+				result = "Team successfully added";	
+		return "{\"message\":\""+result+"\"}";
     }
 }
