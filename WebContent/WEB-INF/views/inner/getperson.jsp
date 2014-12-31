@@ -53,13 +53,13 @@
    	<td><form:input path="nic" data-validation="required" data-validation-error-msg="You must enter the nic name"/></td>
    </tr>
    <tr>
-   	<td><form:label path="post">Post (from RB)</form:label></td>
+   	<td><form:label path="post">Post</form:label></td>
    	<td>
    			<!--<form:input path="post"/>-->
    			<select id="post" name="post">
    			    <option value="-1">-empty-</option>
 				<c:forEach var="p" items="${posts}"> 
-   			    	<option value="${p.id}"><c:out value="${p.name}"/></option>
+   			    	<option value="${p.id}" ${command.post == p.id ? 'selected' : ''}><c:out value="${p.name}"/></option>
         		</c:forEach>   			
    			</select>
    	</td>

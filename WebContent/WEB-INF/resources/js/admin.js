@@ -12,3 +12,10 @@ function openTeam(id) {
 			url = "inner/admin/teams/add";
 	$("#admin-content").load(url);
 }
+
+function openAdminPerson(id) {
+	var url; 
+	if(id)	url = "inner/admin/persons/edit/"+id; else
+			url = "inner/admin/persons/add";
+	$("#admin-content").load(url);
+}

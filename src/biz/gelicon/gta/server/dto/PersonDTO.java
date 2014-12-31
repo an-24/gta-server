@@ -1,6 +1,7 @@
 package biz.gelicon.gta.server.dto;
 
 import biz.gelicon.gta.server.data.Person;
+import biz.gelicon.gta.server.data.Team;
 
 public class PersonDTO {
 	private Integer id;
@@ -11,6 +12,7 @@ public class PersonDTO {
 	private Integer limit;
 	private Boolean manager;
 	private Integer mode;
+	private TeamDTO team;
 	
 	public PersonDTO() {
 	}
@@ -24,9 +26,16 @@ public class PersonDTO {
 		this.post = person.getPostDict()!=null?person.getPostDict().getId():null;
 		this.limit = person.getLimit();
 		this.manager = person.isManager();
+		this.team = new TeamDTO();
+		this.team.setId(person.getTeam().getId());
+		this.team.setName(person.getTeam().getName());
 		this.mode = mode;
 	}
 	
+	public PersonDTO(Integer mode) {
+		this.mode = mode;
+	}
+
 	public String getNic() {
 		return nic;
 	}
@@ -88,5 +97,13 @@ public class PersonDTO {
 
 	public void setManager(Boolean manager) {
 		this.manager = manager;
+	}
+
+	public TeamDTO getTeam() {
+		return team;
+	}
+
+	public void setTeam(TeamDTO team) {
+		this.team = team;
 	}
 }

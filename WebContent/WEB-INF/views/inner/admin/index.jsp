@@ -17,6 +17,7 @@
 <ol id="admin-menu" class="list-view">
 	<li class="ui-widget-content" href="inner/admin/users">Users</li>
 	<li class="ui-widget-content" href="inner/admin/teams">Teams</li>
+	<li class="ui-widget-content" href="inner/admin/persons">Members</li>
 </ol>
 
 <div id="admin-content" class="ui-widget"></div>

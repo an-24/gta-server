@@ -15,6 +15,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	
 	@Query("select t from Team t,Person p where p.team=t and p.user.id=?1")
 	public List<Team> findMemebers(Integer userId);
+	public User findByIdNotAndName(Integer id, String name);
 
 
 }

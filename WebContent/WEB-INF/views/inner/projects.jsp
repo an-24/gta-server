@@ -13,6 +13,10 @@
 	#frmTeam td{
 		text-align:left;
 	}
+	
+	#tabs-1,#tabs-2,#tabs-3 {
+		overflow: hidden;
+	}
 </style>
 
 <script>
@@ -43,7 +47,7 @@
 
 <div style="white-space:nowrap;">
 
-<ol id="project-list" class="list-view">
+<ol id="project-list" class="list-view" style="width: 300px;">
 	<c:forEach var="t" items="${teams}">
   		<li class="ui-widget-content" team-id="${t.id}" id="li-team-${t.id}">${t.name}</li>
 	</c:forEach>

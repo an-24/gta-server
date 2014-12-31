@@ -64,7 +64,15 @@ public class AdminController {
     	List<User> ulist = userService.findByNameLike(term+"%");
     	List<String> suser = ulist.stream().map(u->"{\"label\":\""+u.getName()+"\",\"id\":"+u.getId()+"}").collect(Collectors.toList());
     	return suser.toString();
-    } 
+    }
+
+    @RequestMapping(value = "/getteams", params={"term"},method=RequestMethod.GET, produces="application/json")
+    @ResponseBody
+    public String getTeams(@RequestParam(value = "term") String term) {
+    	List<Team> list = teamRepository.findByNameLike(term+"%");
+    	List<String> slist = list.stream().map(t->"{\"label\":\""+t.getName()+"\",\"id\":"+t.getId()+"}").collect(Collectors.toList());
+    	return slist.toString();
+    }
     
     @RequestMapping(value = "/users", method=RequestMethod.GET)
     @Transactional(readOnly=true)
@@ -111,6 +119,9 @@ public class AdminController {
         	user.setId(dto.getId());
     	} else {
     		user = userService.findUser(dto.getId());
+    		User u = userService.findByIdNotAndName(dto.getId(),dto.getName());
+    		if(u!=null)
+    			throw new SpringException("A user with the same name already exists");
     	}
     	user.setName(dto.getName());
     	user.setEmail(dto.getEmail());
@@ -175,6 +186,9 @@ public class AdminController {
         	team.setId(dto.getId());
     	} else {
     		team = teamRepository.findOne(dto.getId());
+    		Team t = teamRepository.findByIdNotAndName(dto.getId(),dto.getName());
+    		if(t!=null)
+    			throw new SpringException("A team with the same name already exists");
     	}
     	team.setName(dto.getName());
     	team.setActive(dto.getActive());
@@ -208,4 +222,70 @@ public class AdminController {
 				result = "Team successfully added";	
 		return "{\"message\":\""+result+"\"}";
     }
+    
+    @RequestMapping(value = "/persons", method=RequestMethod.GET)
+    @Transactional(readOnly=true)
+    public String persons(Model ui) {
+    	List<PersonDTO> list = personRepository.findAll().stream().map(p->{
+    		PersonDTO dto = new PersonDTO(p,0);
+    		return dto;
+    	}).collect(Collectors.toList());
+    	ui.addAttribute("persons", list);
+		return "inner/admin/persons";
+    }
+    @RequestMapping(value = "/persons/add", method=RequestMethod.GET)
+    @Transactional
+    public ModelAndView addPerson(Model ui) {
+    	ModelAndView mv = new ModelAndView("inner/admin/person","person",
+    			new PersonDTO(GtaSystem.MODE_ADD));
+    	mv.getModelMap().addAttribute("posts", postRepository.findAll());
+        return mv;
+    }
+    
+    @RequestMapping(value = "/persons/edit/{id}", method=RequestMethod.GET)
+    @Transactional
+    public ModelAndView editPerson(Model ui,
+    		@PathVariable Integer id) {
+    	ModelAndView mv = new ModelAndView("inner/admin/person","person",
+    			new PersonDTO(personRepository.findOne(id),GtaSystem.MODE_EDIT));
+    	mv.getModelMap().addAttribute("posts", postRepository.findAll());
+        return mv;
+    }
+    
+    @RequestMapping(value = "/persons/update", method=RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    @Transactional
+    public String updatePerson(Model ui,PersonDTO dto) {
+    	Person p;
+		Team team = teamRepository.findOne(dto.getTeam().getId());
+    	if(dto.getMode()==GtaSystem.MODE_ADD) {
+    		p = new Person();
+    		p.setTeam(team);
+    		Person p1 = personRepository.findByTeam_IdAndNic(dto.getTeam().getId(),dto.getNic());
+    		if(p1!=null)
+    			throw new SpringException("A person with the same name already exists");
+    	} else {
+    		p = personRepository.findOne(dto.getId());
+    		p.setTeam(team);
+    		Person p1 = personRepository.findByIdNotAndTeam_IdAndNic(dto.getId(),dto.getTeam().getId(),dto.getNic());
+    		if(p1!=null)
+    			throw new SpringException("A person with the same name already exists");
+    	}
+    	p.setNic(dto.getNic());
+    	p.setUser(userService.findUser(dto.getUser().getId()));
+    	if(dto.getPost()!=null)
+    		p.setPostDict(postRepository.findOne(dto.getPost()));
+    	p.setPost(dto.getPostName());
+    	p.setLimit(dto.getLimit());
+    	
+    	personRepository.save(p);
+    	
+		String result;
+		if(dto.getMode()==GtaSystem.MODE_EDIT)
+			result = "Team successfully changed";else
+				result = "Team successfully added";	
+		return "{\"message\":\""+result+"\"}";
+    }
+
+   
 }

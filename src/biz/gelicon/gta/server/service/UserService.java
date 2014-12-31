@@ -64,6 +64,10 @@ public class UserService {
 	public User findByName(String name) {
 		return userRepository.findByName(name);
 	}
+
+	public User findByIdNotAndName(Integer id,String name) {
+		return userRepository.findByIdNotAndName(id,name);
+	}
 	
 	public boolean isCurrentPM(Team team) {
 		List<Person> persons = getCurrentPersons(team);
