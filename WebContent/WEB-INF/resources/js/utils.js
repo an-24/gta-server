@@ -3,6 +3,7 @@ function initForm(frm,url,cb,redirect) {
     $.validate({
     	validateOnBlur : false,
     	errorMessagePosition : $('#error-place'),
+    	modules : 'security',
     	scrollToTopOnError : false,
     	onError : function() {
             if(!$.formUtils.haltValidation) {
@@ -50,3 +51,8 @@ function isInt(n){
     return Number(n)===n && n%1===0;
 };
 
+function selectSelectableElement(selectableContainer, elementsToSelect){
+    $(".ui-selected", selectableContainer).not(elementsToSelect).removeClass("ui-selected").addClass("ui-unselecting");
+    $(elementsToSelect).addClass("ui-selecting");
+    selectableContainer.data().uiSelectable._mouseStop(null);
+}

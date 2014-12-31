@@ -5,9 +5,14 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
+import org.springframework.orm.jpa.EntityManagerFactoryUtils;
+import org.springframework.orm.jpa.EntityManagerHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import biz.gelicon.gta.server.data.Person;
 import biz.gelicon.gta.server.data.Post;
@@ -29,6 +34,8 @@ public class UserService {
 	private PostRepository postRepository;
 	@Inject
 	private TeamRepository teamRepository;
+	@Inject
+	private EntityManagerFactory entityManagerFactory;
 	
 	static private User currentUser;
 
@@ -54,6 +61,10 @@ public class UserService {
 		return userRepository.findByNameLike(substr);
 	}
 
+	public User findByName(String name) {
+		return userRepository.findByName(name);
+	}
+	
 	public boolean isCurrentPM(Team team) {
 		List<Person> persons = getCurrentPersons(team);
 		Optional<Person> opt = persons.stream().filter(p->p.isManager()).findFirst();
@@ -79,6 +90,17 @@ public class UserService {
 	public List<User> findAll() {
 		return userRepository.findAll();
 	}
+
+	public void save(User user) {
+		userRepository.save(user);
+	}
+
+	public void mergeUser(User user) {
+		EntityManager em = EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory);
+		em.merge(user);
+//		em.flush();
+	}
+
 
 	
 }

@@ -271,6 +271,6 @@ div.form-error {
 	padding:10px;
 }
 
-#users-table {
+#users-table,#teams-table {
 	width:100%;
 }

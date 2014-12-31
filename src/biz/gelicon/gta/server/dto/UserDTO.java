@@ -3,7 +3,7 @@ package biz.gelicon.gta.server.dto;
 import biz.gelicon.gta.server.data.User;
 
 public class UserDTO {
-	private int id;
+	private Integer id;
 	private String name;
 	private String email;
 	private String members;
@@ -24,10 +24,10 @@ public class UserDTO {
 		this(u);
 		this.mode =  mode;
 	}
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getName() {

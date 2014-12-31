@@ -6,7 +6,7 @@
 <script type="text/javascript">
 $(function() {
 	$("#users-table").dataTable({
-		pageLength:8,
+		pageLength:7,
 		lengthChange:false,
 		info: false
 	});
