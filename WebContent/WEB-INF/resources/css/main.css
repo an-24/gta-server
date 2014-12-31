@@ -26,7 +26,7 @@ div.content {
   padding-left: 30px;
   padding-right: 30px;
   min-height: 500px;
-  background-color: #007000;
+  background: url('../images/back2.jpeg');
 }
 
 div.mainmenu a {
@@ -140,7 +140,7 @@ a.ui-multiselect-close .ui-icon:hover {
 
 #project-list {
 	top: 20px;
-	width: 400px;
+	width: 374px;
 	background-color: white;
 	position: relative;
 	border-radius: 5px;
@@ -271,6 +271,6 @@ div.form-error {
 	padding:10px;
 }
 
-#users-table,#teams-table {
+#users-table {
 	width:100%;
 }
