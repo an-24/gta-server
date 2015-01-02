@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -22,6 +23,7 @@ import biz.gelicon.gta.server.data.User;
 import biz.gelicon.gta.server.dto.PersonDTO;
 import biz.gelicon.gta.server.repo.PersonRepository;
 import biz.gelicon.gta.server.repo.PostRepository;
+import biz.gelicon.gta.server.service.PersonService;
 import biz.gelicon.gta.server.service.UserService;
 
 @Controller
@@ -34,6 +36,8 @@ public class PersonController {
 	private PostRepository postRepository;
 	@Inject
 	private UserService userService;
+	@Inject
+	private PersonService personService;
 	
     @RequestMapping(value = "/edit/{id}", method=RequestMethod.GET)
     @Transactional(readOnly=true)
@@ -84,7 +88,7 @@ public class PersonController {
 		if(dto.getPost()!=null)
 			p.setPostDict(userService.findPost(dto.getPost()));
 		p.setTeam(userService.findTeam(teamId));
-		personRepository.save(p);
+		personService.save(p);
 		String result;
 		if(dto.getMode()==GtaSystem.MODE_EDIT)
 			result = "Team member successfully changed";else

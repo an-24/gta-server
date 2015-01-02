@@ -17,6 +17,13 @@
 	#tabs-1,#tabs-2,#tabs-3 {
 		overflow: hidden;
 	}
+	
+	#workDiary {
+		display:none;
+		float: right;
+		top: -26pt;
+		position: relative;
+	}
 </style>
 
 <script>
@@ -25,6 +32,7 @@
     	selected : function(event, ui) {
     		$("#tabs").css("display","block");
     		$("#team-propertys h2").text("Project: "+ui.selected.innerHTML);
+    		$('#workDiary').css("display","block");
     		var teamId = $(ui.selected).attr("team-id");
     		loadProjectSheet(teamId,$.cookie("token"));
     	}
@@ -40,7 +48,10 @@
     	toastr["success"](data.message, "Success");
     	refreshProjectSheet(0);
     });
-	
+	$("#workDiary").click(function(){
+		location.href = "diary/"
+			+$("#project-list li.ui-selected").attr("team-id");
+	});
   });
   
 </script>
@@ -54,7 +65,7 @@
 </ol>
 
 <div id="team-propertys">
-	<h2></h2>
+	<h2></h2><button id="workDiary" class="ui-widget">Work diary</button>
 	<div id="tabs" style="display:none">
 		<ul>
 			<li><a href="#tabs-1">Common</a></li>

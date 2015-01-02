@@ -251,12 +251,14 @@ div.form-error {
 
 .getperson-error {
 	text-align: center;
-	display: inline-block;
+	display: block;
 	position: relative;
 	left: 30px;
 	vertical-align: middle;
-	width: 630px;
-    margin-bottom: 0px !important;
+	margin-bottom: 0px !important;
+	margin-left: 40px;
+	margin-right: 40px;
+	top: -32px;	
 }	
 
 #admin-menu {

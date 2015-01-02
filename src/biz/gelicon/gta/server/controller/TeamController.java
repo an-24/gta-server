@@ -1,5 +1,8 @@
 package biz.gelicon.gta.server.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.inject.Inject;
 
 import org.hibernate.Hibernate;
@@ -12,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import biz.gelicon.gta.server.data.Team;
+import biz.gelicon.gta.server.dto.PersonDTO;
+import biz.gelicon.gta.server.dto.TeamDTO;
 import biz.gelicon.gta.server.repo.TeamRepository;
 import biz.gelicon.gta.server.utils.SpringException;
 
@@ -25,10 +30,14 @@ public class TeamController {
     @RequestMapping(value = "/{id}", method=RequestMethod.GET, produces = "application/json")
     @Transactional(readOnly=true)
     @ResponseBody
-    public Team getTeam(@PathVariable Integer id) {
+    public TeamDTO getTeam(@PathVariable Integer id) {
     	Team team = teamRepository.findOne(id);
-    	Hibernate.initialize(team.getPersons());
-    	return team;
+    	List<PersonDTO> persons = team.getPersons().stream()
+    			.map(p->new PersonDTO(p,0)).collect(Collectors.toList());
+    	TeamDTO dto = new TeamDTO(team);
+    	dto.setPersons(persons);
+    	dto.setManagerCurrentUser(team.isManagerCurrentUser());
+    	return dto;
     }
 	
 	@RequestMapping(value = "/update", method=RequestMethod.POST, produces = "application/json")

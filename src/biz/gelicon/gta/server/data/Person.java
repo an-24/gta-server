@@ -118,4 +118,12 @@ public class Person implements Serializable {
 		return postDict==null?false:postDict.getId()==1;
 	}
 
+	@Override
+	@Transient
+	public String toString() {
+		return "Person [id=" + id + ", nic=" + nic + ", post=" + post
+				+ ", active=" + active + ", limit=" + limit + ", team=" + team
+				+ ", user=" + user + ", postDict=" + postDict + "]";
+	}
+
 }

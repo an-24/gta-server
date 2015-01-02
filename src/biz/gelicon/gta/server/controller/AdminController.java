@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -31,6 +32,7 @@ import biz.gelicon.gta.server.dto.UserDTO;
 import biz.gelicon.gta.server.repo.PersonRepository;
 import biz.gelicon.gta.server.repo.PostRepository;
 import biz.gelicon.gta.server.repo.TeamRepository;
+import biz.gelicon.gta.server.service.PersonService;
 import biz.gelicon.gta.server.service.UserService;
 import biz.gelicon.gta.server.utils.DateUtils;
 import biz.gelicon.gta.server.utils.SpringException;
@@ -48,6 +50,8 @@ public class AdminController {
 	private PostRepository postRepository;
 	@Inject
 	private PersonRepository personRepository;
+	@Inject
+	private PersonService personService;
 	
 
     @RequestMapping(method=RequestMethod.GET)
@@ -214,7 +218,7 @@ public class AdminController {
     	team.getPersons().add(manager);
     	
     	teamRepository.save(team);
-    	personRepository.save(manager);
+    	personService.save(manager);
     	
 		String result;
 		if(dto.getMode()==GtaSystem.MODE_EDIT)
@@ -278,7 +282,7 @@ public class AdminController {
     	p.setPost(dto.getPostName());
     	p.setLimit(dto.getLimit());
     	
-    	personRepository.save(p);
+    	personService.save(p);
     	
 		String result;
 		if(dto.getMode()==GtaSystem.MODE_EDIT)

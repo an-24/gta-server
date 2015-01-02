@@ -1,6 +1,7 @@
 package biz.gelicon.gta.server.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -17,10 +18,19 @@ public class TeamDTO {
 	private Date createDate;
 	
 	private Integer limit;
+	private Integer workedOfDay;
+	private Integer workedOfWeek;
+	private Integer workedOfMonth;
+	private Integer workedOfBeginProject;
+	
 	private Integer workerCount;
 	private Integer mode;
+
+	private List<PersonDTO> persons;
 	
 	private PersonDTO manager;
+	
+	private boolean managerCurrentUser;
 
 	public TeamDTO() {
 	}
@@ -31,6 +41,10 @@ public class TeamDTO {
 		this.active = t.isActive();
 		this.createDate = t.getCreateDate();
 		this.limit = t.getLimit();
+		this.workedOfBeginProject = t.getWorkedOfBeginProject();
+		this.workedOfDay = t.getWorkedOfDay();
+		this.workedOfMonth = t.getWorkedOfMonth();
+		this.workedOfWeek = t.getWorkedOfWeek();
 		if(t.getManager()!=null) this.manager = new PersonDTO(t.getManager(),0);else
 			this.manager = new PersonDTO();
 	}
@@ -109,6 +123,54 @@ public class TeamDTO {
 
 	public void setManager(PersonDTO manager) {
 		this.manager = manager;
+	}
+
+	public Integer getWorkedOfDay() {
+		return workedOfDay;
+	}
+
+	public void setWorkedOfDay(Integer workedOfDay) {
+		this.workedOfDay = workedOfDay;
+	}
+
+	public Integer getWorkedOfWeek() {
+		return workedOfWeek;
+	}
+
+	public void setWorkedOfWeek(Integer workedOfWeek) {
+		this.workedOfWeek = workedOfWeek;
+	}
+
+	public Integer getWorkedOfMonth() {
+		return workedOfMonth;
+	}
+
+	public void setWorkedOfMonth(Integer workedOfMonth) {
+		this.workedOfMonth = workedOfMonth;
+	}
+
+	public Integer getWorkedOfBeginProject() {
+		return workedOfBeginProject;
+	}
+
+	public void setWorkedOfBeginProject(Integer workedOfBeginProject) {
+		this.workedOfBeginProject = workedOfBeginProject;
+	}
+
+	public List<PersonDTO> getPersons() {
+		return persons;
+	}
+
+	public void setPersons(List<PersonDTO> persons) {
+		this.persons = persons;
+	}
+
+	public boolean isManagerCurrentUser() {
+		return managerCurrentUser;
+	}
+
+	public void setManagerCurrentUser(boolean managerCurrentUser) {
+		this.managerCurrentUser = managerCurrentUser;
 	}
 
 }

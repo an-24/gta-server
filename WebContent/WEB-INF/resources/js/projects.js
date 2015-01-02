@@ -43,7 +43,7 @@ function loadProjectSheet(teamId,token,tabActive) {
         		var alink = "<a onclick='openPerson("+p.id+");return false;' href='#"+p.id+"'>"+s+"</a>";
         		window._dataTablePersons
         			.DataTable()
-        			.row.add([alink,p.postDict?p.postDict.name:p.post,(p.limit||""),p]);
+        			.row.add([alink,p.postName,(p.limit||""),p]);
         		window._personList[p.id] = p;
         	}
     		window._dataTablePersons

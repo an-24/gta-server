@@ -40,6 +40,7 @@
 		<div class="mainmenu">
 			<a href=".">Home</a>
 			<a href="proj">Projects</a>
+			<a href="diary">Work diary</a>
 			<c:if test="${user!=null && userObj.sysAdmin}">
 			<a href="admin">Administrator</a>
 			</c:if>

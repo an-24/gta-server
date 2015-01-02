@@ -17,4 +17,6 @@ public interface PersonRepository extends JpaRepository<Person,Integer> {
 	public Person findByUserAndTeamAndNic(User user, Team team,String nic);
 	public Person findByTeam_IdAndNic(Integer id, String nic);
 	public Person findByIdNotAndTeam_IdAndNic(Integer id, Integer teamId, String nic);
+	public Person findByTeam_IdAndPostDict_IdAndIdNot(Integer teamId, int postId,Integer id);
+	public Person findByTeam_IdAndPostDict_Id(Integer teamId, int postId);
 }

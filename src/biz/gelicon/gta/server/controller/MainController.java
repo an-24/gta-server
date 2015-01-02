@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import biz.gelicon.gta.server.Sessions;
 import biz.gelicon.gta.server.Teams;
@@ -52,6 +53,33 @@ public class MainController {
     	ui.addAttribute("menu","projects");
     	ui.addAttribute("base",getBaseURL(request));
         return "index";
+    }
+
+    @RequestMapping(value = "/diary",method=RequestMethod.GET)
+    public String diaryGET(Model ui, HttpServletRequest request) {
+    	HttpSession session = request.getSession();
+    	ui.addAttribute("user",session.getAttribute("user"));
+    	ui.addAttribute("userObj",UserService.getCurrentUser());
+    	Integer diaryId = (Integer) session.getAttribute("diaryId");
+    	if(diaryId!=null) {
+    		// забываем
+    		session.removeAttribute("diaryId");
+    	}
+    	ui.addAttribute("menu","diary"+(diaryId==null?"":"/"+diaryId));
+    	ui.addAttribute("base",getBaseURL(request));
+        return "index";
+    }
+
+    @RequestMapping(value = "/diary/{id}",method=RequestMethod.GET)
+    public String diaryOneGET(Model ui, HttpServletRequest request,
+    		@PathVariable Integer id, RedirectAttributes ra) {
+    	HttpSession session = request.getSession();
+    	session.setAttribute("diaryId", id);
+    	ui.addAttribute("user",session.getAttribute("user"));
+    	ui.addAttribute("userObj",UserService.getCurrentUser());
+    	ui.addAttribute("menu","diary");
+    	ui.addAttribute("base",getBaseURL(request));
+        return "redirect:../diary";
     }
     
     @RequestMapping(value = "/admin",method=RequestMethod.GET)
