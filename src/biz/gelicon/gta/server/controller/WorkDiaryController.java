@@ -3,6 +3,7 @@ package biz.gelicon.gta.server.controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -17,13 +18,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import biz.gelicon.gta.server.GtaSystem;
+import biz.gelicon.gta.server.data.Message;
 import biz.gelicon.gta.server.data.Person;
 import biz.gelicon.gta.server.data.Team;
+import biz.gelicon.gta.server.data.User;
 import biz.gelicon.gta.server.dto.DayDTO;
 import biz.gelicon.gta.server.dto.MonthDTO;
 import biz.gelicon.gta.server.dto.TeamDTO;
 import biz.gelicon.gta.server.dto.PersonDTO;
 import biz.gelicon.gta.server.dto.WeekDTO;
+import biz.gelicon.gta.server.repo.MessageRepository;
 import biz.gelicon.gta.server.repo.PersonRepository;
 import biz.gelicon.gta.server.repo.TeamRepository;
 import biz.gelicon.gta.server.service.UserService;
@@ -36,6 +40,8 @@ public class WorkDiaryController {
 	private TeamRepository teamRepository;
 	@Inject
 	private PersonRepository personRepository;
+	@Inject
+	private MessageRepository messageRepository;
 
     @RequestMapping(method=RequestMethod.GET)
     @Transactional(readOnly=true)
@@ -89,13 +95,31 @@ public class WorkDiaryController {
     @RequestMapping(value = "/data", method=RequestMethod.GET)
     @Transactional(readOnly=true)
     public String data(Model ui,
+    		@RequestParam(required=true)  Integer teamId,
     		@RequestParam(required=true) String monthId,
     		@RequestParam(required=true) Integer personId) {
+    	
+    	Team team = teamRepository.findOne(teamId);
     	
     	Date start = DateUtils.newDate(1,DateUtils.decodeMonth(monthId),DateUtils.decodeYear(monthId));
     	Date end = DateUtils.getEndOfMonth(start);
     	start = DateUtils.getStartOfWeek(start);
     	end = DateUtils.getEndOfWeek(end);
+    	
+    	List<Message> timing;
+    	if(personId>=0) {
+    		User user = personRepository.findOne(personId).getUser();
+    		timing = messageRepository.findByTeamAndUserAndDtBeginBetween(team,user,start, end);
+    	} else {
+    		timing = messageRepository.findByTeamAndDtBeginBetween(team,start, end);
+    	}
+    	//group
+    	Map<Date, Double> groups = timing.stream()
+    			.collect(Collectors.groupingBy(t->DateUtils.cleanTime(t.getDtBegin()),
+    					 Collectors.summingDouble(Message::getHours)));
+    	
+    	//timing.stream().flatMapToDouble(t->24*DateUtils.substractDate(t.getDtFinish(),t.getDtBegin()));
+    	
     	Date curr = start;
     	List<List<DayDTO>> data = new ArrayList<>(); 
     	while(curr.before(end)) {

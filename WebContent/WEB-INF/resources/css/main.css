@@ -300,3 +300,12 @@ div.form-error {
 	right: 8px;
 	overflow: hidden;
 }
+
+#diary {
+	position: absolute;
+	white-space: nowrap;
+	left: 10px;
+	top: 60px;
+	right: 10px;
+	bottom: 10px;
+}

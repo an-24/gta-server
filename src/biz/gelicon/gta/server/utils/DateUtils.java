@@ -22,7 +22,7 @@ public class DateUtils {
 	    Calendar calendar = Calendar.getInstance();
 	    calendar.setTime(date);
 	    calendar.add(Calendar.DAY_OF_WEEK, 
-				calendar.getFirstDayOfWeek() - calendar.get(Calendar.DAY_OF_WEEK));
+				calendar.getFirstDayOfWeek() - calendar.get(Calendar.DAY_OF_WEEK)-1);
 	    return calendar.getTime();
 	}
 	
@@ -127,5 +127,8 @@ public class DateUtils {
 		return cleanTime(calendar.getTime());
 	}
 	
-	
+	public static double substractDate(Date d1,Date d2) {
+		long diff = Math.abs(d1.getTime() - d2.getTime());
+		return 1.0*diff/(24 * 60 * 60 * 1000);		
+	}
 }

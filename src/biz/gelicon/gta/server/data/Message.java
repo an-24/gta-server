@@ -20,6 +20,8 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import biz.gelicon.gta.server.utils.DateUtils;
+
 @XmlRootElement
 @Entity
 @Table(name = "TIMING")
@@ -158,6 +160,11 @@ public class Message implements Serializable {
 
 	public void setScreenshot(ScreenShot screenshot) {
 		this.screenshot = screenshot;
+	}
+	
+	@Transient
+	public double getHours() {
+		return 24*DateUtils.substractDate(getDtFinish(),getDtBegin());
 	}
 
 	@Override

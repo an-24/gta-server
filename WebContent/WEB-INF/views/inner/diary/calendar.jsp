@@ -6,10 +6,40 @@
 <style>
 	#diary table {
 		width:100%;
-	}	 
+		height:100%;
+		text-align: center;
+	}
+	#diary td {
+		vertical-align: top;
+		font-size: x-small;
+		width: 120px;
+	}
+	#diary th {
+		padding-bottom: 20px;
+	}
+	#diary td .hours {
+		padding-top: 11px;
+		font-size: initial;	 
+	}
+	
+	#diary td .activity {
+		position: relative;
+		height: 10px;
+		background-color: green;
+		margin-left: 16px;
+		margin-right: 16px;
+		width:0px;
+	}
+	
+	#diary-container .header button {
+		float:left;
+	}
+
 </style>
 
 <script type="text/javascript">
+
+var teamId = <c:out value="${team.id}"/>;
 
 $(function() {
 	$("#persons").multiselect({
@@ -39,28 +69,28 @@ $(function() {
 function loadInfo(selPersonId,selMonthId) {
 	var pId = selPersonId || $("#persons").val();
 	var mId = selMonthId || $("#months").val();
-	$("#diary table tbody").load("inner/diary/data?personId="+pId+"&monthId="+mId);
+	$("#diary table tbody").load("inner/diary/data?personId="+pId+"&monthId="+mId+"&teamId="+teamId);
 }
 
 </script>
 
 <div id="diary-container" class="ui-widget">
-	<div style="white-space: nowrap;margin-bottom:10px;">
+	<div class="header" style="white-space: nowrap;margin-bottom:10px;padding-left: 20px;">
 		<h2 style="float:left;margin-right:60px;">${team.name}</h2>
-		<span>Member:</span>
+		<div style="float:left;position:relative;top:6px">Member:</div>
  		<select id="persons">
 			<c:forEach var="p" items="${team.persons}"> 
  			    <option value="${p.id}" ${currentPersonId == p.id ? 'selected' : ''}><c:out value="${p.nic}"/></option>
       		</c:forEach>   			
  		</select>
-		<span style="margin-left:20px;">Month:</span>
+		<div style="margin-left:20px;float:left;position:relative;top:6px">Month:</div>
  		<select id="months">
 			<c:forEach var="m" items="${months}"> 
  			    <option value="${m.id}" ${currentMonthId == m.id ? 'selected' : ''}><c:out value="${m.fullName}"/></option>
       		</c:forEach>   			
  		</select>
 	</div>
-	<div id="diary" style="white-space: nowrap;height: 100%;">
+	<div id="diary">
 		<table>
 			<thead>
 				<tr>

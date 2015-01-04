@@ -6,7 +6,11 @@
 <c:forEach var="week" items="${data}">
 	<tr> 
 		<c:forEach var="data" items="${week}">
-			<td><fmt:formatDate value="${data.day}" pattern="dd"/></td>
-		</c:forEach>   			
+			<td><fmt:formatDate value="${data.day}" pattern="dd"/>
+			<div class="hours">20</div>
+			<div class="activity">&#160;</div>
+			</td>
+		</c:forEach>
+		<td style="width:auto"></td>   			
 	</tr>
 </c:forEach>   			
