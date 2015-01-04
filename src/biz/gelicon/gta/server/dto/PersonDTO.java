@@ -1,7 +1,6 @@
 package biz.gelicon.gta.server.dto;
 
 import biz.gelicon.gta.server.data.Person;
-import biz.gelicon.gta.server.data.Team;
 
 public class PersonDTO {
 	private Integer id;
@@ -15,6 +14,11 @@ public class PersonDTO {
 	private TeamDTO team;
 	
 	public PersonDTO() {
+	}
+
+	public PersonDTO(Integer id, String nic) {
+		this.id = id;
+		this.nic = nic;
 	}
 
 	public PersonDTO(Person person,Integer mode) {

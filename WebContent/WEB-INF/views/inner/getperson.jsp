@@ -7,7 +7,7 @@
   $(function() {
     $("#post").multiselect({
     	   multiple: false,
-    	   header: "Выбор должности",
+    	   header: "Select post",
     	   noneSelectedText: "-",
     	   style:"width:100%",
     	   selectedList: 1,

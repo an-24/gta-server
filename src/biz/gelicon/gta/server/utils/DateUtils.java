@@ -1,7 +1,13 @@
 package biz.gelicon.gta.server.utils;
 
+import java.text.DateFormatSymbols;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import jersey.repackaged.com.google.common.collect.Lists;
 
 public class DateUtils {
 
@@ -63,4 +69,63 @@ public class DateUtils {
         calendar.set(Calendar.HOUR_OF_DAY, 0);
 	    return calendar.getTime();
 	}
+	
+	public static Date incDay(Date date, int dayCount) {
+	    Calendar calendar = Calendar.getInstance();
+	    calendar.setTime(date);
+	    calendar.add(Calendar.DAY_OF_MONTH, dayCount);
+	    return calendar.getTime();
+	}
+
+	public static Date incMonth(Date date, int mounthCount) {
+	    Calendar calendar = Calendar.getInstance();
+	    calendar.setTime(date);
+	    calendar.add(Calendar.MONTH, mounthCount);
+	    return calendar.getTime();
+	}
+	
+	public static String getMonthName(int number, Locale locale) {
+		DateFormatSymbols symbols = DateFormatSymbols.getInstance(locale);
+		return symbols.getMonths()[number];
+	}
+	
+	public static List<String> getDayOfWeekNames(Locale locale) {
+		DateFormatSymbols symbols = DateFormatSymbols.getInstance(locale);
+		return Lists.newArrayList(Arrays.copyOfRange(symbols.getWeekdays(), 1, 8));
+	}
+
+	public static int extractMonth(Date date) {
+	    Calendar calendar = Calendar.getInstance();
+	    calendar.setTime(date);
+		return calendar.get(Calendar.MONTH);
+	}
+
+	public static int extractYear(Date date) {
+	    Calendar calendar = Calendar.getInstance();
+	    calendar.setTime(date);
+		return calendar.get(Calendar.YEAR);
+	}
+	
+	public static String codeMonth(int number, int year) {
+		String m = number>9?String.valueOf(number):"0"+String.valueOf(number);
+		return String.valueOf(year)+m;
+	}
+	
+	public static int decodeMonth(String id) {
+		return Integer.valueOf(id.substring(4));
+	}
+	
+	public static int decodeYear(String id) {
+		return Integer.valueOf(id.substring(0, 3));
+	}
+
+	public static Date newDate(int day, int month, int year) {
+	    Calendar calendar = Calendar.getInstance();
+	    calendar.set(Calendar.DAY_OF_MONTH, day);
+	    calendar.set(Calendar.MONTH, month);
+	    calendar.set(Calendar.YEAR, year);
+		return cleanTime(calendar.getTime());
+	}
+	
+	
 }

@@ -3,6 +3,7 @@ package biz.gelicon.gta.server.service;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -44,7 +45,7 @@ public class UserService {
 		return currentUser;
 	}
 
-	public List<Person> getCurrentPersons(Team team) {
+	public Set<Person> getCurrentPersons(Team team) {
 		return personRepository.findByUserAndTeam(currentUser,team);
 	}
 
@@ -70,7 +71,7 @@ public class UserService {
 	}
 	
 	public boolean isCurrentPM(Team team) {
-		List<Person> persons = getCurrentPersons(team);
+		Set<Person> persons = getCurrentPersons(team);
 		Optional<Person> opt = persons.stream().filter(p->p.isManager()).findFirst();
 		return opt.isPresent();
 	}
