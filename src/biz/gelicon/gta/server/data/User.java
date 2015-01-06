@@ -20,6 +20,8 @@ public class User implements Serializable {
 	private String name;
 	private String password;
 	private String email;
+	private String locale;
+	private String timeZoneId;
 	
 	@Id
 	@javax.persistence.SequenceGenerator(name="newRec", sequenceName="NEWRECORDID")	
@@ -65,6 +67,22 @@ public class User implements Serializable {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + "]";
+	}
+
+	@Column(name = "PROGUSER_LOCALE", length = 30, nullable = true)
+	public String getLocale() {
+		return locale;
+	}
+	public void setLocale(String locale) {
+		this.locale = locale;
+	}
+	
+	@Column(name = "PROGUSER_TIMEZONE", length = 30, nullable = true)
+	public String getTimeZoneId() {
+		return timeZoneId;
+	}
+	public void setTimeZoneId(String timeZoneId) {
+		this.timeZoneId = timeZoneId;
 	}
 
 }

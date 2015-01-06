@@ -84,6 +84,7 @@ public class PersonController {
 		p.setNic(dto.getNic());
 		p.setPost(dto.getPostName());
 		p.setLimit(dto.getLimit());
+		p.setInternal(dto.getInternal());
 		p.setUser(userService.findUser(dto.getUser().getId()));
 		if(dto.getPost()!=null)
 			p.setPostDict(userService.findPost(dto.getPost()));

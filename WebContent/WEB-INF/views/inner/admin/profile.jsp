@@ -3,31 +3,39 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
+<style>
+#profile-content {
+	top: 20px;
+	background-color: white;
+	position: relative;
+	border-radius: 5px;
+	min-height: 402px;
+	padding: 20px;
+	overflow: hidden;
+	left: 50%;
+	width: 500px;
+	margin-left: -250px;
+}
+
+</style>
+
+
 <script>
   $(function() {
-	 $("#locale").multiselect({
-	   	   multiple: false,
-	   	   header: "Select locale",
-	   	   noneSelectedText: "-",
-	   	   style:"width:177px",
-	   	   selectedList: 1
-	});
     initForm($("#frmUser"),"inner/admin/users/update",function(data){
     	toastr["success"](data.message, "Success");
-    	selectSelectableElement($("#admin-menu"),$("#admin-menu li[href='inner/admin/users']"));
     });
     $("#frmUser #cancel").click(function() {
-    	selectSelectableElement($("#admin-menu"),$("#admin-menu li[href='inner/admin/users']"));
     });
     
   });
 </script>
 
+<div id="profile-content" class="ui-widget">
 
-<c:if test="${user.mode==1}"><h2>New user</h2></c:if>
-<c:if test="${user.mode==2}"><h2>Edited by '${user.name}'</h2></c:if>
+<c:if test="${user.mode==2}"><h2>Profile '${user.name}'</h2></c:if>
 
-<div id='error-place' class='form-error'></div>
+<div id='error-place' class='form-error'></div> 
 
 <form:form id="frmUser" style="width:auto" commandName="user">
    <form:input path="mode" type="hidden"/>
@@ -40,18 +48,6 @@
    <tr>
    	<td><form:label path="email">E-mail</form:label></td>
    	<td><form:input path="email" data-validation="email" data-validation-error-msg="Error in entering of e-mail" data-validation-optional="true"/></td>
-   </tr>
-   <tr>
-   	<td><form:label path="locale">Locale</form:label></td>
-   	<td>
-		<!--<form:input path="locale"/>-->
-   		<select id="locale" name="locale">
-   		    <option value="">-default-</option>
-			<c:forEach var="l" items="${locales}"> 
-   		    	<option value="${l.toLanguageTag()}" ${user.locale == l.toLanguageTag() ? 'selected' : ''}><c:out value="${l.displayName}"/></option>
-        	</c:forEach>   			
-   		</select>
-   	</td>
    </tr>
    <c:if test="${user.mode==2}">
    <tr>
@@ -79,10 +75,11 @@
    <tfoot>
    <tr>
    	<td colspan="2">
-   		<input id="cancel" type="button" value="Cancel"/>
    		<input id="default" type="submit" value="Submit"/>
    	</td>
    </tr>
    </tfoot>
    </table>  
 </form:form>
+
+</div>

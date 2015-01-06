@@ -8,6 +8,8 @@ public class UserDTO {
 	private String email;
 	private String members;
 	private Integer mode;
+	private String locale;
+	private String timeZoneId;
 
 	public UserDTO() {
 	}
@@ -18,6 +20,8 @@ public class UserDTO {
 		id = u.getId();
 		name = u.getName();
 		email=u.getEmail();
+		locale=u.getLocale();
+		timeZoneId=u.getTimeZoneId();
 	}
 	
 	public UserDTO(User u, Integer mode) {
@@ -53,6 +57,18 @@ public class UserDTO {
 	}
 	public void setMode(Integer mode) {
 		this.mode = mode;
+	}
+	public String getLocale() {
+		return locale;
+	}
+	public void setLocale(String locale) {
+		this.locale = locale;
+	}
+	public String getTimeZoneId() {
+		return timeZoneId;
+	}
+	public void setTimeZoneId(String timeZoneId) {
+		this.timeZoneId = timeZoneId;
 	}
 	
 

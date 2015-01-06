@@ -34,6 +34,7 @@ public class Person implements Serializable {
 	private Team team;
 	private User user;
 	private Post postDict;
+	private Boolean internal;
 
 	public Person() {
 	}
@@ -124,6 +125,15 @@ public class Person implements Serializable {
 		return "Person [id=" + id + ", nic=" + nic + ", post=" + post
 				+ ", active=" + active + ", limit=" + limit + ", team=" + team
 				+ ", user=" + user + ", postDict=" + postDict + "]";
+	}
+
+	@Column(name = "PERSON_INTERNAL", nullable = false)
+	public Boolean getInternal() {
+		return internal;
+	}
+
+	public void setInternal(Boolean internal) {
+		this.internal = internal;
 	}
 
 }

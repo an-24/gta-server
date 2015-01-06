@@ -13,7 +13,7 @@
   $(function() {
     $("#post").multiselect({
     	   multiple: false,
-    	   header: "Выбор должности",
+    	   header: "Select post",
     	   noneSelectedText: "-",
     	   style:"width:100%",
     	   selectedList: 1,
@@ -104,6 +104,8 @@
    <tr>
    <td><form:label path="limit">Limit</form:label></td>
    <td><form:input path="limit" data-validation="number" data-validation-optional="true"/></td>
+   <td><form:label path="internal">Internal</form:label></td>
+   <td><form:checkbox path="internal"/></td>
    </tr>
    <tfoot>
    <tr>

@@ -12,6 +12,7 @@ public class PersonDTO {
 	private Boolean manager;
 	private Integer mode;
 	private TeamDTO team;
+	private Boolean internal;
 	
 	public PersonDTO() {
 	}
@@ -34,6 +35,7 @@ public class PersonDTO {
 		this.team.setId(person.getTeam().getId());
 		this.team.setName(person.getTeam().getName());
 		this.mode = mode;
+		this.internal = person.getInternal();
 	}
 	
 	public PersonDTO(Integer mode) {
@@ -109,5 +111,13 @@ public class PersonDTO {
 
 	public void setTeam(TeamDTO team) {
 		this.team = team;
+	}
+
+	public Boolean getInternal() {
+		return internal;
+	}
+
+	public void setInternal(Boolean internal) {
+		this.internal = internal;
 	}
 }

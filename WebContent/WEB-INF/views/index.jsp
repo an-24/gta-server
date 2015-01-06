@@ -30,13 +30,21 @@
 	<script src="resources/js/projects.js"></script>
 	<script src="resources/js/person.js"></script>
 	<script src="resources/js/admin.js"></script>
-
+    
+    <style>
+    	#copyright {
+       		text-align: center;
+			position: absolute;
+			bottom: 0px;
+			width: 100%;
+    	}
+    </style>
 </head>
 <body>
 	<div class="top">
 		<div class="user">
 			<c:if test="${user==null}"><a href="login">Log in</a></c:if>
-			<c:if test="${user!=null}"><span style="margin-right:10px;font-size:large">[${user}]</span><a href="action/logout" onclick="$.removeCookie('token')">Log out</a></c:if>
+			<c:if test="${user!=null}"><span style="margin-right:10px;font-size:large">[<a href="profile">${user}</a>]</span><a href="action/logout" onclick="$.removeCookie('token')">Log out</a></c:if>
 		</div>
 		<a href="."><img alt="GTA" src="resources/images/logo.png"></a>
 		<div class="mainmenu">
@@ -53,6 +61,14 @@
 		<c:import url="${innerurl}"/>
 	</div>
 	<div class="footer">
+	
+		<ul>
+			<li><h3>Company Info</h3></li>
+			<li>About us</li>
+			<li>Contact</li>
+		</ul>
+	
+		<p id="copyright">© 2015 Gelicon JCC Ltd.</p>
 	</div>
 </body>
 </html>

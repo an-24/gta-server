@@ -1,5 +1,7 @@
 package biz.gelicon.gta.server;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class GtaSystem {
@@ -13,6 +15,13 @@ public class GtaSystem {
 
 	public static void setLocaleName(String locale) {
 		GtaSystem.locale = Locale.forLanguageTag(locale);
+	}
+
+	public static List<Locale> getAviableLocales() {
+		List<Locale> locales = new ArrayList<>();
+    	locales.add(Locale.ENGLISH);
+    	locales.add(Locale.forLanguageTag("ru"));
+		return locales;
 	}
 
 }

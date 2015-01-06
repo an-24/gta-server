@@ -84,6 +84,15 @@ public class MainController {
         return "index";
     }
     
+    @RequestMapping(value = "/profile",method=RequestMethod.GET)
+    public String profileGET(Model ui, HttpServletRequest request) {
+    	HttpSession session = request.getSession();
+    	ui.addAttribute("user",session.getAttribute("user"));
+    	ui.addAttribute("userObj",UserService.getCurrentUser());
+    	ui.addAttribute("menu","admin/profile/edit");
+    	ui.addAttribute("base",getBaseURL(request));
+        return "index";
+    }
     
     @RequestMapping(value = "/proj",method=RequestMethod.POST)
     public String projPOST(Model ui, HttpServletRequest request) {

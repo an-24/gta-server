@@ -33,6 +33,20 @@ div.mainmenu a {
 	margin-right:20px;
 }
 
+div.footer {
+	position: absolute;
+	background-color: #545454;
+	top: 640px;
+	width: 100%;
+	bottom: 0px;
+	color:white;	
+}
+
+ul {
+	list-style-type:none;	
+}
+
+
 a, a:visited {
 	color:#333333;
 	text-decoration:none;

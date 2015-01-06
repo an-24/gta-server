@@ -1,15 +1,16 @@
 package biz.gelicon.gta.server.controller;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -56,6 +57,7 @@ public class AdminController {
 
     @RequestMapping(method=RequestMethod.GET)
     public String main(Model ui, HttpServletRequest request) {
+    	checkAdmin();
     	HttpSession session = request.getSession();
     	ui.addAttribute("user",session.getAttribute("user"));
     	ui.addAttribute("menu","admin");
@@ -65,6 +67,7 @@ public class AdminController {
     @RequestMapping(value = "/getusers", params={"term"},method=RequestMethod.GET, produces="application/json")
     @ResponseBody
     public String getUsers(@RequestParam(value = "term") String term) {
+    	checkAdmin();
     	List<User> ulist = userService.findByNameLike(term+"%");
     	List<String> suser = ulist.stream().map(u->"{\"label\":\""+u.getName()+"\",\"id\":"+u.getId()+"}").collect(Collectors.toList());
     	return suser.toString();
@@ -73,6 +76,7 @@ public class AdminController {
     @RequestMapping(value = "/getteams", params={"term"},method=RequestMethod.GET, produces="application/json")
     @ResponseBody
     public String getTeams(@RequestParam(value = "term") String term) {
+    	checkAdmin();
     	List<Team> list = teamRepository.findByNameLike(term+"%");
     	List<String> slist = list.stream().map(t->"{\"label\":\""+t.getName()+"\",\"id\":"+t.getId()+"}").collect(Collectors.toList());
     	return slist.toString();
@@ -81,6 +85,7 @@ public class AdminController {
     @RequestMapping(value = "/users", method=RequestMethod.GET)
     @Transactional(readOnly=true)
     public String users(Model ui) {
+    	checkAdmin();
     	List<UserDTO> list = userService.findAll().stream().map(u->{
     		UserDTO dto = new UserDTO(u);
     		dto.setMembers(
@@ -98,24 +103,40 @@ public class AdminController {
     
     @RequestMapping(value = "/users/add", method=RequestMethod.GET)
     public ModelAndView addUser(Model ui) {
+    	checkAdmin();
     	ModelAndView mv = new ModelAndView("inner/admin/user","user",new UserDTO(GtaSystem.MODE_ADD));
     	mv.getModelMap().addAttribute("pswd_confirmation", "");
+    	List<Locale> locales =GtaSystem.getAviableLocales();
+    	mv.getModelMap().addAttribute("locales", locales);
         return mv;
     }
     
     @RequestMapping(value = "/users/edit/{id}", method=RequestMethod.GET)
     public ModelAndView editUser(Model ui,
     		@PathVariable Integer id) {
-    	ModelAndView mv = new ModelAndView("inner/admin/user","user",new UserDTO(userService.findUser(id),GtaSystem.MODE_EDIT));
+    	User u = userService.findUser(id);
+    	checkAdminOrSelf(u);
+    	ModelAndView mv = new ModelAndView("inner/admin/user","user",new UserDTO(u,GtaSystem.MODE_EDIT));
+    	List<Locale> locales =GtaSystem.getAviableLocales();
+    	mv.getModelMap().addAttribute("locales", locales);
         return mv;
     }
 
+    @RequestMapping(value = "/profile/edit", method=RequestMethod.GET)
+    public ModelAndView profileUser(Model ui) {
+    	User u = UserService.getCurrentUser();
+    	ModelAndView mv = new ModelAndView("inner/admin/profile","user",new UserDTO(u,GtaSystem.MODE_EDIT));
+        return mv;
+    }
+    
+    
     @RequestMapping(value = "/users/update", method=RequestMethod.POST, produces = "application/json")
     @ResponseBody
     @Transactional
     public String updateUser(Model ui,UserDTO dto, String pswd_confirmation) {
     	User user;
     	if(dto.getMode()==GtaSystem.MODE_ADD) {
+        	checkAdmin();
     		User u = userService.findByName(dto.getName());
     		if(u!=null)
     			throw new SpringException("A user with the same name already exists");
@@ -123,12 +144,15 @@ public class AdminController {
         	user.setId(dto.getId());
     	} else {
     		user = userService.findUser(dto.getId());
+        	checkAdminOrSelf(user);
     		User u = userService.findByIdNotAndName(dto.getId(),dto.getName());
     		if(u!=null)
     			throw new SpringException("A user with the same name already exists");
     	}
     	user.setName(dto.getName());
     	user.setEmail(dto.getEmail());
+    	user.setLocale(dto.getLocale());
+    	user.setTimeZoneId(dto.getTimeZoneId());
     	
     	if(pswd_confirmation!=null && !pswd_confirmation.isEmpty()) {
 
@@ -150,9 +174,10 @@ public class AdminController {
 		return "{\"message\":\""+result+"\"}";
     }
     
-    @RequestMapping(value = "/teams", method=RequestMethod.GET)
+	@RequestMapping(value = "/teams", method=RequestMethod.GET)
     @Transactional(readOnly=true)
     public String teams(Model ui) {
+    	checkAdmin();
     	List<TeamDTO> list = teamRepository.findAll().stream().map(t->{
     		TeamDTO dto = new TeamDTO(t);
     		dto.setWorkerCount(t.getPersons().size());
@@ -164,6 +189,7 @@ public class AdminController {
 
     @RequestMapping(value = "/teams/add", method=RequestMethod.GET)
     public ModelAndView addTeam(Model ui) {
+    	checkAdmin();
     	ModelAndView mv = new ModelAndView("inner/admin/team","team",new TeamDTO(GtaSystem.MODE_ADD));
         return mv;
     }
@@ -172,6 +198,7 @@ public class AdminController {
     @Transactional
     public ModelAndView editTeam(Model ui,
     		@PathVariable Integer id) {
+    	checkAdmin();
     	ModelAndView mv = new ModelAndView("inner/admin/team","team",new TeamDTO(teamRepository.findOne(id),GtaSystem.MODE_EDIT));
         return mv;
     }
@@ -181,6 +208,7 @@ public class AdminController {
     @ResponseBody
     @Transactional
     public String updateTeam(Model ui,TeamDTO dto) {
+    	checkAdmin();
     	Team team;
     	if(dto.getMode()==GtaSystem.MODE_ADD) {
     		Team t = teamRepository.findByName(dto.getName());
@@ -230,6 +258,7 @@ public class AdminController {
     @RequestMapping(value = "/persons", method=RequestMethod.GET)
     @Transactional(readOnly=true)
     public String persons(Model ui) {
+    	checkAdmin();
     	List<PersonDTO> list = personRepository.findAll().stream().map(p->{
     		PersonDTO dto = new PersonDTO(p,0);
     		return dto;
@@ -242,6 +271,7 @@ public class AdminController {
     public ModelAndView addPerson(Model ui) {
     	ModelAndView mv = new ModelAndView("inner/admin/person","person",
     			new PersonDTO(GtaSystem.MODE_ADD));
+    	checkAdmin();
     	mv.getModelMap().addAttribute("posts", postRepository.findAll());
         return mv;
     }
@@ -250,6 +280,7 @@ public class AdminController {
     @Transactional
     public ModelAndView editPerson(Model ui,
     		@PathVariable Integer id) {
+    	checkAdmin();
     	ModelAndView mv = new ModelAndView("inner/admin/person","person",
     			new PersonDTO(personRepository.findOne(id),GtaSystem.MODE_EDIT));
     	mv.getModelMap().addAttribute("posts", postRepository.findAll());
@@ -260,6 +291,7 @@ public class AdminController {
     @ResponseBody
     @Transactional
     public String updatePerson(Model ui,PersonDTO dto) {
+    	checkAdmin();
     	Person p;
 		Team team = teamRepository.findOne(dto.getTeam().getId());
     	if(dto.getMode()==GtaSystem.MODE_ADD) {
@@ -281,6 +313,7 @@ public class AdminController {
     		p.setPostDict(postRepository.findOne(dto.getPost()));
     	p.setPost(dto.getPostName());
     	p.setLimit(dto.getLimit());
+    	p.setInternal(dto.getInternal());
     	
     	personService.save(p);
     	
@@ -291,5 +324,15 @@ public class AdminController {
 		return "{\"message\":\""+result+"\"}";
     }
 
-   
+    private void checkAdmin(){
+    	if(!UserService.getCurrentUser().isSysAdmin())
+    		throw new SpringException("System admin role needed");
+    }
+
+    private void checkAdminOrSelf(User user) {
+    	if(!UserService.getCurrentUser().isSysAdmin() &&
+    	   !UserService.getCurrentUser().getId().equals(user.getId()))
+    		throw new SpringException("System admin role needed");
+	}
+    
 }

@@ -13,11 +13,13 @@ public class SystemInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
+		String path = request.getPathInfo();
+		boolean inner = path.indexOf("/inner/")>=0;
 		// внутренний вызов
-		if(request.getCookies()==null) {
+		if(inner) {
 			if(UserService.getCurrentUser()==null 
-					&& !request.getPathInfo().endsWith("login")
-					&& !request.getPathInfo().endsWith("home")) {
+					&& !path.endsWith("login")
+					&& !path.endsWith("home")) {
 				response.sendRedirect("login");
 				return false;
 			}
