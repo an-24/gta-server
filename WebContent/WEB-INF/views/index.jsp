@@ -13,6 +13,7 @@
     <link type="text/css" rel="stylesheet" href="resources/css/jquery.multiselect.css">
     <link type="text/css" rel="stylesheet" href="resources/css/toastr.css">
     <link type="text/css" rel="stylesheet" href="resources/css/main.css">
+    <link type="text/css" rel="stylesheet" href="resources/css/jquery.fancybox-1.3.4.css">
 
 	<script src="resources/js/lib/jquery-min.js"></script>
 	<script src="resources/js/lib/jquery.cookie.js"></script>
@@ -22,6 +23,7 @@
 	<script src="resources/js/lib/jquery.multiselect.ru.js"></script>
 	<script src="resources/js/lib/jquery.form-validator.js"></script>
 	<script src="resources/js/lib/toastr.js"></script>
+	<script src="resources/js/lib/jquery.fancybox-1.3.4.js"></script>
 	
 	<script src="resources/js/main.js"></script>
 	<script src="resources/js/utils.js"></script>

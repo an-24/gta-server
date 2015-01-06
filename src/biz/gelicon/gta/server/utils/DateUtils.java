@@ -105,6 +105,12 @@ public class DateUtils {
 	    calendar.setTime(date);
 		return calendar.get(Calendar.YEAR);
 	}
+
+	public static int extractHour(Date date) {
+	    Calendar calendar = Calendar.getInstance();
+	    calendar.setTime(date);
+		return calendar.get(Calendar.HOUR_OF_DAY);
+	}
 	
 	public static String codeMonth(int number, int year) {
 		String m = number>9?String.valueOf(number):"0"+String.valueOf(number);
@@ -116,7 +122,7 @@ public class DateUtils {
 	}
 	
 	public static int decodeYear(String id) {
-		return Integer.valueOf(id.substring(0, 3));
+		return Integer.valueOf(id.substring(0, 4));
 	}
 
 	public static Date newDate(int day, int month, int year) {

@@ -2,6 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <script type="text/javascript">
 $(function() {
@@ -34,7 +35,7 @@ $(function() {
 		  		<td><a onclick="openTeam(${t.id});return false;" href="#${t.id}">${t.name}</a></td>
 		  		<td>${t.manager.nic}</td>
 		  		<td>${t.active}</td>
-		  		<td>${t.createDate}</td>
+		  		<td><fmt:formatDate value='${t.createDate}' dateStyle='short'/></td>
 		  		<td>${t.limit}</td>
 		  		<td>${t.workerCount}</td>
 			</tr>

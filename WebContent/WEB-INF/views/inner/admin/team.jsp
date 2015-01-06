@@ -2,6 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <script>
 
@@ -48,7 +49,7 @@ $("#user-name").autocomplete({
    	<td><form:label path="name">Team name<em>*</em></form:label></td>
    	<td><form:input path="name" data-validation="required" data-validation-error-msg="You must enter the team name"/></td>
    	<td><label>Date of start</label></td>
-   	<td><input value="${team.createDate}" readonly type="text"/></td>
+   	<td><input value="<fmt:formatDate value='${team.createDate}' dateStyle='short'/>" readonly type="text"/></td>
    </tr>
    <tr>
    	<td><form:label path="active">Active</form:label></td>

@@ -26,7 +26,10 @@ public class SystemInterceptor extends HandlerInterceptorAdapter {
 			// определение текущего пользователя
 			String token = NetUtils.getTokenFromCookie(request);
 			if(token!=null)
-				UserService.setCurrentUser(Sessions.findSession(token));
+				UserService.setCurrentUser(Sessions.findSession(token));else
+				// сброс пользователя
+				UserService.setCurrentUser(null);
+
 			return super.preHandle(request, response, handler);
 		}
 	}

@@ -4,8 +4,9 @@ import java.util.Date;
 
 public class DayDTO {
 	private Date day;
-	private int hours;
-	private int activity;
+	private Double hours;
+	private Double activity;
+	private int activityWidth;
 	
 	public DayDTO() {
 	}
@@ -20,16 +21,24 @@ public class DayDTO {
 	public void setDay(Date day) {
 		this.day = day;
 	}
-	public int getHours() {
+	public Double getHours() {
 		return hours;
 	}
-	public void setHours(int hours) {
-		this.hours = hours;
+	public void setHours(Double value) {
+		this.hours = value;
 	}
-	public int getActivity() {
+	public Double getActivity() {
 		return activity;
 	}
-	public void setActivity(int activity) {
+	public void setActivity(Double activity) {
 		this.activity = activity;
+	}
+
+	public int getActivityWidth() {
+		return activityWidth;
+	}
+
+	public void setActivityWidth(int activityWidth) {
+		this.activityWidth = activityWidth;
 	}
 }

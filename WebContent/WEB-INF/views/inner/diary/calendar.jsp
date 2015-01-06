@@ -4,28 +4,35 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <style>
-	#diary table {
+	#diary table#month-cal {
 		width:100%;
 		height:100%;
 		text-align: center;
+		border-collapse: collapse;
 	}
-	#diary td {
+	#diary table#month-cal td {
 		vertical-align: top;
 		font-size: x-small;
 		width: 120px;
 	}
-	#diary th {
+	#diary table#month-cal th {
 		padding-bottom: 20px;
 	}
-	#diary td .hours {
+	#diary table#month-cal td .hours {
 		padding-top: 11px;
-		font-size: initial;	 
+		font-size: large;	 
 	}
 	
-	#diary td .activity {
+	#diary table#month-cal tbody td:hover {
+		cursor:default;
+		color:#660000;
+		background-color: silver;
+	}
+	
+	#diary table#month-cal td .activity {
 		position: relative;
 		height: 10px;
-		background-color: green;
+		background-color: #00A000;
 		margin-left: 16px;
 		margin-right: 16px;
 		width:0px;
@@ -33,6 +40,20 @@
 	
 	#diary-container .header button {
 		float:left;
+	}
+	
+	.headertext {
+		margin-left:20px;
+		float:left;
+		position:relative;
+		top:6px
+	}
+	
+	.team-name {
+		float: left;
+		max-width: 200px;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 </style>
@@ -69,40 +90,29 @@ $(function() {
 function loadInfo(selPersonId,selMonthId) {
 	var pId = selPersonId || $("#persons").val();
 	var mId = selMonthId || $("#months").val();
-	$("#diary table tbody").load("inner/diary/data?personId="+pId+"&monthId="+mId+"&teamId="+teamId);
+	$("#diary").load("inner/diary/data?personId="+pId+"&monthId="+mId+"&teamId="+teamId);
 }
 
 </script>
 
 <div id="diary-container" class="ui-widget">
 	<div class="header" style="white-space: nowrap;margin-bottom:10px;padding-left: 20px;">
-		<h2 style="float:left;margin-right:60px;">${team.name}</h2>
-		<div style="float:left;position:relative;top:6px">Member:</div>
+		<h2 class="team-name">${team.name}</h2>
+		<div class="headertext">Member:</div>
  		<select id="persons">
 			<c:forEach var="p" items="${team.persons}"> 
  			    <option value="${p.id}" ${currentPersonId == p.id ? 'selected' : ''}><c:out value="${p.nic}"/></option>
       		</c:forEach>   			
  		</select>
-		<div style="margin-left:20px;float:left;position:relative;top:6px">Month:</div>
+		<div class="headertext">Month:</div>
  		<select id="months">
 			<c:forEach var="m" items="${months}"> 
  			    <option value="${m.id}" ${currentMonthId == m.id ? 'selected' : ''}><c:out value="${m.fullName}"/></option>
       		</c:forEach>   			
  		</select>
+		<div class="headertext">Total:</div>
+		<div id="total" class="headertext"></div>
 	</div>
 	<div id="diary">
-		<table>
-			<thead>
-				<tr>
-				<c:forEach var="day" items="${axis}"> 
-		    		<th><c:out value="${day}"/></th>
-   				</c:forEach>   			
-	    		<th>&#160;&#160;&#160;</th>
-				</tr>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
 	</div>
-
 </div>

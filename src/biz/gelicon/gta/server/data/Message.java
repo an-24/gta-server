@@ -167,6 +167,11 @@ public class Message implements Serializable {
 		return 24*DateUtils.substractDate(getDtFinish(),getDtBegin());
 	}
 
+	@Transient
+	public double getActivity() {
+		return key+mouse+0.1*mouseMove; 
+	}
+	
 	@Override
 	public String toString() {
 		return "Message [id=" + id + ", key=" + key + ", mouse=" + mouse
