@@ -10,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.springframework.transaction.annotation.Transactional;
-
 @Entity
 @Table(name = "PROGUSER")
 public class User implements Serializable {

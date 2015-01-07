@@ -102,17 +102,17 @@
 		   		<td><label>Worked from the beginning of the project</label></td>
 		   		<td id="workedOfBeginProject">340<span> hours</span></td>
 		   	</tr>
-		   	<tfoo>
+		   	<tfoot>
 		   		<tr>
 		   			<td id="updTeamBtn" style="text-align: right;" colspan="2"><input value="Update" type="submit"/></td>
 		   		</tr>
-		   	</tfoo>
+		   	</tfoot>
 		   </table>
 		   </form>  
   		</div>
   		<div id="tabs-2">
   			<button id="addPerson">Add</button>
-			<table id="person-list" class="display" cellspacing="0">
+			<table id="person-list" class="display">
 				<thead>
 					<tr>
 						<th>Name</th>

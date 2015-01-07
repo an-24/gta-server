@@ -14,6 +14,11 @@ body, table td, select, button {
   font-family: Geneva, Calibri,'Arial Unicode MS', Arial, sans-serif;
 }
 
+table {
+	border-spacing:0px;
+}
+
+
 h1, h2, h3 {
 	margin: 0px;
 }
@@ -39,7 +44,8 @@ div.footer {
 	top: 640px;
 	width: 100%;
 	bottom: 0px;
-	color:white;	
+	color:white;
+	min-height: 134px;	
 }
 
 ul {

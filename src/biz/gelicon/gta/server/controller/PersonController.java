@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;

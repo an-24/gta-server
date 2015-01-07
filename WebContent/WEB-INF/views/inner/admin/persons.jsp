@@ -16,9 +16,8 @@ $(function() {
 });
 </script>
 
-
 <button id="addPerson">Add</button>
-<table id="person-table" class="display" cellspacing="0">
+<table id="person-table" class="display">
 	<thead>
 		<tr>
 			<th>Nic</th>

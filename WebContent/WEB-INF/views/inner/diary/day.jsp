@@ -70,10 +70,10 @@
 					 <ol>
 						<li>Worked out: <fmt:formatNumber value="${hour.worktime}" maxFractionDigits="1" minFractionDigits="1"></fmt:formatNumber></li>
 						<li>Activity: <fmt:formatNumber value="${hour.activity}" maxFractionDigits="1" minFractionDigits="1"></fmt:formatNumber>
-								(<fmt:formatNumber value="${hour.activityPercent}" maxFractionDigits="1" minFractionDigits="1"></fmt:formatNumber>%)</li>
+								(<fmt:formatNumber value="${hour.activityPercent}" maxFractionDigits="1" minFractionDigits="1"></fmt:formatNumber>%)
 						<div style="font-size: x-small;">(keys pressed: ${hour.keyDown},
 						mouse clicked: ${hour.mouseClick},
-						mouse moved: ${hour.mouseMove})</div>
+						mouse moved: ${hour.mouseMove})</div></li>
 					 </ol>	
 					</c:if>
 				</td>

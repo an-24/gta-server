@@ -1,6 +1,5 @@
 package biz.gelicon.gta.server.service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -10,16 +9,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
-import org.springframework.orm.jpa.EntityManagerHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import biz.gelicon.gta.server.GtaSystem;
 import biz.gelicon.gta.server.data.Person;
 import biz.gelicon.gta.server.data.Post;
 import biz.gelicon.gta.server.data.Team;
 import biz.gelicon.gta.server.data.User;
-import biz.gelicon.gta.server.dto.UserDTO;
 import biz.gelicon.gta.server.repo.PersonRepository;
 import biz.gelicon.gta.server.repo.PostRepository;
 import biz.gelicon.gta.server.repo.TeamRepository;
@@ -55,6 +51,9 @@ public class UserService {
 	
 	static public void setCurrentUser(User user) {
 		currentUser = user;
+		if(user!=null) {
+			GtaSystem.setLocaleName(user.getLocale());
+		}
 	}
 
 

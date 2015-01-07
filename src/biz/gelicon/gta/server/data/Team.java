@@ -3,11 +3,9 @@ package biz.gelicon.gta.server.data;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.inject.Inject;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,8 +18,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
-import biz.gelicon.gta.server.Sessions;
 import biz.gelicon.gta.server.service.UserService;
 
 
@@ -127,6 +125,7 @@ public class Team  implements Serializable {
 	}
 	
 	@Transient
+	@XmlTransient
 	public Person getManager() {
 		Optional<Person> opt = getPersons().stream().filter(p->p.getPostDict()!=null?
 															p.getPostDict().getId()==1:false).findFirst();
@@ -134,6 +133,7 @@ public class Team  implements Serializable {
 	}
 	
 	@Transient
+	@XmlTransient
 	public boolean isManagerCurrentUser() {
 		Optional<Person> opt = persons.stream().filter(p->p.isManager()).findFirst();
 		return !opt.isPresent()?false:opt.get().getUser().getId().equals(UserService.getCurrentUser().getId());

@@ -9,7 +9,14 @@
 	   	   multiple: false,
 	   	   header: "Select locale",
 	   	   noneSelectedText: "-",
-	   	   style:"width:177px",
+	   	   style:"width:190px",
+	   	   selectedList: 1
+	});
+	 $("#timeZoneId").multiselect({
+	   	   multiple: false,
+	   	   header: "Select time zone",
+	   	   noneSelectedText: "-",
+	   	   style:"width:490px",
 	   	   selectedList: 1
 	});
     initForm($("#frmUser"),"inner/admin/users/update",function(data){
@@ -23,6 +30,18 @@
   });
 </script>
 
+<style>
+	form {
+		padding-top:0px;
+	}
+
+	td#td-tz-id button span.ui-label-text{
+		text-overflow: ellipsis;
+		width: 420px;
+		overflow: hidden;
+	}
+
+</style>
 
 <c:if test="${user.mode==1}"><h2>New user</h2></c:if>
 <c:if test="${user.mode==2}"><h2>Edited by '${user.name}'</h2></c:if>
@@ -48,7 +67,19 @@
    		<select id="locale" name="locale">
    		    <option value="">-default-</option>
 			<c:forEach var="l" items="${locales}"> 
-   		    	<option value="${l.toLanguageTag()}" ${user.locale == l.toLanguageTag() ? 'selected' : ''}><c:out value="${l.displayName}"/></option>
+   		    	<option value="${l.id}" ${user.locale == l.id ? 'selected' : ''}><c:out value="${l.name}"/></option>
+        	</c:forEach>   			
+   		</select>
+   	</td>
+   </tr>
+   <tr>
+   	<td><form:label path="timeZoneId">Time zone</form:label></td>
+   	<td id="td-tz-id">
+		<!--<form:input path="locale"/>-->
+   		<select id="timeZoneId" name="timeZoneId">
+   		    <option value="">-empty-</option>
+			<c:forEach var="tz" items="${timezones}"> 
+   		    	<option value="${tz.id}" ${user.timeZoneId == tz.id ? 'selected' : ''}><c:out value="${tz.name}"/></option>
         	</c:forEach>   			
    		</select>
    	</td>

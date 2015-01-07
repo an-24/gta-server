@@ -18,7 +18,6 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import biz.gelicon.gta.server.dto.PersonDTO;
 
 @Entity
 @Table(name = "PERSON",
@@ -50,6 +49,7 @@ public class Person implements Serializable {
 		this.id = id;
 	}
 
+	@XmlTransient
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "POST_ID", nullable = true)	
 	public Post getPostDict() {

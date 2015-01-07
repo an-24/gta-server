@@ -38,7 +38,7 @@ $("#user-name").autocomplete({
 <c:if test="${team.mode==1}"><h2>New team</h2></c:if>
 <c:if test="${team.mode==2}"><h2>Edited by '${team.name}'</h2></c:if>
 
-<div id='error-place' class='form-error'/>
+<div id='error-place' class='form-error'></div>
 
 <form:form id="frmTeam" style="width:auto" commandName="team">
    <form:input path="mode" type="hidden"/>

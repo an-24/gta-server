@@ -4,30 +4,52 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <style>
-#profile-content {
-	top: 20px;
-	background-color: white;
-	position: relative;
-	border-radius: 5px;
-	min-height: 402px;
-	padding: 20px;
-	overflow: hidden;
-	left: 50%;
-	width: 500px;
-	margin-left: -250px;
-}
+	form {
+		padding-top:0px;
+		padding-bottom:0px;
+	}
+
+	#profile-content {
+		top: 20px;
+		background-color: white;
+		position: relative;
+		border-radius: 5px;
+		min-height: 402px;
+		padding: 20px;
+		overflow: hidden;
+		left: 50%;
+		width: 600px;
+		margin-left: -250px;
+	}
+	td#td-tz-id button span.ui-label-text{
+		text-overflow: ellipsis;
+		width: 420px;
+		overflow: hidden;
+	}
 
 </style>
 
 
 <script>
   $(function() {
-    initForm($("#frmUser"),"inner/admin/users/update",function(data){
-    	toastr["success"](data.message, "Success");
-    });
-    $("#frmUser #cancel").click(function() {
-    });
-    
+		 $("#locale").multiselect({
+		   	   multiple: false,
+		   	   header: "Select locale",
+		   	   noneSelectedText: "-",
+		   	   style:"width:190px",
+		   	   selectedList: 1
+		});
+		 $("#timeZoneId").multiselect({
+		   	   multiple: false,
+		   	   header: "Select time zone",
+		   	   noneSelectedText: "-",
+		   	   style:"width:490px",
+		   	   selectedList: 1
+		});
+	  
+    	initForm($("#frmUser"),"inner/admin/users/update",function(data){
+    		toastr["success"](data.message, "Success");
+    	});
   });
 </script>
 
@@ -48,6 +70,30 @@
    <tr>
    	<td><form:label path="email">E-mail</form:label></td>
    	<td><form:input path="email" data-validation="email" data-validation-error-msg="Error in entering of e-mail" data-validation-optional="true"/></td>
+   </tr>
+   <tr>
+   	<td><form:label path="locale">Locale</form:label></td>
+   	<td>
+		<!--<form:input path="locale"/>-->
+   		<select id="locale" name="locale">
+   		    <option value="">-default-</option>
+			<c:forEach var="l" items="${locales}"> 
+   		    	<option value="${l.id}" ${user.locale == l.id ? 'selected' : ''}><c:out value="${l.name}"/></option>
+        	</c:forEach>   			
+   		</select>
+   	</td>
+   </tr>
+   <tr>
+   	<td><form:label path="timeZoneId">Time zone</form:label></td>
+   	<td id="td-tz-id">
+		<!--<form:input path="locale"/>-->
+   		<select id="timeZoneId" name="timeZoneId">
+   		    <option value="">-empty-</option>
+			<c:forEach var="tz" items="${timezones}"> 
+   		    	<option value="${tz.id}" ${user.timeZoneId == tz.id ? 'selected' : ''}><c:out value="${tz.name}"/></option>
+        	</c:forEach>   			
+   		</select>
+   	</td>
    </tr>
    <c:if test="${user.mode==2}">
    <tr>

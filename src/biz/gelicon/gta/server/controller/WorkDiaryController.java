@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import biz.gelicon.gta.server.GtaSystem;
 import biz.gelicon.gta.server.data.Message;
@@ -39,10 +38,9 @@ import biz.gelicon.gta.server.data.User;
 import biz.gelicon.gta.server.dto.DayDTO;
 import biz.gelicon.gta.server.dto.HourDTO;
 import biz.gelicon.gta.server.dto.MonthDTO;
+import biz.gelicon.gta.server.dto.PersonDTO;
 import biz.gelicon.gta.server.dto.ScreenShotDTO;
 import biz.gelicon.gta.server.dto.TeamDTO;
-import biz.gelicon.gta.server.dto.PersonDTO;
-import biz.gelicon.gta.server.dto.WeekDTO;
 import biz.gelicon.gta.server.repo.MessageRepository;
 import biz.gelicon.gta.server.repo.PersonRepository;
 import biz.gelicon.gta.server.repo.ScreenShotRepository;
@@ -294,7 +292,7 @@ public class WorkDiaryController {
     	}
 		return months;
 	}
-
+/*
 	private List<WeekDTO> makeWeeks(Date dayOfMonth) {
     	List<WeekDTO> weeks = new ArrayList<>();
     	Date startDate = DateUtils.getStartOfMonth(dayOfMonth);
@@ -308,5 +306,5 @@ public class WorkDiaryController {
     	}
     	return weeks;
     }
-    
+*/   
 }

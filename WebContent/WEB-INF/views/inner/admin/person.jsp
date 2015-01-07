@@ -66,7 +66,7 @@
 <c:if test="${person.mode==1}"><h2>New member</h2></c:if>
 <c:if test="${person.mode==2}"><h2>Edited by '${person.nic}'</h2></c:if>
 
-<div id='error-place' class='form-error'/>
+<div id='error-place' class='form-error'></div>
 
 <form:form id="frmPerson" style="width:auto" commandName="person">
    <form:input path="mode" type="hidden"/>

@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;

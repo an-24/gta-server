@@ -1,15 +1,16 @@
 package biz.gelicon.gta.server.controller;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import jersey.repackaged.com.google.common.collect.Lists;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,8 +28,10 @@ import biz.gelicon.gta.server.data.Person;
 import biz.gelicon.gta.server.data.Post;
 import biz.gelicon.gta.server.data.Team;
 import biz.gelicon.gta.server.data.User;
+import biz.gelicon.gta.server.dto.LocaleDTO;
 import biz.gelicon.gta.server.dto.PersonDTO;
 import biz.gelicon.gta.server.dto.TeamDTO;
+import biz.gelicon.gta.server.dto.TimeZoneDTO;
 import biz.gelicon.gta.server.dto.UserDTO;
 import biz.gelicon.gta.server.repo.PersonRepository;
 import biz.gelicon.gta.server.repo.PostRepository;
@@ -106,8 +109,14 @@ public class AdminController {
     	checkAdmin();
     	ModelAndView mv = new ModelAndView("inner/admin/user","user",new UserDTO(GtaSystem.MODE_ADD));
     	mv.getModelMap().addAttribute("pswd_confirmation", "");
-    	List<Locale> locales =GtaSystem.getAviableLocales();
+    	List<LocaleDTO> locales = GtaSystem.getAviableLocales().stream()
+    			.map(l->new LocaleDTO(l)).collect(Collectors.toList());
+    	List<TimeZoneDTO> zones = Lists.asList(new String(), TimeZone.getAvailableIDs()).stream()
+    			.map(s->TimeZone.getTimeZone(s)).collect(Collectors.toList()).stream()
+    			.sorted((tz1,tz2)->Integer.valueOf(tz1.getRawOffset()).compareTo(Integer.valueOf(tz2.getRawOffset())))
+    			.map(tz->new TimeZoneDTO(tz)).collect(Collectors.toList());
     	mv.getModelMap().addAttribute("locales", locales);
+    	mv.getModelMap().addAttribute("timezones", zones);
         return mv;
     }
     
@@ -117,8 +126,14 @@ public class AdminController {
     	User u = userService.findUser(id);
     	checkAdminOrSelf(u);
     	ModelAndView mv = new ModelAndView("inner/admin/user","user",new UserDTO(u,GtaSystem.MODE_EDIT));
-    	List<Locale> locales =GtaSystem.getAviableLocales();
+    	List<LocaleDTO> locales = GtaSystem.getAviableLocales().stream()
+    			.map(l->new LocaleDTO(l)).collect(Collectors.toList());
+    	List<TimeZoneDTO> zones = Lists.asList(new String(), TimeZone.getAvailableIDs()).stream()
+    			.map(s->TimeZone.getTimeZone(s)).collect(Collectors.toList()).stream()
+    			.sorted((tz1,tz2)->Integer.valueOf(tz1.getRawOffset()).compareTo(Integer.valueOf(tz2.getRawOffset())))
+    			.map(tz->new TimeZoneDTO(tz)).collect(Collectors.toList());
     	mv.getModelMap().addAttribute("locales", locales);
+    	mv.getModelMap().addAttribute("timezones", zones);
         return mv;
     }
 
@@ -126,6 +141,14 @@ public class AdminController {
     public ModelAndView profileUser(Model ui) {
     	User u = UserService.getCurrentUser();
     	ModelAndView mv = new ModelAndView("inner/admin/profile","user",new UserDTO(u,GtaSystem.MODE_EDIT));
+    	List<LocaleDTO> locales = GtaSystem.getAviableLocales().stream()
+    			.map(l->new LocaleDTO(l)).collect(Collectors.toList());
+    	List<TimeZoneDTO> zones = Lists.asList(new String(), TimeZone.getAvailableIDs()).stream()
+    			.map(s->TimeZone.getTimeZone(s)).collect(Collectors.toList()).stream()
+    			.sorted((tz1,tz2)->Integer.valueOf(tz1.getRawOffset()).compareTo(Integer.valueOf(tz2.getRawOffset())))
+    			.map(tz->new TimeZoneDTO(tz)).collect(Collectors.toList());
+    	mv.getModelMap().addAttribute("locales", locales);
+    	mv.getModelMap().addAttribute("timezones", zones);
         return mv;
     }
     
@@ -151,9 +174,10 @@ public class AdminController {
     	}
     	user.setName(dto.getName());
     	user.setEmail(dto.getEmail());
-    	user.setLocale(dto.getLocale());
-    	user.setTimeZoneId(dto.getTimeZoneId());
-    	
+    	if("".equals(dto.getLocale())) user.setLocale(null);else
+    								   user.setLocale(dto.getLocale());
+    	if("".equals(dto.getTimeZoneId())) user.setTimeZoneId(null);else
+    								   user.setTimeZoneId(dto.getTimeZoneId());
     	if(pswd_confirmation!=null && !pswd_confirmation.isEmpty()) {
 
     		try {

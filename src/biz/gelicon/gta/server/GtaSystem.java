@@ -14,7 +14,8 @@ public class GtaSystem {
 	}
 
 	public static void setLocaleName(String locale) {
-		GtaSystem.locale = Locale.forLanguageTag(locale);
+		if(locale==null) GtaSystem.locale = Locale.ENGLISH;else
+					GtaSystem.locale = Locale.forLanguageTag(locale);
 	}
 
 	public static List<Locale> getAviableLocales() {

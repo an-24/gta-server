@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import biz.gelicon.gta.server.data.Team;
-import biz.gelicon.gta.server.data.User;
 
 public interface TeamRepository extends JpaRepository<Team, Integer> {
 

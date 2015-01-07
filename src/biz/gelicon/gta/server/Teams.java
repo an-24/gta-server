@@ -2,7 +2,6 @@ package biz.gelicon.gta.server;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -113,7 +112,6 @@ public class Teams {
 				}
 			}
     		//calculate WorkedOfMonth
-    		Calendar now;
     		q = session.createQuery("select t.id, 24*sum(m.dtFinish-m.dtBegin) "
     				+ "from Message m, Team t, Person p "
     				+ "where m.team.id=t.id AND m.user.id=p.user.id AND p.team.id=t.id AND t.active=true AND p.user.id=:id AND "
