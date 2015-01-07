@@ -169,7 +169,7 @@ public class Message implements Serializable {
 
 	@Transient
 	public double getActivity() {
-		return key+mouse+0.1*mouseMove; 
+		return key+mouse+0.01*mouseMove; 
 	}
 	
 	@Override

@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import biz.gelicon.gta.server.GtaSystem;
 import jersey.repackaged.com.google.common.collect.Lists;
@@ -146,6 +147,26 @@ public class DateUtils {
 		return 1.0*diff/(24 * 60 * 60 * 1000);		
 	}
 
+	public static Date convertToTimeZone(Date date, TimeZone tzDestination) {
+	    TimeZone tzSource = TimeZone.getDefault();
+	    if(tzSource==tzDestination) return date;
+		// in default time zone
+	    Calendar calendar = newCalendar();
+	    calendar.setTime(date);
+	    // to GMT
+	    calendar.add(Calendar.MILLISECOND, -tzSource.getRawOffset());
+        if (tzSource.inDaylightTime(calendar.getTime())) {
+            calendar.add(Calendar.MILLISECOND, -tzSource.getDSTSavings());
+        }
+	    // to tz
+	    calendar.add(Calendar.MILLISECOND, tzDestination.getRawOffset());
+        if (tzDestination.inDaylightTime(calendar.getTime())) {
+            calendar.add(Calendar.MILLISECOND, tzDestination.getDSTSavings());
+        }
+	    return calendar.getTime(); 
+	}
+
+	
 	private static Calendar newCalendar() {
 		Calendar calendar = Calendar.getInstance(GtaSystem.getLocale());
 		return calendar;

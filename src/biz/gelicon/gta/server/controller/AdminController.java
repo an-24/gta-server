@@ -64,6 +64,7 @@ public class AdminController {
     	HttpSession session = request.getSession();
     	ui.addAttribute("user",session.getAttribute("user"));
     	ui.addAttribute("menu","admin");
+    	ui.addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
         return "inner/admin/index";
     }
 
@@ -101,6 +102,7 @@ public class AdminController {
     		return dto;
     	}).collect(Collectors.toList());
     	ui.addAttribute("users", list);
+    	ui.addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
 		return "inner/admin/users";
     }
     
@@ -117,6 +119,7 @@ public class AdminController {
     			.map(tz->new TimeZoneDTO(tz)).collect(Collectors.toList());
     	mv.getModelMap().addAttribute("locales", locales);
     	mv.getModelMap().addAttribute("timezones", zones);
+    	mv.getModelMap().addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
         return mv;
     }
     
@@ -134,6 +137,7 @@ public class AdminController {
     			.map(tz->new TimeZoneDTO(tz)).collect(Collectors.toList());
     	mv.getModelMap().addAttribute("locales", locales);
     	mv.getModelMap().addAttribute("timezones", zones);
+    	mv.getModelMap().addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
         return mv;
     }
 
@@ -149,6 +153,7 @@ public class AdminController {
     			.map(tz->new TimeZoneDTO(tz)).collect(Collectors.toList());
     	mv.getModelMap().addAttribute("locales", locales);
     	mv.getModelMap().addAttribute("timezones", zones);
+    	mv.getModelMap().addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
         return mv;
     }
     
@@ -208,6 +213,7 @@ public class AdminController {
     		return dto;
     	}).collect(Collectors.toList());
     	ui.addAttribute("teams", list);
+    	ui.addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
 		return "inner/admin/teams";
     }
 
@@ -215,6 +221,7 @@ public class AdminController {
     public ModelAndView addTeam(Model ui) {
     	checkAdmin();
     	ModelAndView mv = new ModelAndView("inner/admin/team","team",new TeamDTO(GtaSystem.MODE_ADD));
+    	mv.getModelMap().addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
         return mv;
     }
     
@@ -224,6 +231,7 @@ public class AdminController {
     		@PathVariable Integer id) {
     	checkAdmin();
     	ModelAndView mv = new ModelAndView("inner/admin/team","team",new TeamDTO(teamRepository.findOne(id),GtaSystem.MODE_EDIT));
+    	mv.getModelMap().addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
         return mv;
     }
     
@@ -288,6 +296,7 @@ public class AdminController {
     		return dto;
     	}).collect(Collectors.toList());
     	ui.addAttribute("persons", list);
+    	ui.addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
 		return "inner/admin/persons";
     }
     @RequestMapping(value = "/persons/add", method=RequestMethod.GET)
@@ -297,6 +306,7 @@ public class AdminController {
     			new PersonDTO(GtaSystem.MODE_ADD));
     	checkAdmin();
     	mv.getModelMap().addAttribute("posts", postRepository.findAll());
+    	mv.getModelMap().addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
         return mv;
     }
     
@@ -308,6 +318,7 @@ public class AdminController {
     	ModelAndView mv = new ModelAndView("inner/admin/person","person",
     			new PersonDTO(personRepository.findOne(id),GtaSystem.MODE_EDIT));
     	mv.getModelMap().addAttribute("posts", postRepository.findAll());
+    	mv.getModelMap().addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
         return mv;
     }
     

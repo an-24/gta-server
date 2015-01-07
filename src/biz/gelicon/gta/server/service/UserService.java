@@ -53,7 +53,8 @@ public class UserService {
 		currentUser = user;
 		if(user!=null) {
 			GtaSystem.setLocaleName(user.getLocale());
-		}
+		} else
+			GtaSystem.setLocaleName(null);
 	}
 
 

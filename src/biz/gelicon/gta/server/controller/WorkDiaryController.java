@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
@@ -117,6 +118,12 @@ public class WorkDiaryController {
     		@RequestParam(required=true) String monthId,
     		@RequestParam(required=true) Integer personId) {
     	
+    	final TimeZone tzDestination;
+    	String tzId = UserService.getCurrentUser().getTimeZoneId();
+    	if(tzId!=null && !tzId.isEmpty())
+    		tzDestination = TimeZone.getTimeZone(tzId);else
+    		tzDestination = TimeZone.getDefault();	
+    	
     	Team team = teamRepository.findOne(teamId);
     	
     	Date start = DateUtils.newDate(1,DateUtils.decodeMonth(monthId),DateUtils.decodeYear(monthId));
@@ -133,10 +140,10 @@ public class WorkDiaryController {
     	}
     	//group
     	Map<Date, Double> groupHours = timing.stream()
-    			.collect(Collectors.groupingBy(t->DateUtils.cleanTime(t.getDtBegin()),
+    			.collect(Collectors.groupingBy(t->DateUtils.cleanTime(DateUtils.convertToTimeZone(t.getDtBegin(),tzDestination)),
     					 Collectors.summingDouble(Message::getHours)));
     	Map<Date, Double> groupActivity = timing.stream()
-    			.collect(Collectors.groupingBy(t->DateUtils.cleanTime(t.getDtBegin()),
+    			.collect(Collectors.groupingBy(t->DateUtils.cleanTime(DateUtils.convertToTimeZone(t.getDtBegin(),tzDestination)),
     					 Collectors.summingDouble(Message::getActivity)));
     	// total
     	DayDTO total = new DayDTO();
@@ -176,6 +183,12 @@ public class WorkDiaryController {
     		@RequestParam(required=true) String date,
     		@RequestParam(required=true) Integer personId) {
 
+    	final TimeZone tzDestination;
+    	String tzId = UserService.getCurrentUser().getTimeZoneId();
+    	if(tzId!=null && !tzId.isEmpty())
+    		tzDestination = TimeZone.getTimeZone(tzId);else
+    		tzDestination = TimeZone.getDefault();	
+    	
     	Team team = teamRepository.findOne(teamId);
     	
     	Date curr;
@@ -193,22 +206,22 @@ public class WorkDiaryController {
     	}
     	//group on hours
     	Map<Integer, Double> groupHours = timing.stream()
-    			.collect(Collectors.groupingBy(t->DateUtils.extractHour(t.getDtBegin()),
+    			.collect(Collectors.groupingBy(t->exctactLocalHour(t,tzDestination),
     					 Collectors.summingDouble(Message::getHours)));
     	Map<Integer, Double> groupActivity = timing.stream()
-    			.collect(Collectors.groupingBy(t->DateUtils.extractHour(t.getDtBegin()),
+    			.collect(Collectors.groupingBy(t->exctactLocalHour(t,tzDestination),
     					 Collectors.summingDouble(Message::getActivity)));
     	Map<Integer, Integer> groupOnKeys = timing.stream()
-    			.collect(Collectors.groupingBy(t->DateUtils.extractHour(t.getDtBegin()),
+    			.collect(Collectors.groupingBy(t->exctactLocalHour(t,tzDestination),
     					 Collectors.summingInt(Message::getKey)));
     	Map<Integer, Integer> groupOnMouseClicks = timing.stream()
-    			.collect(Collectors.groupingBy(t->DateUtils.extractHour(t.getDtBegin()),
+    			.collect(Collectors.groupingBy(t->exctactLocalHour(t,tzDestination),
     					 Collectors.summingInt(Message::getMouse)));
     	Map<Integer, Integer> groupOnMouseMove = timing.stream()
-    			.collect(Collectors.groupingBy(t->DateUtils.extractHour(t.getDtBegin()),
+    			.collect(Collectors.groupingBy(t->exctactLocalHour(t,tzDestination),
     					 Collectors.summingInt(Message::getMouseMove)));
     	Map<Integer,List<Message>> groupMessages = timing.stream()
-    			.collect(Collectors.groupingBy(t->DateUtils.extractHour(t.getDtBegin()),
+    			.collect(Collectors.groupingBy(t->exctactLocalHour(t,tzDestination),
     					Collectors.toList()));
     	// total
     	HourDTO total = new HourDTO();
@@ -238,6 +251,10 @@ public class WorkDiaryController {
     	ui.addAttribute("date", curr);
         return "inner/diary/day";
     }	
+    
+    private static int exctactLocalHour(Message m,TimeZone tz) {
+    	return DateUtils.extractHour(DateUtils.convertToTimeZone(m.getDtBegin(),tz));
+    }
     
     @RequestMapping(value = "/screenshot.png", method=RequestMethod.GET)
     @Transactional(readOnly=true)
@@ -278,7 +295,7 @@ public class WorkDiaryController {
     private Double normalizeActivity(Double sumActivity, Double hours) {
     	if(hours==null || sumActivity==null) return 0D;
     	// максимальная возможная активность за hours часов
-    	double maxActivity = hours*60*60*0.3;
+    	double maxActivity = hours*60*60*1.0;
     	double percent = 100*sumActivity/maxActivity;
 		return percent>100?100:percent;
 	}

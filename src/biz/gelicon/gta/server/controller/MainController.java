@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import biz.gelicon.gta.server.GtaSystem;
 import biz.gelicon.gta.server.Teams;
 import biz.gelicon.gta.server.service.UserService;
 import biz.gelicon.gta.server.utils.SpringException;
@@ -29,6 +30,7 @@ public class MainController {
     	ui.addAttribute("userObj",UserService.getCurrentUser());
     	ui.addAttribute("menu","home");
     	ui.addAttribute("base",getBaseURL(request));
+    	ui.addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
         return "index";
     }
 
@@ -44,6 +46,7 @@ public class MainController {
     	ui.addAttribute("userObj",UserService.getCurrentUser());
     	ui.addAttribute("menu","projects");
     	ui.addAttribute("base",getBaseURL(request));
+    	ui.addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
         return "index";
     }
 
@@ -59,6 +62,7 @@ public class MainController {
     	}
     	ui.addAttribute("menu","diary"+(diaryId==null?"":"/"+diaryId));
     	ui.addAttribute("base",getBaseURL(request));
+    	ui.addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
         return "index";
     }
 
@@ -81,6 +85,7 @@ public class MainController {
     	ui.addAttribute("userObj",UserService.getCurrentUser());
     	ui.addAttribute("menu","admin");
     	ui.addAttribute("base",getBaseURL(request));
+    	ui.addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
         return "index";
     }
     
@@ -91,6 +96,7 @@ public class MainController {
     	ui.addAttribute("userObj",UserService.getCurrentUser());
     	ui.addAttribute("menu","admin/profile/edit");
     	ui.addAttribute("base",getBaseURL(request));
+    	ui.addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
         return "index";
     }
     
@@ -103,6 +109,7 @@ public class MainController {
     public String login(Model ui, HttpServletRequest request) {
     	ui.addAttribute("menu","login");
     	ui.addAttribute("base",getBaseURL(request));
+    	ui.addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
         return "index";
     }
 
