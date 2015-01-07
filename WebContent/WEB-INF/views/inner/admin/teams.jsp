@@ -4,6 +4,9 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
+<fmt:setLocale value="${loc}"/>
+<fmt:bundle basename="biz.gelicon.gta.server.i18n.Bundle">
+
 <script type="text/javascript">
 $(function() {
 	$("#teams-table").dataTable({
@@ -17,16 +20,16 @@ $(function() {
 });
 </script>
 
-<button id="addTeam">Add</button>
+<button id="addTeam"><fmt:message key="label.add"/></button>
 <table id="teams-table">
 	<thead>
 		<tr>
-			<th>Name</th>
-			<th>Manager</th>
-			<th>Active</th>
-			<th>Date of start</th>
-			<th>Limit</th>
-			<th>Number of members</th>
+			<th><fmt:message key="label.name"/></th>
+			<th><fmt:message key="label.manager"/></th>
+			<th><fmt:message key="label.active"/></th>
+			<th><fmt:message key="label.startdate"/></th>
+			<th><fmt:message key="label.limit"/></th>
+			<th><fmt:message key="label.membercount"/></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -42,3 +45,5 @@ $(function() {
 		</c:forEach>
 	</tbody>
 </table>
+
+</fmt:bundle>

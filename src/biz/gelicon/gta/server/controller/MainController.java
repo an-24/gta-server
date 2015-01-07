@@ -149,7 +149,9 @@ public class MainController {
     
     @RequestMapping(value = "inner/login", method=RequestMethod.GET)
     public ModelAndView loginInner(Model ui) {
-    	return new ModelAndView("inner/login","command",new UserInput());
+    	ModelAndView mv = new ModelAndView("inner/login","command",new UserInput());
+    	mv.getModelMap().addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
+    	return mv;
     }
     
     private String getBaseURL(HttpServletRequest request) {

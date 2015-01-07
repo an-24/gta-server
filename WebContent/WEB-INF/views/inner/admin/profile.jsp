@@ -38,21 +38,21 @@
   $(function() {
 		 $("#locale").multiselect({
 		   	   multiple: false,
-		   	   header: "Select locale",
+		   	   header: "<fmt:message key='label.select-locale'/>",
 		   	   noneSelectedText: "-",
 		   	   style:"width:190px",
 		   	   selectedList: 1
 		});
 		 $("#timeZoneId").multiselect({
 		   	   multiple: false,
-		   	   header: "Select time zone",
+		   	   header: "<fmt:message key='label.select-tz'/>",
 		   	   noneSelectedText: "-",
 		   	   style:"width:490px",
 		   	   selectedList: 1
 		});
 	  
     	initForm($("#frmUser"),"inner/admin/users/update",function(data){
-    		toastr["success"](data.message, "Success");
+        	toastr["success"](data.message, "<fmt:message key='message.success'/>");
     	});
   });
 </script>
@@ -69,11 +69,13 @@
    <table>
    <tr>
    	<td><form:label path="name"><fmt:message key="label.username"/><em>*</em></form:label></td>
-   	<td><form:input id="user-name" path="name" data-validation="required" data-validation-error-msg="<fmt:message key='message.username'/>"/></td>
+   	<fmt:message var="tmp" key='message.username'/>
+   	<td><form:input id="user-name" path="name" data-validation="required" data-validation-error-msg="${tmp}"/></td>
    </tr>
    <tr>
    	<td><form:label path="email">E-mail</form:label></td>
-   	<td><form:input path="email" data-validation="email" data-validation-error-msg="<fmt:message key='message.email'/>" data-validation-optional="true"/></td>
+   	<fmt:message var="tmp" key='message.email'/>
+   	<td><form:input path="email" data-validation="email" data-validation-error-msg="${tmp}" data-validation-optional="true"/></td>
    </tr>
    <tr>
    	<td><form:label path="locale"><fmt:message key="label.lang"/></form:label></td>
@@ -110,22 +112,25 @@
    <tr>
    	<c:if test="${user.mode==2}">
    		<td><label><fmt:message key="label.newpassword"/></label></td>
-   		<td><input name="pswd_confirmation" value="" type="password" autocomplete="off" data-validation="length" data-validation-length="min8" data-validation-optional="true" data-validation-error-msg="<fmt:message key='message.incorrectpassword'/>"/></td>
+   		<fmt:message var="tmp" key='message.incorrectpassword'/>
+   		<td><input name="pswd_confirmation" value="" type="password" autocomplete="off" data-validation="length" data-validation-length="min8" data-validation-optional="true" data-validation-error-msg="${tmp}"/></td>
    	</c:if>
    	<c:if test="${user.mode==1}">
    		<td><label><fmt:message key="label.youpassword"/></label></td>
-   		<td><input name="pswd_confirmation" value="" type="password" autocomplete="off" data-validation="length" data-validation-length="min8" data-validation-error-msg="<fmt:message key='message.incorrectpassword'/>"/></td>
+   		<fmt:message var="tmp" key='message.incorrectpassword'/>
+   		<td><input name="pswd_confirmation" value="" type="password" autocomplete="off" data-validation="length" data-validation-length="min8" data-validation-error-msg="${tmp}"/></td>
    	</c:if>
    </tr>
    <tr>
    	<td><label><fmt:message key="label.confirmpassword"/></label></td>
-   	<td><input name="pswd" value="" type="password"  autocomplete="off" data-validation="confirmation" data-validation-error-msg="<fmt:message key='message.noconfirmpassword'/>"/></td>
+   	<fmt:message var="tmp" key='message.noconfirmpassword'/>
+   	<td><input name="pswd" value="" type="password"  autocomplete="off" data-validation="confirmation" data-validation-error-msg="${tmp}"/></td>
    </tr>
    
    <tfoot>
    <tr>
    	<td colspan="2">
-   		<input id="default" type="submit" value="Submit"/>
+   		<input id="default" type="submit" value="<fmt:message key='label.submit'/>"/>
    	</td>
    </tr>
    </tfoot>

@@ -2,6 +2,10 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${loc}"/>
+<fmt:bundle basename="biz.gelicon.gta.server.i18n.Bundle">
 
 <script>
   $(function() {
@@ -15,9 +19,11 @@
 </script>
 
 <ol id="admin-menu" class="list-view">
-	<li class="ui-widget-content" href="inner/admin/users">Users</li>
-	<li class="ui-widget-content" href="inner/admin/teams">Teams</li>
-	<li class="ui-widget-content" href="inner/admin/persons">Members</li>
+	<li class="ui-widget-content" href="inner/admin/users"><fmt:message key="label.users"/></li>
+	<li class="ui-widget-content" href="inner/admin/teams"><fmt:message key="label.teams"/></li>
+	<li class="ui-widget-content" href="inner/admin/persons"><fmt:message key="label.members"/></li>
 </ol>
 
 <div id="admin-content" class="ui-widget"></div>
+
+</fmt:bundle>

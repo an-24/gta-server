@@ -2,6 +2,10 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${loc}"/>
+<fmt:bundle basename="biz.gelicon.gta.server.i18n.Bundle">
 
 <script type="text/javascript">
 $(function() {
@@ -16,13 +20,13 @@ $(function() {
 });
 </script>
 
-<button id="addUser">Add</button>
+<button id="addUser"><fmt:message key="label.add"/></button>
 <table id="users-table">
 	<thead>
 		<tr>
-			<th>Name</th>
+			<th><fmt:message key="label.name"/></th>
 			<th>e-mail</th>
-			<th>Members of team</th>
+			<th><fmt:message key="label.members"/></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -35,3 +39,5 @@ $(function() {
 		</c:forEach>
 	</tbody>
 </table>
+
+</fmt:bundle>
