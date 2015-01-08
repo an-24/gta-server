@@ -2,6 +2,10 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<fmt:setLocale value="${loc}"/>
+<fmt:bundle basename="biz.gelicon.gta.server.i18n.Bundle">
 
 <style>
 	#diary table#month-cal {
@@ -65,7 +69,7 @@ var teamId = <c:out value="${team.id}"/>;
 $(function() {
 	$("#persons").multiselect({
 		   multiple: false,
-		   header: "Select member",
+		   header: "<fmt:message key='label.select-member'/>",
 		   noneSelectedText: "-",
 		   style:"width:200px",
 		   selectedList: 1,
@@ -75,7 +79,7 @@ $(function() {
 	});
 	$("#months").multiselect({
 		   multiple: false,
-		   header: "Select month",
+		   header: "<fmt:message key='label.select-month'/>",
 		   noneSelectedText: "-",
 		   style:"width:200px",
 		   selectedList: 1,
@@ -98,21 +102,22 @@ function loadInfo(selPersonId,selMonthId) {
 <div id="diary-container" class="ui-widget">
 	<div class="header" style="white-space: nowrap;margin-bottom:10px;padding-left: 20px;">
 		<h2 class="team-name">${team.name}</h2>
-		<div class="headertext">Member:</div>
+		<div class="headertext"><fmt:message key='label.member'/>:</div>
  		<select id="persons">
 			<c:forEach var="p" items="${team.persons}"> 
  			    <option value="${p.id}" ${currentPersonId == p.id ? 'selected' : ''}><c:out value="${p.nic}"/></option>
       		</c:forEach>   			
  		</select>
-		<div class="headertext">Month:</div>
+		<div class="headertext"><fmt:message key='label.month'/>:</div>
  		<select id="months">
 			<c:forEach var="m" items="${months}"> 
  			    <option value="${m.id}" ${currentMonthId == m.id ? 'selected' : ''}><c:out value="${m.fullName}"/></option>
       		</c:forEach>   			
  		</select>
-		<div class="headertext">Total:</div>
+		<div class="headertext"><fmt:message key='label.total'/>:</div>
 		<div id="total" class="headertext"></div>
 	</div>
 	<div id="diary">
 	</div>
 </div>
+</fmt:bundle>

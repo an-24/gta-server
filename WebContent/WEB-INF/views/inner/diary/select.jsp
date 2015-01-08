@@ -2,6 +2,10 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<fmt:setLocale value="${loc}"/>
+<fmt:bundle basename="biz.gelicon.gta.server.i18n.Bundle">
 
 <style>
  #select-project {
@@ -32,10 +36,12 @@
 </script>
 
 <div id="select-project" style="white-space:nowrap;">
-<h2>Select project</h2>
+<h2><fmt:message key='label.selectproject'/></h2>
 <ol id="plist" class="list-view">
 	<c:forEach var="t" items="${teams}">
   		<li class="ui-widget-content" team-id="${t.id}" id="li-team-${t.id}">${t.name}</li>
 	</c:forEach>
 </ol>
 </div>
+
+</fmt:bundle>

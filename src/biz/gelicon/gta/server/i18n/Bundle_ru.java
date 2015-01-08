@@ -7,6 +7,7 @@ public class Bundle_ru extends ListResourceBundle {
 	static final Object[][] contents = {
 		  {"label.home", "Главная"},
 		  {"label.projects", "Проекты"},
+		  {"label.project", "Проект"},
 		  {"label.workdiary", "Рабочий дневник"},
 		  {"label.administrator","Администрирование"},
 		  {"label.companyinfo","Информация о компании"},
@@ -30,6 +31,7 @@ public class Bundle_ru extends ListResourceBundle {
 		  {"label.users","Пользователи"},
 		  {"label.teams","Команды"},
 		  {"label.members","Участники команд"},
+		  {"label.member","Участник"},
 		  {"label.add","Добавить"},
 		  {"label.name","Имя"},
 		  {"label.manager","Менеджер"},
@@ -57,7 +59,22 @@ public class Bundle_ru extends ListResourceBundle {
 		  {"label.postname","Название должности"},
 		  {"label.internal","Внутренний"},
 		  {"message.selectteam","Необходимо выбрать команду"},
-		  {"message.postname","Название должности не может быть пустым"}
+		  {"message.postname","Название должности не может быть пустым"},
+		  {"label.common","Главное"},
+		  {"label.statistics","Статистика"},
+		  {"label.worked-per-day","Отработано за день"},
+		  {"label.worked-per-week","Отработано за неделю"},
+		  {"label.worked-per-month","Отработано за месяц"},
+		  {"label.worked-from-begin","Отработано всего"},
+		  {"label.update","Изменить"},
+		  {"label.back","Назад"},
+		  {"label.selectproject","Выбор проекта"},
+		  {"label.select-member","Выбор участника"},
+		  {"label.select-month","Выбор месяца"},
+		  {"label.month","Месяц"},
+		  {"label.total","Всего"},
+		  {"label.worked","Отработано"},
+		  {"label.activity","Активность"}
 	};
 	
 	@Override

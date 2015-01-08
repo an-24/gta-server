@@ -7,6 +7,7 @@ public class Bundle_en extends ListResourceBundle {
 	static final Object[][] contents = {
 		  {"label.home", "Home"},
 		  {"label.projects", "Projects"},
+		  {"label.project", "Project"},
 		  {"label.workdiary", "Work diary"},
 		  {"label.administrator","Administrator"},
 		  {"label.companyinfo","Company Info"},
@@ -30,6 +31,7 @@ public class Bundle_en extends ListResourceBundle {
 		  {"label.users","Users"},
 		  {"label.teams","Teams"},
 		  {"label.members","Members"},
+		  {"label.member","Member"},
 		  {"label.add","Add"},
 		  {"label.name","Name"},
 		  {"label.manager","Manager"},
@@ -57,7 +59,22 @@ public class Bundle_en extends ListResourceBundle {
 		  {"label.postname","Post name"},
 		  {"label.internal","Internal"},
 		  {"message.selectteam","You must select a team"},
-		  {"message.postname","You must enter the post name"}
+		  {"message.postname","You must enter the post name"},
+		  {"label.common","Common"},
+		  {"label.statistics","Statistics"},
+		  {"label.worked-per-day","Worked per day"},
+		  {"label.worked-per-week","Worked per week"},
+		  {"label.worked-per-month","Worked per month"},
+		  {"label.worked-from-begin","Worked from the beginning of the project"},
+		  {"label.update","Update"},
+		  {"label.back","Back"},
+		  {"label.selectproject","Select project"},
+		  {"label.select-member","Select member"},
+		  {"label.select-month","Select month"},
+		  {"label.month","Month"},
+		  {"label.total","Total"},
+		  {"label.worked","Worked out"},
+		  {"label.activity","Activity"}
 	};
 	
 	@Override

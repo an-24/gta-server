@@ -47,6 +47,7 @@ public class PersonController {
     	mv.getModelMap().addAttribute("manager", manager);
     	mv.getModelMap().addAttribute("teamId", person.getTeam().getId());
     	mv.getModelMap().addAttribute("posts", postRepository.findAll());
+    	mv.getModelMap().addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
     	return mv;
     }
 
@@ -60,6 +61,7 @@ public class PersonController {
     	mv.getModelMap().addAttribute("manager", manager);
     	mv.getModelMap().addAttribute("teamId", person.getTeam().getId());
     	mv.getModelMap().addAttribute("posts", postRepository.findAll());
+    	mv.getModelMap().addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
     	return mv;
     }
     

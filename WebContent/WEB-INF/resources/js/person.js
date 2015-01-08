@@ -3,7 +3,7 @@ function openPerson(id) {
 	if(id) p = window._personList[id];else 
 		p = {nic:"New member"};
 	var tabs = $("#tabs");
-	var tabContentHtml = "<input value='back' type='button' onclick='backFormPerson(1)'/>" +
+	var tabContentHtml = "<input id='backbutton' value='back' type='button' onclick='backFormPerson(1)'/>" +
 			"<div id='error-place' class='form-error getperson-error'/>" +
 			"<div id='personForm'></div>";
 	$(tabs).find("ul").append(

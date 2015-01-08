@@ -126,6 +126,7 @@ public class MainController {
     @RequestMapping(value = "inner/projects", method=RequestMethod.GET)
     public String projInner(Model ui) {
     	ui.addAttribute("teams",new Teams().getTeams(UserService.getCurrentUser()));
+    	ui.addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
     	return "inner/projects";
     }
     

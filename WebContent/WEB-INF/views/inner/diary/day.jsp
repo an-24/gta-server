@@ -4,6 +4,9 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
+<fmt:setLocale value="${loc}"/>
+<fmt:bundle basename="biz.gelicon.gta.server.i18n.Bundle">
+
 <style>
 	#backToData {
 		float:left;
@@ -52,7 +55,7 @@
 </script>
 
 
-<button id="backToData">Back</button>
+<button id="backToData"><fmt:message key='label.back'/></button>
 <h3 id="date"><fmt:formatDate value="${date}" dateStyle="short"/></h3>
 
 <div id="hours-place">
@@ -68,8 +71,8 @@
 				<td>
 					<c:if test="${hour.worktime!=null}">
 					 <ol>
-						<li>Worked out: <fmt:formatNumber value="${hour.worktime}" maxFractionDigits="1" minFractionDigits="1"></fmt:formatNumber></li>
-						<li>Activity: <fmt:formatNumber value="${hour.activity}" maxFractionDigits="1" minFractionDigits="1"></fmt:formatNumber>
+						<li><fmt:message key='label.worked'/>: <fmt:formatNumber value="${hour.worktime}" maxFractionDigits="1" minFractionDigits="1"></fmt:formatNumber></li>
+						<li><fmt:message key='label.activity'/>: <fmt:formatNumber value="${hour.activity}" maxFractionDigits="1" minFractionDigits="1"></fmt:formatNumber>
 								(<fmt:formatNumber value="${hour.activityPercent}" maxFractionDigits="1" minFractionDigits="1"></fmt:formatNumber>%)
 						<div style="font-size: x-small;">(keys pressed: ${hour.keyDown},
 						mouse clicked: ${hour.mouseClick},
@@ -86,6 +89,6 @@
 </table>
 </div>
 
-
+</fmt:bundle>
 
 

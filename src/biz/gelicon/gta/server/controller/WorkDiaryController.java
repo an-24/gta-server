@@ -73,6 +73,7 @@ public class WorkDiaryController {
             return "redirect:../inner/diary/"+list.get(0).getId();
     	}
     	ui.addAttribute("teams", list);
+    	ui.addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
         return "inner/diary/select";
     }
 
@@ -108,6 +109,7 @@ public class WorkDiaryController {
     	ui.addAttribute("currentPersonId", currentPersonId);
     	ui.addAttribute("months", months);
     	ui.addAttribute("team", teamDto);
+    	ui.addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
         return "inner/diary/calendar";
     }
 
@@ -173,6 +175,7 @@ public class WorkDiaryController {
     	ui.addAttribute("axis", DateUtils.getDayOfWeekNames(GtaSystem.getLocale()));
     	ui.addAttribute("data", data);
     	ui.addAttribute("total", total);
+    	ui.addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
         return "inner/diary/data";
     }
 
@@ -249,6 +252,7 @@ public class WorkDiaryController {
     	ui.addAttribute("total", total);
     	ui.addAttribute("hours", hours);
     	ui.addAttribute("date", curr);
+    	ui.addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
         return "inner/diary/day";
     }	
     
