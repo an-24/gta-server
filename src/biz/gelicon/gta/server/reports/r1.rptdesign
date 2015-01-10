@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
-    <property name="createdBy">Eclipse BIRT Designer Version 4.4.1.v201408290142 Build &lt;4.4.1.v20140916-1320></property>
+    <property name="createdBy">Eclipse BIRT Designer Version 4.3.2.v20140211-1400 Build &lt;4.3.2.v20140218-1056></property>
     <simple-property-list name="includeResource">
         <value>src/biz/gelicon/gta/server/i18n/reports/r1_ru</value>
         <value>src/biz/gelicon/gta/server/i18n/reports/r1_en</value>
@@ -234,17 +234,6 @@
                 <property name="pattern">Short Date</property>
             </structure>
         </scalar-parameter>
-        <scalar-parameter name="team" id="275">
-            <property name="valueType">static</property>
-            <property name="dataType">string</property>
-            <property name="distinct">true</property>
-            <list-property name="selectionList"/>
-            <property name="paramType">simple</property>
-            <property name="controlType">text-box</property>
-            <structure name="format">
-                <property name="category">Unformatted</property>
-            </structure>
-        </scalar-parameter>
         <scalar-parameter name="teamId" id="329">
             <property name="valueType">static</property>
             <property name="dataType">integer</property>
@@ -323,13 +312,7 @@
                 </list-property>
             </structure>
             <property name="dataSource">Data Source</property>
-            <method name="open"><![CDATA[importPackage(Packages.org.springframework.context);
-importPackage(Packages.org.springframework.web.context.support);
-importPackage(Packages.biz.gelicon.gta.server.service);
-
-var spring = new ReportService().getSpringContext();
-//your spring bean
-var bean = spring.getBean("reportService");
+            <method name="open"><![CDATA[var bean = spring.getBean("reportService");
 var data = bean.getWorkedOutData(params["teamId"],params["dateBegin"],params["dateEnd"]);
  
 dataIterator = data.iterator();]]></method>
@@ -420,16 +403,6 @@ dataIterator = data.iterator();]]></method>
                 <cell id="256">
                     <property name="colSpan">3</property>
                     <property name="rowSpan">1</property>
-                    <data id="276">
-                        <list-property name="boundDataColumns">
-                            <structure>
-                                <property name="name">team</property>
-                                <expression name="expression" type="javascript">params["team"]</expression>
-                                <property name="dataType">string</property>
-                            </structure>
-                        </list-property>
-                        <property name="resultSetColumn">team</property>
-                    </data>
                 </cell>
             </row>
             <row id="258">

@@ -15,6 +15,8 @@ import org.eclipse.birt.report.engine.api.IReportEngine;
 import org.eclipse.birt.report.engine.api.IReportRunnable;
 import org.eclipse.birt.report.engine.api.IRunAndRenderTask;
 import org.eclipse.birt.report.engine.api.PDFRenderOption;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,6 +36,9 @@ import biz.gelicon.gta.server.utils.SpringException;
 @Controller
 @RequestMapping("/inner/report")
 public class ReportController {
+	
+	@Autowired
+	private ApplicationContext appContext;
 
 	
     @RequestMapping(value = "/r1", method=RequestMethod.GET)
@@ -58,6 +63,8 @@ public class ReportController {
 			allParams.put("dateBegin", dtStart);
 			allParams.put("dateEnd", dtEnd);
 			params.setParameterValues(allParams);
+			
+			task.getAppContext().put("spring", appContext);
 			
 			PDFRenderOption options = new PDFRenderOption();
 			options.setOutputFormat("pdf");
