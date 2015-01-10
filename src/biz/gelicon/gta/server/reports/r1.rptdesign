@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
-    <property name="createdBy">Eclipse BIRT Designer Version 4.3.2.v20140211-1400 Build &lt;4.3.2.v20140218-1056></property>
+    <property name="createdBy">Eclipse BIRT Designer Version 4.4.1.v201408290142 Build &lt;4.4.1.v20140916-1320></property>
     <simple-property-list name="includeResource">
         <value>src/biz/gelicon/gta/server/i18n/reports/r1_ru</value>
         <value>src/biz/gelicon/gta/server/i18n/reports/r1_en</value>
@@ -245,12 +245,23 @@
                 <property name="category">Unformatted</property>
             </structure>
         </scalar-parameter>
+        <scalar-parameter name="teamId" id="329">
+            <property name="valueType">static</property>
+            <property name="dataType">integer</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
     </parameters>
     <data-sources>
         <script-data-source name="Data Source" id="319"/>
     </data-sources>
     <data-sets>
-        <script-data-set name="Data Set" id="320">
+        <script-data-set name="DSMembers" id="320">
             <list-property name="resultSetHints">
                 <structure>
                     <property name="position">1</property>
@@ -312,6 +323,26 @@
                 </list-property>
             </structure>
             <property name="dataSource">Data Source</property>
+            <method name="open"><![CDATA[importPackage(Packages.org.springframework.context);
+importPackage(Packages.org.springframework.web.context.support);
+importPackage(Packages.biz.gelicon.gta.server.service);
+
+var spring = new ReportService().getSpringContext();
+//your spring bean
+var bean = spring.getBean("reportService");
+var data = bean.getWorkedOutData(params["teamId"],params["dateBegin"],params["dateEnd"]);
+ 
+dataIterator = data.iterator();]]></method>
+            <method name="fetch"><![CDATA[if(dataIterator.hasNext()){
+	var object = dataIterator.next();
+	row["member"] = object.getMember();
+	row["worked"] = object.getHours();
+	row["activity_bal"] = object.getActivityBal();
+	row["activity_percent"] = object.getActivityPercent();
+	return true;
+}else{
+	return false;
+}]]></method>
         </script-data-set>
     </data-sets>
     <styles>
@@ -456,7 +487,7 @@
             <property name="borderTopStyle">solid</property>
             <property name="borderTopWidth">medium</property>
             <property name="width">8.01388888888889in</property>
-            <property name="dataSet">Data Set</property>
+            <property name="dataSet">DSMembers</property>
             <property name="refTemplateParameter">NewTemplateParameterDefinition2</property>
             <list-property name="boundDataColumns">
                 <structure>
