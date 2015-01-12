@@ -1,5 +1,13 @@
 package biz.gelicon.gta.server.controller;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -13,6 +21,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.XMLWorkerHelper;
 
 import biz.gelicon.gta.server.utils.DateUtils;
 import biz.gelicon.gta.server.utils.SpringException;
@@ -26,8 +42,9 @@ public class ReportController {
 
 	
     @RequestMapping(value = "/r1", method=RequestMethod.GET)
+    @ResponseBody
     @Transactional(readOnly=true)
-    public void getScreenshot(Model ui, HttpServletResponse response,
+    public void getR1(HttpServletResponse response,
     		@RequestParam(required=true)  Integer teamId,
     		@RequestParam(required=true)  String dateStart,
     		@RequestParam(required=true)  String dateEnd) {
@@ -36,37 +53,45 @@ public class ReportController {
     		SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
 			Date dtStart = formatter.parse(dateStart);
 			Date dtEnd = DateUtils.getEndOfDay(formatter.parse(dateEnd));
-/*			
-			IReportEngine engine = BirtEngine.getInstance();
-			IReportRunnable report = engine.openReportDesign(ClassLoader.getSystemResourceAsStream("biz/gelicon/gta/server/reports/r1.rptdesign"));
-			IRunAndRenderTask task = engine.createRunAndRenderTask(report);
 			
-			IGetParameterDefinitionTask params = engine.createGetParameterDefinitionTask(report);
-			HashMap<String,Object> allParams = params.getDefaultValues();
-			allParams.put("teamId", teamId);
-			allParams.put("dateBegin", dtStart);
-			allParams.put("dateEnd", dtEnd);
-			params.setParameterValues(allParams);
-			
-			task.getAppContext().put("spring", appContext);
-			
-			PDFRenderOption options = new PDFRenderOption();
-			options.setOutputFormat("pdf");
-			options.setOutputStream(response.getOutputStream());
-			task.setRenderOption(options);
-			
-			task.run();
-			task.close();
-*/			
+			Document document = new Document();
+			BufferedOutputStream buff = new BufferedOutputStream(response.getOutputStream());
+			PdfWriter writer = PdfWriter.getInstance(document,buff);
+			document.open();
+			//BaseFont f = BaseFont.createFont(BaseFont.HELVETICA,BaseFont.CP1252, BaseFont.EMBEDDED);
+			//writer.getDirectContent().setFontAndSize(f,18f);
+			XMLWorkerHelper gen = XMLWorkerHelper.getInstance();
+			gen.parseXHtml(writer, document,
+					getR1InputStream(teamId,dtStart,dtEnd),
+					getCSS());
+			document.close();
+			buff.flush();
+			buff.close();
 		} catch (Exception e) {
-			throw new SpringException(e.getMessage());
+			e.printStackTrace();
+			//throw new SpringException(e.getMessage());
 		};
-    	
-/*    	
-    	final HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_PNG);
-    	return new ResponseEntity<byte[]>(ss.getScreenshot(), headers, HttpStatus.OK);
-*/    	
     }
+
+
+	private InputStream getR1InputStream(Integer teamId, Date dtStart, Date dtEnd) throws UnsupportedEncodingException {
+		StringBuffer html = new StringBuffer();
+		html.append("<html>")
+			.append("<head>")
+			.append("</head>")
+			.append("<body>")
+			.append("<h1>").append("Worked out on period.  Выработка").append("</h1>")
+			.append("</body></html>");
+		return new ByteArrayInputStream(html.toString().getBytes("UTF-8"));
+	}
+	
+	private InputStream getCSS() throws UnsupportedEncodingException {
+		String css =
+				"body {"
+				+ "font-family:Tahoma;"
+				+ "color:black;"
+				+ "}";
+		return new ByteArrayInputStream(css.getBytes("UTF-8"));
+	}
 	
 }
