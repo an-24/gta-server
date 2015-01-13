@@ -82,7 +82,8 @@ public class Bundle_ru extends ListResourceBundle {
 		  {"label.signnote","Работы приняты ответственным лицом заказчика"},
 		  {"label.sign","подпись"},
 		  {"label.report","Еженедельный отчет"},
-		  {"label.signreport","Подписать"}
+		  {"label.signreport","Подписать"},
+		  {"label.signed","Подписан"}
 	};
 	
 	@Override

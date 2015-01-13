@@ -29,6 +29,7 @@
         <mapping class="biz.gelicon.gta.server.data.Message"/>
         <mapping class="biz.gelicon.gta.server.data.ScreenShot"/>
         <mapping class="biz.gelicon.gta.server.data.Post"/>
+        <mapping class="biz.gelicon.gta.server.data.WeeklySignature"/>
         
     </session-factory>
 </hibernate-configuration>

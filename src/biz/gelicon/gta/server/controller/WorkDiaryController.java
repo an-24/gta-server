@@ -36,6 +36,7 @@ import biz.gelicon.gta.server.data.Person;
 import biz.gelicon.gta.server.data.ScreenShot;
 import biz.gelicon.gta.server.data.Team;
 import biz.gelicon.gta.server.data.User;
+import biz.gelicon.gta.server.data.WeeklySignature;
 import biz.gelicon.gta.server.dto.DayDTO;
 import biz.gelicon.gta.server.dto.HourDTO;
 import biz.gelicon.gta.server.dto.MonthDTO;
@@ -46,6 +47,7 @@ import biz.gelicon.gta.server.repo.MessageRepository;
 import biz.gelicon.gta.server.repo.PersonRepository;
 import biz.gelicon.gta.server.repo.ScreenShotRepository;
 import biz.gelicon.gta.server.repo.TeamRepository;
+import biz.gelicon.gta.server.repo.WeeklySignatureRepository;
 import biz.gelicon.gta.server.service.UserService;
 import biz.gelicon.gta.server.utils.DateUtils;
 import biz.gelicon.gta.server.utils.SpringException;
@@ -61,6 +63,8 @@ public class WorkDiaryController {
 	private MessageRepository messageRepository;
 	@Inject
 	private ScreenShotRepository screenShotRepository;
+	@Inject
+	private WeeklySignatureRepository weeklySignatureRepository;
 	
 
     @RequestMapping(method=RequestMethod.GET)
@@ -154,9 +158,10 @@ public class WorkDiaryController {
     	total.setActivity(normalizeActivity(totalActivity,total.getHours()));
     	// per day
     	Date curr = start;
-    	List<List<DayDTO>> data = new ArrayList<>(); 
+    	Date now = new Date();
+    	List<Week> data = new ArrayList<>(); 
     	while(curr.before(end)) {
-    		List<DayDTO> week = new ArrayList<>();
+    		Week week = new Week();
     		for (int i = 0; i < 7; i++) {
         		DayDTO day = new DayDTO(curr);
         		day.setHours(groupHours.get(curr));
@@ -167,9 +172,14 @@ public class WorkDiaryController {
         		// макс ширина 88px
         		day.setActivityWidth((int)(88*day.getActivity()/100));
         		
-        		week.add(day);
+        		week.getDays().add(day);
         		curr = DateUtils.incDay(curr, 1);
 			}
+    		Date last = week.getDays().get(6).getDay();
+    		week.setSignAvailable(now.after(last));
+    		WeeklySignature sign = weeklySignatureRepository.findByDtDay(last);
+    		week.setSignNeeded(sign==null);
+    		week.setSignature(sign);
     		data.add(week);
     	}
     	ui.addAttribute("axis", DateUtils.getDayOfWeekNames(GtaSystem.getLocale()));
@@ -310,6 +320,40 @@ public class WorkDiaryController {
     	}
 		return months;
 	}
+	
+	
+	public class Week {
+		private List<DayDTO> days = new ArrayList<>();
+		private Boolean signNeeded;
+		private Boolean signAvailable;
+		private WeeklySignature signature;
+		
+		public Boolean getSignNeeded() {
+			return signNeeded;
+		}
+		public void setSignature(WeeklySignature sign) {
+			this.signature = sign;
+		}
+		public void setSignNeeded(Boolean signNeeded) {
+			this.signNeeded = signNeeded;
+		}
+		public Boolean getSignAvailable() {
+			return signAvailable;
+		}
+		public void setSignAvailable(Boolean signAviable) {
+			this.signAvailable = signAviable;
+		}
+		public List<DayDTO> getDays() {
+			return days;
+		}
+		public void setDays(List<DayDTO> days) {
+			this.days = days;
+		}
+		public WeeklySignature getSignature() {
+			return signature;
+		}
+	}
+	
 /*
 	private List<WeekDTO> makeWeeks(Date dayOfMonth) {
     	List<WeekDTO> weeks = new ArrayList<>();

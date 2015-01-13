@@ -82,7 +82,9 @@ public class Bundle_en extends ListResourceBundle {
 		  {"label.signnote","Works taken by the responsible person of the customer"},
 		  {"label.sign","sign"},
 		  {"label.report","Weekly report"},
-		  {"label.signreport","Sign the report"}
+		  {"label.signreport","Sign the report"},
+		  {"label.signed","Signed"}
+		  
 	};
 	
 	@Override
