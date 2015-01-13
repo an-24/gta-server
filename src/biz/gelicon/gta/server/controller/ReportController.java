@@ -13,20 +13,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.inject.Inject;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletResponse;
-import javax.servlet.ServletResponseWrapper;
 import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.http.HttpRequest;
-import org.springframework.http.client.support.HttpRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,16 +32,12 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import biz.gelicon.gta.server.GtaSystem;
-import biz.gelicon.gta.server.controller.MainController.UserInput;
+import biz.gelicon.gta.server.repo.TeamRepository;
+import biz.gelicon.gta.server.service.ReportService;
 import biz.gelicon.gta.server.utils.DateUtils;
 import biz.gelicon.gta.server.utils.HttpServletResponseStub;
 
-import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.FontFactoryImp;
-import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 
@@ -61,6 +51,10 @@ public class ReportController {
 	private ServletContext servletContext;
 	@Inject
 	private InternalResourceViewResolver viewResolver;
+	@Inject
+	private TeamRepository teamRepository;
+	@Inject
+	private ReportService reportService;
 
 	
     @RequestMapping(value = "/r1", method=RequestMethod.GET)
@@ -95,9 +89,10 @@ public class ReportController {
 			Integer teamId, Date dtStart, Date dtEnd) throws Exception {
 		View view = viewResolver.resolveViewName("reports/r1", GtaSystem.getLocale());
     	ModelAndView mv = new ModelAndView(view);
-    	mv.getModelMap().addAttribute("teamId", teamId);
+    	mv.getModelMap().addAttribute("teamName", teamRepository.findOne(teamId).getName());
     	mv.getModelMap().addAttribute("dtStart", dtStart);
     	mv.getModelMap().addAttribute("dtEnd", dtEnd);
+    	mv.getModelMap().addAttribute("data", reportService.getWorkedOutData(teamId, dtStart, dtEnd));
     	
     	ByteArrayServletResponse dest = new ByteArrayServletResponse();
     	mv.getView().render(mv.getModelMap(), request, dest);

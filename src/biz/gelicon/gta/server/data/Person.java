@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "PERSON",
-	   uniqueConstraints = @UniqueConstraint(columnNames = {"TEAM_ID", "PERSON_NIC"}))
+	   uniqueConstraints = @UniqueConstraint(columnNames = {"TEAM_ID", "USER_ID"}))
 @XmlRootElement
 public class Person implements Serializable {
 	private static final long serialVersionUID = -3868288445640424189L;

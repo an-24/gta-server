@@ -8,6 +8,17 @@ public class WorkedOut {
 	private Double activityBal;
 	private Double activityPercent;
 	
+	public WorkedOut(String member, String post, Integer postId, Double hours,
+			Double activityBal, Double activityPercent) {
+		super();
+		this.member = member;
+		this.post = post;
+		this.postId = postId;
+		this.hours = hours;
+		this.activityBal = activityBal;
+		this.activityPercent = activityPercent;
+	}
+	
 	public String getMember() {
 		return member;
 	}

@@ -36,7 +36,6 @@ public class UserService {
 	
 	static private User currentUser;
 
-	
 	static public User getCurrentUser() {
 		return currentUser;
 	}
@@ -105,7 +104,6 @@ public class UserService {
 		em.merge(user);
 //		em.flush();
 	}
-
 
 	
 }

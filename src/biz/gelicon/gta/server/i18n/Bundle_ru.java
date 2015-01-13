@@ -74,7 +74,9 @@ public class Bundle_ru extends ListResourceBundle {
 		  {"label.month","Месяц"},
 		  {"label.total","Всего"},
 		  {"label.worked","Отработано"},
-		  {"label.activity","Активность"}
+		  {"label.activity","Активность"},
+		  {"label.onperiod","В периоде:"},
+		  {"label.scores","баллы"}
 	};
 	
 	@Override

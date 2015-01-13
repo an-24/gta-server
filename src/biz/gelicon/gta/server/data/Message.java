@@ -163,13 +163,21 @@ public class Message implements Serializable {
 	}
 	
 	@Transient
-	public double getHours() {
+	public Double getHours() {
 		return 24*DateUtils.substractDate(getDtFinish(),getDtBegin());
 	}
 
 	@Transient
-	public double getActivity() {
+	public Double getActivity() {
 		return key+mouse+0.01*mouseMove; 
+	}
+	
+	@Transient
+	public Double getActivityPercent() {
+		if(getHours()==null) return 0D;
+    	double maxActivity = getHours()*60*60*1.0;
+    	double percent = 100*getActivity()/maxActivity;
+		return percent>100?100:percent;
 	}
 	
 	@Override

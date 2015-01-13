@@ -74,7 +74,9 @@ public class Bundle_en extends ListResourceBundle {
 		  {"label.month","Month"},
 		  {"label.total","Total"},
 		  {"label.worked","Worked out"},
-		  {"label.activity","Activity"}
+		  {"label.activity","Activity"},
+		  {"label.onperiod","On period:"},
+		  {"label.scores","scores"}
 	};
 	
 	@Override

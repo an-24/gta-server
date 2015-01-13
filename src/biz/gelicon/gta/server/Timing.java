@@ -22,6 +22,7 @@ import biz.gelicon.gta.server.data.Message;
 import biz.gelicon.gta.server.data.ScreenShot;
 import biz.gelicon.gta.server.data.Team;
 import biz.gelicon.gta.server.data.User;
+import biz.gelicon.gta.server.service.UserService;
 import biz.gelicon.gta.server.utils.MessageWrapper;
 import biz.gelicon.gta.server.utils.WebException;
 
@@ -45,6 +46,7 @@ public class Timing {
     	try{
     		Message message = m.getRight();
     		message.setUser(u);
+    		//message.setPerson(??);
     		Query q = session.createQuery("from Team t where t.name=:name");
     		q.setString("name", message.getTeamName());
     		message.setTeam((Team) q.iterate().next());
