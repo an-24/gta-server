@@ -5,8 +5,11 @@ public class WorkedOut {
 	private String post;
 	private Integer postId;
 	private Double hours;
-	private Double activityBal;
+	private Double activityScore;
 	private Double activityPercent;
+
+	public WorkedOut() {
+	}
 	
 	public WorkedOut(String member, String post, Integer postId, Double hours,
 			Double activityBal, Double activityPercent) {
@@ -15,7 +18,7 @@ public class WorkedOut {
 		this.post = post;
 		this.postId = postId;
 		this.hours = hours;
-		this.activityBal = activityBal;
+		this.activityScore = activityBal;
 		this.activityPercent = activityPercent;
 	}
 	
@@ -37,11 +40,11 @@ public class WorkedOut {
 	public void setHours(Double hours) {
 		this.hours = hours;
 	}
-	public Double getActivityBal() {
-		return activityBal;
+	public Double getActivityScore() {
+		return activityScore;
 	}
-	public void setActivityBal(Double activityBal) {
-		this.activityBal = activityBal;
+	public void setActivityScore(Double activityBal) {
+		this.activityScore = activityBal;
 	}
 	public Double getActivityPercent() {
 		return activityPercent;

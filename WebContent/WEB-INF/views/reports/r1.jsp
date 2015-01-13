@@ -14,6 +14,9 @@
 			font-size:18pt;
 			padding-bottom:20px;
 		}
+		h2 {
+			padding-top:12px;
+		}
 		p {
 			padding-bottom:6px;
 		}
@@ -32,6 +35,16 @@
 		td {
 			border:1px #ccc;
 		}
+		
+		.right {
+			text-align: right;
+		}
+		
+		.sign {
+			margin-top:28px;
+			text-align: right;
+		}
+		
 	</style>
 
 </head>
@@ -46,26 +59,72 @@
 	<tr>
 		<th width="300" rowspan="2"><fmt:message key="label.member"/></th>
 		<th width="200" rowspan="2"><fmt:message key="label.post"/></th>
-		<th width="80" rowspan="2"><fmt:message key="label.worked"/></th>
+		<th width="80" rowspan="2"><fmt:message key="label.worked"/> (<fmt:message key="label.hours"/>)</th>
 		<th colspan="2"><fmt:message key="label.activity"/></th>
 	</tr>
 	<tr>
 		<th>(<fmt:message key="label.scores"/>)</th>
 		<th>(%)</th>
 	</tr>
+    <c:set var="sumHours" value="${0}"/>
 	<tbody>
 		<c:forEach var="wo" items="${data}">
 			<tr>
 		  		<td>${wo.member}</td>
 		  		<td>${wo.post}</td>
-		  		<td><fmt:formatNumber value="${wo.hours}" maxFractionDigits="1" minFractionDigits="1"/></td>
-		  		<td>${wo.activityBal}</td>
-		  		<td>${wo.activityPercent}</td>
+		  		<td class="right"><fmt:formatNumber value="${wo.hours}" maxFractionDigits="1" minFractionDigits="1"/></td>
+		  		<td class="right"><fmt:formatNumber value="${wo.activityScore}" maxFractionDigits="1" minFractionDigits="1"/></td>
+		  		<td class="right"><fmt:formatNumber value="${wo.activityPercent}" maxFractionDigits="1" minFractionDigits="1"/></td>
 			</tr>
+			<c:set var="sumHours" value="${sumHours + wo.hours}"/>
 		</c:forEach>
 	</tbody>
-	
+	<tfoot>
+		<tr>
+	  		<th class="right" colspan="3"><fmt:formatNumber value="${sumHours}" maxFractionDigits="1" minFractionDigits="1"/></th>
+	  		<th colspan="2"></th>
+		</tr>
+	</tfoot>
 </table>
+<h2><fmt:message key="label.byposition"/></h2>
+<table cellpadding="4" cellspacing="0">
+	<tr>
+		<th width="300" rowspan="2"><fmt:message key="label.post"/></th>
+		<th width="100" rowspan="2"><fmt:message key="label.worked"/> (<fmt:message key="label.hours"/>)</th>
+		<th width="200" colspan="2"><fmt:message key="label.activity"/></th>
+	</tr>
+	<tr>
+		<th>(<fmt:message key="label.scores"/>)</th>
+		<th>(%)</th>
+	</tr>
+    <c:set var="sumHours" value="${0}"/>
+	<tbody>
+		<c:forEach var="wo" items="${dataByPosition}">
+			<tr>
+		  		<td>${wo.post}</td>
+		  		<td class="right"><fmt:formatNumber value="${wo.hours}" maxFractionDigits="1" minFractionDigits="1"/></td>
+		  		<td class="right"><fmt:formatNumber value="${wo.activityScore}" maxFractionDigits="1" minFractionDigits="1"/></td>
+		  		<td class="right"><fmt:formatNumber value="${wo.activityPercent}" maxFractionDigits="1" minFractionDigits="1"/></td>
+			</tr>
+			<c:set var="sumHours" value="${sumHours + wo.hours}"/>
+		</c:forEach>
+	</tbody>
+	<tfoot>
+		<tr>
+	  		<th class="right" colspan="2"><fmt:formatNumber value="${sumHours}" maxFractionDigits="1" minFractionDigits="1"/></th>
+	  		<th colspan="2"></th>
+		</tr>
+	</tfoot>
+</table>
+
+<p class="sign">
+ <fmt:message key="label.signnote"/>
+</p>
+<p class="right"> _____________________/____________________</p>
+<p class="right">(<fmt:message key="label.sign"/>)</p>
+<c:set var="now" value="<%=new java.util.Date()%>"></c:set>
+<p class="right"><fmt:formatDate value="${now}" dateStyle="short"/></p>
+
 
 </body>
 </fmt:bundle>

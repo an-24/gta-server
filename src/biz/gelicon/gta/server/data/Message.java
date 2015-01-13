@@ -169,14 +169,26 @@ public class Message implements Serializable {
 
 	@Transient
 	public Double getActivity() {
-		return key+mouse+0.01*mouseMove; 
+		return getActivityScore(key,mouse,mouseMove); 
 	}
 	
 	@Transient
 	public Double getActivityPercent() {
-		if(getHours()==null) return 0D;
-    	double maxActivity = getHours()*60*60*1.0;
-    	double percent = 100*getActivity()/maxActivity;
+		return getActivityPercent(getHours(),getActivity());
+	}
+	
+	@Transient
+	static public Double getActivityScore(int key,int mouse,int mouseMove) {
+		return key+mouse+0.01*mouseMove;
+	}
+	
+	@Transient
+	static public Double getActivityPercent(Double hours,Double activityScore) {
+    	if(hours==null || activityScore==null) return 0D;
+    	// максимальная возможная активность за hours часов
+    	double maxActivity = hours*60*60*1.0;
+    	if(Math.abs(maxActivity)<0.0001) return 0D; 
+    	double percent = 100*activityScore/maxActivity;
 		return percent>100?100:percent;
 	}
 	

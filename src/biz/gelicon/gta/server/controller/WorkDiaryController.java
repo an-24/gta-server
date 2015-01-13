@@ -175,6 +175,7 @@ public class WorkDiaryController {
     	ui.addAttribute("axis", DateUtils.getDayOfWeekNames(GtaSystem.getLocale()));
     	ui.addAttribute("data", data);
     	ui.addAttribute("total", total);
+    	ui.addAttribute("teamId", teamId);
     	ui.addAttribute("loc",GtaSystem.getLocale().toLanguageTag());
         return "inner/diary/data";
     }
@@ -297,11 +298,7 @@ public class WorkDiaryController {
         
     
     private Double normalizeActivity(Double sumActivity, Double hours) {
-    	if(hours==null || sumActivity==null) return 0D;
-    	// максимальная возможная активность за hours часов
-    	double maxActivity = hours*60*60*1.0;
-    	double percent = 100*sumActivity/maxActivity;
-		return percent>100?100:percent;
+    	return Message.getActivityPercent(hours, sumActivity);
 	}
 
 	private List<MonthDTO> makeMonths(Date start) {

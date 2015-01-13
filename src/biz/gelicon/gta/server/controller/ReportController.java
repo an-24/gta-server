@@ -10,7 +10,12 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
@@ -32,7 +37,9 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import biz.gelicon.gta.server.GtaSystem;
+import biz.gelicon.gta.server.data.Message;
 import biz.gelicon.gta.server.repo.TeamRepository;
+import biz.gelicon.gta.server.reports.WorkedOut;
 import biz.gelicon.gta.server.service.ReportService;
 import biz.gelicon.gta.server.utils.DateUtils;
 import biz.gelicon.gta.server.utils.HttpServletResponseStub;
@@ -92,7 +99,21 @@ public class ReportController {
     	mv.getModelMap().addAttribute("teamName", teamRepository.findOne(teamId).getName());
     	mv.getModelMap().addAttribute("dtStart", dtStart);
     	mv.getModelMap().addAttribute("dtEnd", dtEnd);
-    	mv.getModelMap().addAttribute("data", reportService.getWorkedOutData(teamId, dtStart, dtEnd));
+    	
+    	List<WorkedOut> data = reportService.getWorkedOutData(teamId, dtStart, dtEnd);
+    	mv.getModelMap().addAttribute("data", data);
+    	
+    	Map<String, List<WorkedOut>> mapPost = data.stream().collect(Collectors.groupingBy(WorkedOut::getPost));
+    	ArrayList<WorkedOut> dataByPosition = new ArrayList<WorkedOut>();
+    	mapPost.forEach((key,list)->{
+    		WorkedOut wo = new WorkedOut();
+    		wo.setPost(key);
+    		wo.setHours(list.stream().collect(Collectors.summingDouble(WorkedOut::getHours)));
+    		wo.setActivityScore(list.stream().collect(Collectors.summingDouble(WorkedOut::getActivityScore)));
+    		wo.setActivityPercent(Message.getActivityPercent(wo.getHours(), wo.getActivityScore()));
+    		dataByPosition.add(wo);
+    	});
+    	mv.getModelMap().addAttribute("dataByPosition", dataByPosition);
     	
     	ByteArrayServletResponse dest = new ByteArrayServletResponse();
     	mv.getView().render(mv.getModelMap(), request, dest);

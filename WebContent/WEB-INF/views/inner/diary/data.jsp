@@ -4,6 +4,16 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
+<fmt:setLocale value="${loc}"/>
+<fmt:bundle basename="biz.gelicon.gta.server.i18n.Bundle">
+
+<style>
+	table#month-cal td li {
+		font-size: medium;
+		list-style: none;
+	}
+</style>
+
 <table id="month-cal">
 	<thead>
 		<tr>
@@ -22,7 +32,11 @@
 					<div class="activity" style="width:${data.activityWidth}px">&#160;</div>
 					</td>
 				</c:forEach>
-				<td style="width:auto"></td>   			
+    			
+    			<fmt:formatDate var="dtStart" value='${week[0].day}' pattern='dd.MM.yyyy'/>
+    			<fmt:formatDate var="dtEnd" value='${week[6].day}' pattern='dd.MM.yyyy'/>
+				<td style="width:auto"><li><a target="_blank" href="inner/report/r1?teamId=${teamId}&dateStart=${dtStart}&dateEnd=${dtEnd}"><fmt:message key="label.report"/></a></li> 
+				<li><fmt:message key="label.signreport"/></li></td>   			
 			</tr>
 		</c:forEach>   			
 	</tbody>
@@ -46,3 +60,5 @@
 	}
 	
 </script>
+
+</fmt:bundle>

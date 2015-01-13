@@ -76,7 +76,13 @@ public class Bundle_ru extends ListResourceBundle {
 		  {"label.worked","Отработано"},
 		  {"label.activity","Активность"},
 		  {"label.onperiod","В периоде:"},
-		  {"label.scores","баллы"}
+		  {"label.scores","баллы"},
+		  {"label.byposition","По должностям"},
+		  {"label.hours","час."},
+		  {"label.signnote","Работы приняты ответственным лицом заказчика"},
+		  {"label.sign","подпись"},
+		  {"label.report","Еженедельный отчет"},
+		  {"label.signreport","Подписать"}
 	};
 	
 	@Override

@@ -76,7 +76,13 @@ public class Bundle_en extends ListResourceBundle {
 		  {"label.worked","Worked out"},
 		  {"label.activity","Activity"},
 		  {"label.onperiod","On period:"},
-		  {"label.scores","scores"}
+		  {"label.scores","scores"},
+		  {"label.byposition","By position"},
+		  {"label.hours","hours"},
+		  {"label.signnote","Works taken by the responsible person of the customer"},
+		  {"label.sign","sign"},
+		  {"label.report","Weekly report"},
+		  {"label.signreport","Sign the report"}
 	};
 	
 	@Override

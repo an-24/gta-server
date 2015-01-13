@@ -13,6 +13,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.stereotype.Service;
 
+import biz.gelicon.gta.server.data.Message;
 import biz.gelicon.gta.server.reports.WorkedOut;
 
 @Service
@@ -32,13 +33,18 @@ public class ReportService {
 				+ "from Person p, Team t, Message m where t.id=:teamId and p.team.id=t.id "
 				+ "and m.team.id=t.id and m.user.id=p.user.id "
 				+ "and (p.internal=0 or p.internal is null) "
+				+ "and m.dtBegin between :dtBegin and :dtEnd "
 				+ "group by p.nic,p.post,p.postDict",WorkedOut.class);
 		query.setParameter("teamId", teamId);
+		query.setParameter("dtBegin", dateBegin);
+		query.setParameter("dtEnd", dateEnd);
 		
-		//List<WorkedOut> results = query.getResultList();
-		//List<WorkedOut> r = new ArrayList<>();
+		List<WorkedOut> results = query.getResultList();
+		results.forEach(wo->{
+			wo.setActivityPercent(Message.getActivityPercent(wo.getHours(), wo.getActivityScore()));
+		});
 		
-		return query.getResultList();
+		return results;
 	}
 
 	public ApplicationContext getSpringContext() {
