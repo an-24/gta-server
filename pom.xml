@@ -148,6 +148,12 @@
 			<artifactId>org.eclipse.birt.runtime</artifactId>
 			<version>4.3.1</version>
 		</dependency>
- -->		
+ -->
+ 		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15on</artifactId>
+			<version>1.51</version>
+		</dependency>
+ 		
 	</dependencies>
 </project>
