@@ -1,5 +1,6 @@
 package biz.gelicon.gta.server.controller;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
@@ -20,10 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import biz.gelicon.gta.server.GtaSystem;
 import biz.gelicon.gta.server.Login;
+import biz.gelicon.gta.server.Sessions;
 import biz.gelicon.gta.server.data.Person;
 import biz.gelicon.gta.server.data.Post;
 import biz.gelicon.gta.server.data.Team;
@@ -39,6 +42,7 @@ import biz.gelicon.gta.server.repo.TeamRepository;
 import biz.gelicon.gta.server.service.PersonService;
 import biz.gelicon.gta.server.service.UserService;
 import biz.gelicon.gta.server.utils.DateUtils;
+import biz.gelicon.gta.server.utils.NetUtils;
 import biz.gelicon.gta.server.utils.SpringException;
 
 
@@ -161,7 +165,7 @@ public class AdminController {
     @RequestMapping(value = "/users/update", method=RequestMethod.POST, produces = "application/json")
     @ResponseBody
     @Transactional
-    public String updateUser(Model ui,UserDTO dto, String pswd_confirmation) {
+    public String updateUser(Model ui,UserDTO dto, String pswd_confirmation, HttpServletRequest request) {
     	User user;
     	if(dto.getMode()==GtaSystem.MODE_ADD) {
         	checkAdmin();
@@ -193,14 +197,37 @@ public class AdminController {
 			}
     		
     	};
+    	// sertificate
+    	MultipartFile cert = dto.getActiveSertificate();
+    	if(cert!=null) {
+    		try {
+    			if(cert.getBytes().length>0) {
+    				user.setActiveSertificateName(cert.getOriginalFilename());
+    				user.setActiveSertificate(cert.getBytes());
+    			} else {
+    				if(dto.getActiveSertificateName()==null || dto.getActiveSertificateName().isEmpty()) {
+    		    		user.setActiveSertificate(null);
+        				user.setActiveSertificateName(null);
+    				}
+    			}
+			} catch (IOException e) {
+				throw new SpringException(e.getMessage());
+			}
+    	} else {
+    		user.setActiveSertificate(null);
+    	}
     	
     	userService.save(user);
+    	// обновить в session
+		String token = NetUtils.getTokenFromCookie(request);
+		Sessions.updateUser(token, user);
+    	
     	
 		String result;
 		if(dto.getMode()==GtaSystem.MODE_EDIT)
 			result = "User successfully changed";else
 				result = "User successfully added";	
-		return "{\"message\":\""+result+"\"}";
+		return "({\"message\":\""+result+"\"})";
     }
     
 	@RequestMapping(value = "/teams", method=RequestMethod.GET)

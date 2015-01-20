@@ -18,6 +18,7 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
+import org.hibernate.Hibernate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -177,9 +178,12 @@ public class WorkDiaryController {
 			}
     		Date last = week.getDays().get(6).getDay();
     		week.setSignAvailable(now.after(last));
-    		WeeklySignature sign = weeklySignatureRepository.findByDtDay(last);
+    		WeeklySignature sign = weeklySignatureRepository.findByTeamAndDtDay(team, last);
     		week.setSignNeeded(sign==null);
     		week.setSignature(sign);
+    		if(sign!=null) {
+    			Hibernate.initialize(sign.getUser());
+    		}
     		data.add(week);
     	}
     	ui.addAttribute("axis", DateUtils.getDayOfWeekNames(GtaSystem.getLocale()));
@@ -324,34 +328,35 @@ public class WorkDiaryController {
 	
 	public class Week {
 		private List<DayDTO> days = new ArrayList<>();
-		private Boolean signNeeded;
-		private Boolean signAvailable;
+		private boolean signNeeded;
+		private boolean signAvailable;
 		private WeeklySignature signature;
 		
-		public Boolean getSignNeeded() {
-			return signNeeded;
-		}
-		public void setSignature(WeeklySignature sign) {
-			this.signature = sign;
-		}
-		public void setSignNeeded(Boolean signNeeded) {
-			this.signNeeded = signNeeded;
-		}
-		public Boolean getSignAvailable() {
-			return signAvailable;
-		}
-		public void setSignAvailable(Boolean signAviable) {
-			this.signAvailable = signAviable;
-		}
 		public List<DayDTO> getDays() {
 			return days;
 		}
 		public void setDays(List<DayDTO> days) {
 			this.days = days;
 		}
+		public boolean isSignNeeded() {
+			return signNeeded;
+		}
+		public void setSignNeeded(boolean signNeeded) {
+			this.signNeeded = signNeeded;
+		}
+		public boolean isSignAvailable() {
+			return signAvailable;
+		}
+		public void setSignAvailable(boolean signAvailable) {
+			this.signAvailable = signAvailable;
+		}
 		public WeeklySignature getSignature() {
 			return signature;
 		}
+		public void setSignature(WeeklySignature signature) {
+			this.signature = signature;
+		}
+		
 	}
 	
 /*

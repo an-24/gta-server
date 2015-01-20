@@ -82,5 +82,15 @@
         </property>
     </bean>
      
+     <bean id="multipartResolver"  
+  		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+  		<property name="maxUploadSize" value="1000000"/>
+  	 </bean>
 
+	<bean id="reportController" 
+		class="biz.gelicon.gta.server.controller.ReportController">
+	</bean>
+	<bean id="signController" 
+		class="biz.gelicon.gta.server.controller.SignController">
+	</bean>
 </beans>

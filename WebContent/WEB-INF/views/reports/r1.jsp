@@ -10,6 +10,11 @@
 
 <head>
 	<style>
+		body {
+			font-family:Tahoma;
+			color:black;
+		}
+	
 		h1 {
 			font-size:18pt;
 			padding-bottom:20px;
@@ -57,8 +62,8 @@
 <p><fmt:message key="label.team"/>: ${teamName}</p>
 <table cellpadding="4" cellspacing="0">
 	<tr>
-		<th width="300" rowspan="2"><fmt:message key="label.member"/></th>
-		<th width="200" rowspan="2"><fmt:message key="label.post"/></th>
+		<th width="280" rowspan="2"><fmt:message key="label.member"/></th>
+		<th width="180" rowspan="2"><fmt:message key="label.post"/></th>
 		<th width="80" rowspan="2"><fmt:message key="label.worked"/> (<fmt:message key="label.hours"/>)</th>
 		<th colspan="2"><fmt:message key="label.activity"/></th>
 	</tr>
@@ -124,7 +129,6 @@
 <p class="right">(<fmt:message key="label.sign"/>)</p>
 <c:set var="now" value="<%=new java.util.Date()%>"></c:set>
 <p class="right"><fmt:formatDate value="${now}" dateStyle="short"/></p>
-
 
 </body>
 </fmt:bundle>

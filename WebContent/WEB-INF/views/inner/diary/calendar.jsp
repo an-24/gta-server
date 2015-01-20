@@ -97,6 +97,10 @@ function loadInfo(selPersonId,selMonthId) {
 	$("#diary").load("inner/diary/data?personId="+pId+"&monthId="+mId+"&teamId="+teamId);
 }
 
+function refreshCalendar() {
+	loadInfo();
+}
+
 </script>
 
 <div id="diary-container" class="ui-widget">

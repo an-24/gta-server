@@ -1,5 +1,7 @@
 package biz.gelicon.gta.server.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import biz.gelicon.gta.server.data.User;
 
 public class UserDTO {
@@ -10,6 +12,8 @@ public class UserDTO {
 	private Integer mode;
 	private String locale;
 	private String timeZoneId;
+	private MultipartFile activeSertificate;
+	private String activeSertificateName;
 
 	public UserDTO() {
 	}
@@ -22,6 +26,7 @@ public class UserDTO {
 		email=u.getEmail();
 		locale=u.getLocale();
 		timeZoneId=u.getTimeZoneId();
+		activeSertificateName = u.getActiveSertificateName();
 	}
 	
 	public UserDTO(User u, Integer mode) {
@@ -69,6 +74,18 @@ public class UserDTO {
 	}
 	public void setTimeZoneId(String timeZoneId) {
 		this.timeZoneId = timeZoneId;
+	}
+	public MultipartFile getActiveSertificate() {
+		return activeSertificate;
+	}
+	public void setActiveSertificate(MultipartFile activeSertificate) {
+		this.activeSertificate = activeSertificate;
+	}
+	public String getActiveSertificateName() {
+		return activeSertificateName;
+	}
+	public void setActiveSertificateName(String activeSertificateName) {
+		this.activeSertificateName = activeSertificateName;
 	}
 	
 

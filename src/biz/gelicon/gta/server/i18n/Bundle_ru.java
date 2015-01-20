@@ -46,6 +46,7 @@ public class Bundle_ru extends ListResourceBundle {
 		  {"label.newuser","Новый пользователь"},
 		  {"label.editby","Редатируется"},
 		  {"message.success","Успешно"},
+		  {"message.error","Ошибка"},
 		  {"label.select-locale","Выбрать язык"},
 		  {"label.select-tz","Выбрать часовой пояс"},
 		  {"label.newteam","Новая команда"},
@@ -83,7 +84,11 @@ public class Bundle_ru extends ListResourceBundle {
 		  {"label.sign","подпись"},
 		  {"label.report","Еженедельный отчет"},
 		  {"label.signreport","Подписать"},
-		  {"label.signed","Подписан"}
+		  {"label.signed","Подписан"},
+		  {"label.cert","Сертификат ЭП"},
+		  {"message.certneeded","У текущего пользователя отсутствует сертификат"},
+		  {"message.signcheckerror","Подпись не прошла проверку"}
+
 	};
 	
 	@Override

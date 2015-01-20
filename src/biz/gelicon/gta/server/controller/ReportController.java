@@ -2,30 +2,20 @@ package biz.gelicon.gta.server.controller;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,13 +28,18 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import biz.gelicon.gta.server.GtaSystem;
 import biz.gelicon.gta.server.data.Message;
+import biz.gelicon.gta.server.data.WeeklySignature;
 import biz.gelicon.gta.server.repo.TeamRepository;
+import biz.gelicon.gta.server.repo.WeeklySignatureRepository;
 import biz.gelicon.gta.server.reports.WorkedOut;
 import biz.gelicon.gta.server.service.ReportService;
+import biz.gelicon.gta.server.utils.Base64;
+import biz.gelicon.gta.server.utils.ByteArrayServletResponse;
 import biz.gelicon.gta.server.utils.DateUtils;
-import biz.gelicon.gta.server.utils.HttpServletResponseStub;
 
 import com.itextpdf.text.Document;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 
@@ -52,16 +47,16 @@ import com.itextpdf.tool.xml.XMLWorkerHelper;
 @RequestMapping("/inner/report")
 public class ReportController {
 	
-	@Autowired
-	private ApplicationContext appContext;
-	@Autowired
-	private ServletContext servletContext;
 	@Inject
 	private InternalResourceViewResolver viewResolver;
 	@Inject
 	private TeamRepository teamRepository;
 	@Inject
 	private ReportService reportService;
+	@Inject
+	private WeeklySignatureRepository weeklySignatureRepository;
+	@Inject
+	private SignController signController;
 
 	
     @RequestMapping(value = "/r1", method=RequestMethod.GET)
@@ -70,35 +65,68 @@ public class ReportController {
     public void getR1(HttpServletResponse response, HttpServletRequest request,
     		@RequestParam(required=true)  Integer teamId,
     		@RequestParam(required=true)  String dateStart,
-    		@RequestParam(required=true)  String dateEnd) {
+    		@RequestParam(required=true)  String dateEnd,
+    		@RequestParam(required=false) Integer base64encode,
+    		@RequestParam(required=false) Integer signed) {
     	
     	try {
     		SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
 			Date dtStart = formatter.parse(dateStart);
 			Date dtEnd = DateUtils.getEndOfDay(formatter.parse(dateEnd));
-			Document document = new Document();
-			BufferedOutputStream buff = new BufferedOutputStream(response.getOutputStream());
-			PdfWriter writer = PdfWriter.getInstance(document,buff);
-			document.open();
-			XMLWorkerHelper gen = XMLWorkerHelper.getInstance();
-			gen.parseXHtml(writer, document,
-					getR1InputStream(response,request,teamId,dtStart,dtEnd),
-					getCSS(), Charset.forName("UTF-8"));
-			document.close();
-			buff.flush();
-			buff.close();
+			Document document = new Document(PageSize.A4);
+			
+			ByteArrayServletResponse enc64 = null;
+			if(base64encode != null && base64encode.intValue()==1)
+				enc64 = new ByteArrayServletResponse();
+			
+			// проверяем, есть ли подаисанный отчет
+			WeeklySignature signature = weeklySignatureRepository.findByTeamAndDtDay(teamRepository.findOne(teamId),formatter.parse(dateEnd));
+			if(signature!=null) {
+				BufferedOutputStream buff = new BufferedOutputStream(enc64!=null?enc64.getOutputStream() :response.getOutputStream());
+				buff.write(signature.getData());
+				buff.flush();
+				buff.close();
+			} else {
+				BufferedOutputStream buff = new BufferedOutputStream(enc64!=null?enc64.getOutputStream() :response.getOutputStream());
+				
+				PdfWriter writer = PdfWriter.getInstance(document,buff);
+				document.open();
+				
+				boolean bsigned = signed!=null && signed.intValue()==1;
+				InputStream html = getR1InputStream(request,teamId,dtStart,dtEnd,bsigned);
+				
+				XMLWorkerHelper gen = XMLWorkerHelper.getInstance();
+				gen.parseXHtml(writer, document,html,
+						getCSS(), Charset.forName("UTF-8"));
+				
+				if(bsigned) {
+					Image img = Image.getInstance(signController.getStampPublicKey());
+					img.setAbsolutePosition(document.getPageSize().getWidth()-250f, 30f);
+					document.add(img);
+				}
+				
+				document.close();
+				buff.flush();
+				buff.close();
+			}
+			
+			if(enc64!=null) {
+				response.getWriter().print(Base64.encode(enc64.toByteArray()));
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		};
     }
     
-	private InputStream getR1InputStream(HttpServletResponse response, HttpServletRequest request,
-			Integer teamId, Date dtStart, Date dtEnd) throws Exception {
+	private InputStream getR1InputStream(HttpServletRequest request,
+			Integer teamId, Date dtStart, Date dtEnd, boolean signed) throws Exception {
 		View view = viewResolver.resolveViewName("reports/r1", GtaSystem.getLocale());
     	ModelAndView mv = new ModelAndView(view);
     	mv.getModelMap().addAttribute("teamName", teamRepository.findOne(teamId).getName());
     	mv.getModelMap().addAttribute("dtStart", dtStart);
     	mv.getModelMap().addAttribute("dtEnd", dtEnd);
+    	mv.getModelMap().addAttribute("signed",signed);
     	
     	List<WorkedOut> data = reportService.getWorkedOutData(teamId, dtStart, dtEnd);
     	mv.getModelMap().addAttribute("data", data);
@@ -129,76 +157,6 @@ public class ReportController {
 				+ "color:black;"
 				+ "}";
 		return new ByteArrayInputStream(css.getBytes("UTF-8"));
-	}
-	
-	class ByteArrayServletResponse extends HttpServletResponseStub  {
-		private ServletOutputStreamImpl stream;
-		private PrintWriter writer;
-		private ServletOutputStreamImpl writerStream;
-
-		public ByteArrayServletResponse() {
-		}
-		
-		@Override
-		public ServletOutputStream getOutputStream() throws java.io.IOException {
-			if(stream==null) {
-				
-	            if (writer != null)
-	                throw new IllegalStateException(
-	                        "getWriter() has already been called for this response.");
-				
-				stream = new ServletOutputStreamImpl();
-			}
-			return stream;
-		}
-		
-		@Override
-		public PrintWriter getWriter() throws IOException {
-	        if (writer == null) {
-
-	            if (stream != null)
-	                throw new IllegalStateException(
-	                        "getOutputStream() has already been called for this response.");
-
-	            writerStream =  new ServletOutputStreamImpl();
-	            writer = new PrintWriter(new OutputStreamWriter(writerStream, "UTF-8"));
-	            
-	        }
-	        return writer;
-		}
-		
-		
-	    public byte[] toByteArray() {
-	        return stream!=null?stream.toByteArray():writerStream.toByteArray();
-	    }
-
-	    
-	}
-	class ServletOutputStreamImpl extends ServletOutputStream {
-
-	    private final ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-	    ServletOutputStreamImpl() {
-	    }
-
-	    public byte[] toByteArray() {
-	        return out.toByteArray();
-	    }
-
-		@Override
-	    public void write(int b) throws IOException {
-	        out.write(b);
-	    }
-
-		@Override
-		public boolean isReady() {
-			return false;
-		}
-
-		@Override
-		public void setWriteListener(WriteListener l) {
-		}
-
 	}
 	
 }

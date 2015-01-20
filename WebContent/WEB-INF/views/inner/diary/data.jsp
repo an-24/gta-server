@@ -40,12 +40,13 @@
 						<a target="_blank" href="inner/report/r1?teamId=${teamId}&dateStart=${dtStart}&dateEnd=${dtEnd}"><fmt:message key="label.report"/></a>
 					</li>
 				<c:if test="${week.signAvailable and week.signNeeded}"> 
-					<li><a href="inner/sign?teamId=${teamId}&date=${dtEnd}"><fmt:message key="label.signreport"/></a></li>
-					<c:if test="${not week.signNeeded}">
-							<fmt:message key="label.signed"/> <fmt:formatDate var="dtEnd" value='${week.signature.dtSignDay}' pattern='dd.MM.yyyy'/>
-							<c:out value="${week.signature.user.name}"></c:out>  
-					</c:if>
+					<li><a class="signReport" date-sign="${dtEnd}" date-sig-begin="${dtStart}" href="#"><fmt:message key="label.signreport"/></a></li>
 				</c:if>
+				<c:if test="${week.signature!=null}">
+					<fmt:message key="label.signed"/> <c:out value="${week.signature.user.name}"></c:out>, 
+					<fmt:formatDate value='${week.signature.dtSignDay}' type="both" dateStyle="short" timeStyle="short"/>  
+				</c:if>
+				
 				</td>   			
 			</tr>
 		</c:forEach>   			
@@ -61,6 +62,58 @@
 		$("#diary tbody td#day").click(function(){
 			loadInfoOnDay(this);
 		});
+		
+		$(".signReport").click(function(){
+			debugger;
+			var dtBegin = $(this).attr("date-sig-begin");
+			var dtSign = $(this).attr("date-sign");
+			
+			$.ajax({
+				type: "GET",
+		        url: "inner/report/r1?teamId="+teamId+"&dateStart="+dtBegin+"&dateEnd="+dtSign+"&base64encode=1&signed=1",
+		        success: function(dataSign){
+					cades.signature(dataSign, function(sign,hash,data){
+						if(sign) {
+							$.ajax({
+								type: "POST",
+						        url: "inner/sign/put",
+						        data: {
+						        	teamId:teamId,
+						        	date:dtSign,
+						        	signature:sign,
+						        	hash:hash,
+						        	data:data
+						        },
+						        success: function(data){
+						        	var obj = eval(data);
+						        	if(obj.error) this.error({responseText:obj.message});else {
+						        		if(data) {
+						            		toastr["success"]("", "<fmt:message key='message.success'/>");
+						            		refreshCalendar();
+						        		} else {
+						            		toastr["error"]("<fmt:message key='message.signcheckerror'/>", "<fmt:message key='message.error'/>");
+						        		}
+						        	}
+						        },
+						        error: function (request, status, error,data) {
+						        	if($('#error-place').length==0) {
+						            	toastr["error"](request.responseText, "<fmt:message key='message.error'/>");
+						        	} else
+						        	$.formUtils.showError(request.responseText);
+						        }
+						    });
+						}
+					});
+		        },
+		        error: function (request, status, error,data) {
+		        	if($('#error-place').length==0) {
+		            	toastr["error"](request.responseText, "<fmt:message key='message.error'/>");
+		        	} else
+		        	$.formUtils.showError(request.responseText);
+		        }
+			});
+		});
+		
 	});
 
 	function loadInfoOnDay(td) {

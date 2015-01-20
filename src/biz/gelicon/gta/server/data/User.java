@@ -20,6 +20,8 @@ public class User implements Serializable {
 	private String email;
 	private String locale;
 	private String timeZoneId;
+	private byte[] activeSertificate;
+	private String activeSertificateName;
 	
 	@Id
 	@javax.persistence.SequenceGenerator(name="newRec", sequenceName="NEWRECORDID")	
@@ -81,6 +83,21 @@ public class User implements Serializable {
 	}
 	public void setTimeZoneId(String timeZoneId) {
 		this.timeZoneId = timeZoneId;
+	}
+	
+	@Column(name = "PROGUSER_SERTIFICATE")
+	public byte[] getActiveSertificate() {
+		return activeSertificate;
+	}
+	public void setActiveSertificate(byte[] activeSertificate) {
+		this.activeSertificate = activeSertificate;
+	}
+	@Column(name = "PROGUSER_SERTIFICATE_NAME", length = 255, nullable = true)
+	public String getActiveSertificateName() {
+		return activeSertificateName;
+	}
+	public void setActiveSertificateName(String activeSertificateName) {
+		this.activeSertificateName = activeSertificateName;
 	}
 
 }

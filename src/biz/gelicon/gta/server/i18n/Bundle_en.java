@@ -46,6 +46,7 @@ public class Bundle_en extends ListResourceBundle {
 		  {"label.newuser","New user"},
 		  {"label.editby","Edited by"},
 		  {"message.success","Success"},
+		  {"message.error","Error"},
 		  {"label.select-locale","Select locale"},
 		  {"label.select-tz","Select time zone"},
 		  {"label.newteam","New team"},
@@ -83,7 +84,10 @@ public class Bundle_en extends ListResourceBundle {
 		  {"label.sign","sign"},
 		  {"label.report","Weekly report"},
 		  {"label.signreport","Sign the report"},
-		  {"label.signed","Signed"}
+		  {"label.signed","Signed"},
+		  {"label.cert","Sertificate"},
+		  {"message.certneeded","Certificate of current user not found"},
+		  {"message.signcheckerror","Signature not verified"}
 		  
 	};
 	

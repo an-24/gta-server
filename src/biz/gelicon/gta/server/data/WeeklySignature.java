@@ -27,6 +27,9 @@ public class WeeklySignature {
 	private Team team;
 	private User user;
 	private byte[] signature;
+	private byte[] data;
+	private byte[] hash;
+	private byte[] sertificate;
 	
 
 	@Id
@@ -89,6 +92,27 @@ public class WeeklySignature {
 
 	public void setSignature(byte[] signature) {
 		this.signature = signature;
+	}
+	@Column(name = "WEEKLYSIGN_DATA")
+	public byte[] getData() {
+		return data;
+	}
+	public void setData(byte[] data) {
+		this.data = data;
+	}
+	@Column(name = "WEEKLYSIGN_HASH")
+	public byte[] getHash() {
+		return hash;
+	}
+	public void setHash(byte[] hash) {
+		this.hash = hash;
+	}
+	@Column(name = "WEEKLYSIGN_CERT")
+	public byte[] getSertificate() {
+		return sertificate;
+	}
+	public void setSertificate(byte[] sertificate) {
+		this.sertificate = sertificate;
 	}
 
 }

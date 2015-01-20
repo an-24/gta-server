@@ -51,9 +51,16 @@
 		   	   selectedList: 1
 		});
 	  
-    	initForm($("#frmUser"),"inner/admin/users/update",function(data){
+		initMultiPartForm($("#frmUser"),"inner/admin/users/update",function(data) {
         	toastr["success"](data.message, "<fmt:message key='message.success'/>");
     	});
+		
+		$("#activeSertificateName").click(function () {
+		    $("#activeSertificate").trigger('click');
+		});
+		$("#activeSertificate").change(function () {
+			$("#activeSertificateName").val(this.value);
+	    });
   });
 </script>
 
@@ -63,7 +70,7 @@
 
 <div id='error-place' class='form-error'></div> 
 
-<form:form id="frmUser" style="width:auto" commandName="user">
+<form:form id="frmUser" style="width:auto" commandName="user" enctype="multipart/form-data">
    <form:input path="mode" type="hidden"/>
    <form:input path="id" type="hidden"/>
    <table>
@@ -101,6 +108,13 @@
    		</select>
    	</td>
    </tr>
+   
+   <tr>
+   	<td><form:label path="activeSertificate"><fmt:message key="label.cert"/></form:label></td>
+   	<td><input name="activeSertificateName" id="activeSertificateName" readonly value="${user.activeSertificateName}" type="text"/>
+   	<form:input id="activeSertificate" path="activeSertificate" type="file" accept="application/x-x509-ca-cert" style="display:none"/></td>
+   </tr>
+   
    <c:if test="${user.mode==2}">
    <tr>
    	<td colspan="2" style="text-align: left;">

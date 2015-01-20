@@ -28,6 +28,7 @@
 	<script src="resources/js/lib/jquery.form-validator.js"></script>
 	<script src="resources/js/lib/toastr.js"></script>
 	<script src="resources/js/lib/jquery.fancybox-1.3.4.js"></script>
+	<script src="resources/js/lib/cadesplugin.js"></script>
 	
 	<script src="resources/js/main.js"></script>
 	<script src="resources/js/utils.js"></script>
