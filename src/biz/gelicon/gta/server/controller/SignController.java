@@ -8,15 +8,26 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.Principal;
 import java.security.PublicKey;
 import java.security.Signature;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.naming.ldap.LdapName;
+import javax.naming.ldap.Rdn;
+import javax.security.auth.x500.X500Principal;
 import javax.security.cert.CertificateException;
-import javax.security.cert.X509Certificate;
+
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
@@ -152,44 +163,69 @@ public class SignController {
 
 	private X509Certificate getCertificate() throws Exception {
 		byte[] certBuff = UserService.getCurrentUser().getActiveSertificate();
+		return getCertificate(certBuff);
+	}
+
+	private X509Certificate getCertificate(byte[] certBuff) throws Exception {
 		if(certBuff == null || certBuff.length==0)
 			throw new Exception(GtaSystem.getString("message.certneeded"));
 			
 		InputStream inStream = new ByteArrayInputStream(certBuff);
-		X509Certificate cert = X509Certificate.getInstance(inStream);
+		
+		CertificateFactory cf = CertificateFactory.getInstance("X.509");
+		X509Certificate cert = (X509Certificate) cf.generateCertificate(inStream);
+
+		//X509Certificate cert = X509Certificate. getInstance(inStream);
 		inStream.close();
 		return cert;
 	}
 	
 	private PublicKey getPublicKey(byte[] certBuff) throws Exception,
 			CertificateException, IOException {
-		if(certBuff == null || certBuff.length==0)
-			throw new Exception(GtaSystem.getString("message.certneeded"));
-			
-		InputStream inStream = new ByteArrayInputStream(certBuff);
-		X509Certificate cert = X509Certificate.getInstance(inStream);
-		inStream.close();
+		X509Certificate cert = getCertificate(certBuff);
 		PublicKey publicKey = cert.getPublicKey();
 		return publicKey;
 	}
 	
 	
 	public byte[] getStampPublicKey() throws Exception {
-		int width = 202,height = 102;
+		int width = 300,height = 100;
 		BufferedImage image = new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB);
 		Graphics gr = image.createGraphics();
 		gr.setColor(new Color(255,255,255,0));
 		gr.fillRect(0, 0, width, height);
 		
 		gr.setColor(Color.blue);
-		gr.draw3DRect(0, 0, 200, 100, true);
+		gr.draw3DRect(0, 0, width-2, height-2, true);
+
+		gr.setClip(5, 5, width-10, height-10);
 		
-		gr.setFont(new Font(gr.getFont().getName(), Font.BOLD, 26));
-		drawCenralString(gr,"Подписано", 0, width,30);
+		gr.setFont(new Font("Arial", Font.PLAIN, 20));
+		drawCenralString(gr,GtaSystem.getString("label.signed"), 0, width,30);
 
 		X509Certificate cert = getCertificate();
 		gr.setFont(new Font(gr.getFont().getName(), Font.PLAIN, 10));
+
+		LdapName ldapDN;
+		Optional<Rdn> rdnCN;
+		String cn = "????";
+		ldapDN = new LdapName(cert.getSubjectX500Principal().getName());
+		rdnCN = ldapDN.getRdns().stream().filter(rdn->"CN".equals(rdn.getType())).findFirst();
+		if(rdnCN.isPresent()) {
+			cn = (String) Rdn.unescapeValue((String) rdnCN.get().getValue());
+		}
+		gr.drawString(GtaSystem.getString("label.subjectCN")+":"+cn, 10, 50);
 		
+		DateFormat frm = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+		gr.drawString(GtaSystem.getString("label.date")+":"+frm.format(new Date()),10,65);
+		
+		String icn = "????";
+		ldapDN = new LdapName(cert.getIssuerX500Principal().getName());
+		rdnCN = ldapDN.getRdns().stream().filter(rdn->"CN".equals(rdn.getType())).findFirst();
+		if(rdnCN.isPresent()) {
+			icn = (String) Rdn.unescapeValue((String) rdnCN.get().getValue());
+		}
+		gr.drawString(GtaSystem.getString("label.issuer")+":"+icn,10,80);
 		
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ImageIO.write(image, "png", outputStream);

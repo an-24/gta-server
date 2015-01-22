@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import biz.gelicon.gta.server.Teams;
 import biz.gelicon.gta.server.data.Team;
 import biz.gelicon.gta.server.dto.PersonDTO;
 import biz.gelicon.gta.server.dto.TeamDTO;
@@ -31,6 +32,7 @@ public class TeamController {
     @ResponseBody
     public TeamDTO getTeam(@PathVariable Integer id) {
     	Team team = teamRepository.findOne(id);
+    	Teams.calculateWorkTime(team);
     	List<PersonDTO> persons = team.getPersons().stream()
     			.map(p->new PersonDTO(p,0)).collect(Collectors.toList());
     	TeamDTO dto = new TeamDTO(team);

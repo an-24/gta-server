@@ -36,6 +36,7 @@ import biz.gelicon.gta.server.service.ReportService;
 import biz.gelicon.gta.server.utils.Base64;
 import biz.gelicon.gta.server.utils.ByteArrayServletResponse;
 import biz.gelicon.gta.server.utils.DateUtils;
+import biz.gelicon.gta.server.utils.SpringException;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
@@ -101,7 +102,8 @@ public class ReportController {
 				
 				if(bsigned) {
 					Image img = Image.getInstance(signController.getStampPublicKey());
-					img.setAbsolutePosition(document.getPageSize().getWidth()-250f, 30f);
+					img.setAbsolutePosition(document.getPageSize().getWidth()-350f, writer.getVerticalPosition(false));
+					img.setRotationDegrees(45f);
 					document.add(img);
 				}
 				
@@ -116,6 +118,7 @@ public class ReportController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new SpringException(e.getMessage());
 		};
     }
     

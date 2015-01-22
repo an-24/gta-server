@@ -11,6 +11,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
 import biz.gelicon.gta.server.data.User;
+import biz.gelicon.gta.server.utils.WebException;
 
 public class Sessions {
 	private static Map<String,User> sessions = new HashMap<>();
@@ -18,6 +19,13 @@ public class Sessions {
 	
 	public static User findSession(String token) {
 		return sessions.get(token);
+	}
+
+	public static User checkSession(String token) {
+		User u = Sessions.findSession(token);
+		if(u==null) 
+			throw new WebException("Session not found");
+		return u;
 	}
 	
 	public static String newSession(User user) {

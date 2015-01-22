@@ -77,13 +77,13 @@
    <table>
    <colgroup>
    		<col/>
-   		<col width="170px"/>
+   		<col width="192px"/>
    		<col/>
    		<col width="150px"/>
    </colgroup>
    <tr>
    	<td><form:label path="user.name"><fmt:message key='label.username'/><em>*</em></form:label></td>
-   	<td><form:input id="user-name" path="user.name"/>
+   	<td><form:input id="user-name" path="user.name" style="width:178px"/>
    		<fmt:message var="tmp" key='message.selectuser'/>
    	    <form:input id="user-id" path="user.id" type="hidden" data-validation="key" data-validation-error-msg="${tmp}"/></td>
    	<td><form:label path="nic"><fmt:message key='label.nic'/><em>*</em></form:label></td>
@@ -107,7 +107,7 @@
    </tr>
    <tr>
    <td><form:label path="limit"><fmt:message key='label.limit'/></form:label></td>
-   <td><form:input path="limit" data-validation="number" data-validation-optional="true"/></td>
+   <td><form:input path="limit" data-validation="number" data-validation-optional="true" style="width:178px"/></td>
    <td><form:label path="internal"><fmt:message key='label.internal'/></form:label></td>
    <td><form:checkbox path="internal"/></td>
    </tr>

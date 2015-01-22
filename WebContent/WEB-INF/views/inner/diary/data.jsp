@@ -64,7 +64,6 @@
 		});
 		
 		$(".signReport").click(function(){
-			debugger;
 			var dtBegin = $(this).attr("date-sig-begin");
 			var dtSign = $(this).attr("date-sign");
 			
@@ -72,6 +71,10 @@
 				type: "GET",
 		        url: "inner/report/r1?teamId="+teamId+"&dateStart="+dtBegin+"&dateEnd="+dtSign+"&base64encode=1&signed=1",
 		        success: function(dataSign){
+		        	if(dataSign.error) {
+		        		this.error({responseText:dataSign.message});
+			        	return;
+		        	};
 					cades.signature(dataSign, function(sign,hash,data){
 						if(sign) {
 							$.ajax({

@@ -87,8 +87,10 @@ public class Bundle_en extends ListResourceBundle {
 		  {"label.signed","Signed"},
 		  {"label.cert","Sertificate"},
 		  {"message.certneeded","Certificate of current user not found"},
-		  {"message.signcheckerror","Signature not verified"}
-		  
+		  {"message.signcheckerror","Signature not verified"},
+		  {"label.subjectCN","Subject CN"},
+		  {"label.issuer","Issuer"},
+		  {"label.date","Date"}
 	};
 	
 	@Override

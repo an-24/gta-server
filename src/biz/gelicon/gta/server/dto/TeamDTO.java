@@ -18,10 +18,10 @@ public class TeamDTO {
 	private Date createDate;
 	
 	private Integer limit;
-	private Integer workedOfDay;
-	private Integer workedOfWeek;
-	private Integer workedOfMonth;
-	private Integer workedOfBeginProject;
+	private Double workedOfDay;
+	private Double workedOfWeek;
+	private Double workedOfMonth;
+	private Double workedOfBeginProject;
 	
 	private Integer workerCount;
 	private Integer mode;
@@ -125,35 +125,35 @@ public class TeamDTO {
 		this.manager = manager;
 	}
 
-	public Integer getWorkedOfDay() {
+	public Double getWorkedOfDay() {
 		return workedOfDay;
 	}
 
-	public void setWorkedOfDay(Integer workedOfDay) {
+	public void setWorkedOfDay(Double workedOfDay) {
 		this.workedOfDay = workedOfDay;
 	}
 
-	public Integer getWorkedOfWeek() {
+	public Double getWorkedOfWeek() {
 		return workedOfWeek;
 	}
 
-	public void setWorkedOfWeek(Integer workedOfWeek) {
+	public void setWorkedOfWeek(Double workedOfWeek) {
 		this.workedOfWeek = workedOfWeek;
 	}
 
-	public Integer getWorkedOfMonth() {
+	public Double getWorkedOfMonth() {
 		return workedOfMonth;
 	}
 
-	public void setWorkedOfMonth(Integer workedOfMonth) {
+	public void setWorkedOfMonth(Double workedOfMonth) {
 		this.workedOfMonth = workedOfMonth;
 	}
 
-	public Integer getWorkedOfBeginProject() {
+	public Double getWorkedOfBeginProject() {
 		return workedOfBeginProject;
 	}
 
-	public void setWorkedOfBeginProject(Integer workedOfBeginProject) {
+	public void setWorkedOfBeginProject(Double workedOfBeginProject) {
 		this.workedOfBeginProject = workedOfBeginProject;
 	}
 

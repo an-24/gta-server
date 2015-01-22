@@ -21,9 +21,11 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import biz.gelicon.gta.server.data.Person;
 import biz.gelicon.gta.server.data.Team;
 import biz.gelicon.gta.server.data.User;
 import biz.gelicon.gta.server.utils.DateUtils;
+import biz.gelicon.gta.server.utils.WebException;
 
 @Path("teams")
 @Produces(MediaType.APPLICATION_JSON)
@@ -34,6 +36,7 @@ public class Teams {
 	@Path("{token}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public List<Team> getTeamsGET(@PathParam("token") String token) {
+		Sessions.checkSession(token);
 		return getTeams(token);
 	}
 
@@ -43,6 +46,8 @@ public class Teams {
 	public Team getTeamGET(
 			@PathParam("token") String token,
 			@PathParam("teamId") int teamId) {
+
+		Sessions.checkSession(token);
 		
 		List<Team> teams = getTeams(token);
 		for (Team team : teams) {
@@ -56,6 +61,7 @@ public class Teams {
 	
 	@POST
 	public List<Team> getTeamsPOST(String token) {
+		Sessions.checkSession(token);
 		return getTeams(token);
 		
 	}
@@ -76,100 +82,7 @@ public class Teams {
         		Hibernate.initialize(team.getPersons());
 			}
     		// calculate work time for user
-    		Map<Integer,Team> tmap = new HashMap<>();
-    		for (Team t : list) {
-				tmap.put(t.getId(), t);
-			}
-    		//calculate Limits
-    		q = session.createQuery("select t.id, p.limit "
-    				+ "from Team t, Person p "
-    				+ "where p.team.id=t.id AND t.active=true AND p.user.id=:id ");
-    		q.setInteger("id", u.getId());
-    		agglist = q.list();
-    		for (Object[] value : agglist) {
-				Integer id = (Integer) value[0];
-				Team team = tmap.get(id);
-				if(team!=null) {
-					Integer v = (Integer)value[1];
-					//log.info("------- id="+id+" value="+v);
-					team.setLimit(v);
-				}
-			}
-    		//calculate WorkedOfBeginProject
-    		q = session.createQuery("select t.id, 24*sum(m.dtFinish-m.dtBegin) "
-    				+ "from Message m, Team t, Person p "
-    				+ "where m.team.id=t.id AND m.user.id=p.user.id AND p.team.id=t.id AND t.active=true AND p.user.id=:id "
-    				+ "group by t.id");
-    		q.setInteger("id", u.getId());
-    		agglist = q.list();
-    		for (Object[] value : agglist) {
-				Integer id = (Integer) value[0];
-				Team team = tmap.get(id);
-				if(team!=null) {
-					Double v = (Double)value[1];
-					//log.info("------- id="+id+" value="+v);
-					team.setWorkedOfBeginProject(v.intValue());
-				}
-			}
-    		//calculate WorkedOfMonth
-    		q = session.createQuery("select t.id, 24*sum(m.dtFinish-m.dtBegin) "
-    				+ "from Message m, Team t, Person p "
-    				+ "where m.team.id=t.id AND m.user.id=p.user.id AND p.team.id=t.id AND t.active=true AND p.user.id=:id AND "
-    				+ "m.dtFinish between :start AND :finish "
-    				+ "group by t.id");
-    		q.setInteger("id", u.getId());
-    		q.setDate("start", DateUtils.getStartOfMonth(new Date()));
-    		q.setDate("finish", DateUtils.getEndOfMonth(new Date()));
-    		agglist = q.list();
-    		for (Object[] value : agglist) {
-				Integer id = (Integer) value[0];
-				Team team = tmap.get(id);
-				if(team!=null) {
-					Double v = (Double)value[1];
-					//log.info("------- id="+id+" value="+v);
-					team.setWorkedOfMonth(v.intValue());
-				}
-			}
-    		//calculate WorkedOfWeek
-    		q = session.createQuery("select t.id, 24*sum(m.dtFinish-m.dtBegin) "
-    				+ "from Message m, Team t, Person p "
-    				+ "where m.team.id=t.id AND m.user.id=p.user.id AND p.team.id=t.id AND t.active=true AND p.user.id=:id AND "
-    				+ "m.dtFinish between :start AND :finish "
-    				+ "group by t.id");
-    		q.setInteger("id", u.getId());
-    		q.setDate("start", DateUtils.getStartOfWeek(new Date()));
-    		q.setDate("finish", DateUtils.getEndOfWeek(new Date()));
-    		agglist = q.list();
-    		for (Object[] value : agglist) {
-				Integer id = (Integer) value[0];
-				Team team = tmap.get(id);
-				if(team!=null) {
-					Double v = (Double)value[1];
-					//log.info("------- id="+id+" value="+v);
-					team.setWorkedOfWeek(v.intValue());
-				}
-			}
-    		//calculate WorkedOfDay
-    		q = session.createQuery("select t.id, 24*sum(m.dtFinish-m.dtBegin) "
-    				+ "from Message m, Team t, Person p "
-    				+ "where m.team.id=t.id AND m.user.id=p.user.id AND p.team.id=t.id AND t.active=true AND p.user.id=:id AND "
-    				+ "m.dtFinish between :start AND :finish "
-    				+ "group by t.id");
-    		q.setInteger("id", u.getId());
-    		q.setDate("start", DateUtils.getStartOfDay(new Date()));
-    		q.setDate("finish", DateUtils.getEndOfDay(new Date()));
-    		agglist = q.list();
-    		for (Object[] value : agglist) {
-				Integer id = (Integer) value[0];
-				Team team = tmap.get(id);
-				if(team!=null) {
-					Double v = (Double)value[1];
-					//log.info("------- id="+id+" value="+v);
-					team.setWorkedOfDay(v.intValue());
-				}
-			}
-
-    		
+    		calculateWorkTime(session, list, u);
     		
     		log.info("getTeams "+Arrays.deepToString(list.toArray()));
     	} finally {
@@ -178,6 +91,148 @@ public class Teams {
 		
 		return list;
 		
+	}
+
+	public static Double calculateWeekWorkTime(Person person) {
+		Date date = new Date(); 
+		SessionFactory dbSession = Sessions.getHibernateSession();
+    	Session session = dbSession.openSession();
+    	try{
+    		//calculate WorkedOfWeek
+    		Query q = session.createQuery("select 24*sum(m.dtFinish-m.dtBegin) "
+    				+ "from Message m "
+    				+ "where m.team.id=:teamId AND m.user.id=:userId AND "
+    				+ "m.dtFinish between :start AND :finish ");
+    		q.setInteger("teamId", person.getTeam().getId());
+    		q.setInteger("userId", person.getUser().getId());
+    		q.setDate("start", DateUtils.getStartOfWeek(date));
+    		q.setDate("finish", DateUtils.getEndOfDay(DateUtils.getEndOfWeek(date)));
+    		Object[] agglist = (Object[]) q.uniqueResult();
+    		return (Double) agglist[0];
+    	} finally {
+    		session.close();
+    	}
+		
+	}
+	
+	public static void calculateWorkTime(Team team) {
+		SessionFactory dbSession = Sessions.getHibernateSession();
+    	Session session = dbSession.openSession();
+    	try{
+    		calculateWorkTime(session, Arrays.asList(new Team[]{team}), null);
+    	} finally {
+    		session.close();
+    	}
+	}
+	
+	private static void calculateWorkTime(Session session, List<Team> list, User u) {
+		List<Object[]> agglist;
+		Query q;
+		Date date = new Date(); 
+		// если не по пользователю, то по первой команде в списке
+		int teamId=0;
+		if(u==null) {
+			teamId = list.get(0).getId(); 
+		}
+		// calculate work time for user
+		Map<Integer,Team> tmap = new HashMap<>();
+		for (Team t : list) {
+			tmap.put(t.getId(), t);
+		}
+		//calculate Limits
+		/* deprecates
+		q = session.createQuery("select t.id, p.limit "
+				+ "from Team t, Person p "
+				+ "where p.team.id=t.id AND t.active=true AND p.user.id=:id ");
+		q.setInteger("id", u.getId());
+		agglist = q.list();
+		for (Object[] value : agglist) {
+			Integer id = (Integer) value[0];
+			Team team = tmap.get(id);
+			if(team!=null) {
+				Integer v = (Integer)value[1];
+				//log.info("------- id="+id+" value="+v);
+				team.setLimit(v);
+			}
+		}
+		*/
+		//calculate WorkedOfBeginProject
+		q = session.createQuery("select t.id, 24*sum(m.dtFinish-m.dtBegin) "
+				+ "from Message m, Team t, Person p "
+				+ "where m.team.id=t.id AND m.user.id=p.user.id AND p.team.id=t.id AND t.active=true AND "
+				+ (u!=null?"p.user.id=:id":"t.id=:id")+ " "
+				+ "group by t.id");
+		if(u!=null)	q.setInteger("id", u.getId());else q.setInteger("id", teamId); 
+		agglist = q.list();
+		for (Object[] value : agglist) {
+			Integer id = (Integer) value[0];
+			Team team = tmap.get(id);
+			if(team!=null) {
+				Double v = (Double)value[1];
+				//log.info("------- id="+id+" value="+v);
+				team.setWorkedOfBeginProject(v);
+			}
+		}
+		//calculate WorkedOfMonth
+		q = session.createQuery("select t.id, 24*sum(m.dtFinish-m.dtBegin) "
+				+ "from Message m, Team t, Person p "
+				+ "where m.team.id=t.id AND m.user.id=p.user.id AND p.team.id=t.id AND t.active=true AND "
+				+ (u!=null?"p.user.id=:id":"t.id=:id")+" AND "
+				+ "m.dtFinish between :start AND :finish "
+				+ "group by t.id");
+		if(u!=null)	q.setInteger("id", u.getId());else q.setInteger("id", teamId); 
+		q.setDate("start", DateUtils.getStartOfMonth(date));
+		q.setDate("finish", DateUtils.getEndOfDay(DateUtils.getEndOfMonth(date)));
+		agglist = q.list();
+		for (Object[] value : agglist) {
+			Integer id = (Integer) value[0];
+			Team team = tmap.get(id);
+			if(team!=null) {
+				Double v = (Double)value[1];
+				//log.info("------- id="+id+" value="+v);
+				team.setWorkedOfMonth(v);
+			}
+		}
+		//calculate WorkedOfWeek
+		q = session.createQuery("select t.id, 24*sum(m.dtFinish-m.dtBegin) "
+				+ "from Message m, Team t, Person p "
+				+ "where m.team.id=t.id AND m.user.id=p.user.id AND p.team.id=t.id AND t.active=true AND "
+				+ (u!=null?"p.user.id=:id":"t.id=:id")+" AND "
+				+ "m.dtFinish between :start AND :finish "
+				+ "group by t.id");
+		if(u!=null)	q.setInteger("id", u.getId());else q.setInteger("id", teamId); 
+		q.setDate("start", DateUtils.getStartOfWeek(date));
+		q.setDate("finish", DateUtils.getEndOfDay(DateUtils.getEndOfWeek(date)));
+		agglist = q.list();
+		for (Object[] value : agglist) {
+			Integer id = (Integer) value[0];
+			Team team = tmap.get(id);
+			if(team!=null) {
+				Double v = (Double)value[1];
+				//log.info("------- id="+id+" value="+v);
+				team.setWorkedOfWeek(v);
+			}
+		}
+		//calculate WorkedOfDay
+		q = session.createQuery("select t.id, 24*sum(m.dtFinish-m.dtBegin) "
+				+ "from Message m, Team t, Person p "
+				+ "where m.team.id=t.id AND m.user.id=p.user.id AND p.team.id=t.id AND t.active=true AND "
+				+ (u!=null?"p.user.id=:id":"t.id=:id")+" AND "
+				+ "m.dtFinish between :start AND :finish "
+				+ "group by t.id");
+		if(u!=null)	q.setInteger("id", u.getId());else q.setInteger("id", teamId); 
+		q.setDate("start", DateUtils.getStartOfDay(date));
+		q.setDate("finish", DateUtils.getEndOfDay(date));
+		agglist = q.list();
+		for (Object[] value : agglist) {
+			Integer id = (Integer) value[0];
+			Team team = tmap.get(id);
+			if(team!=null) {
+				Double v = (Double)value[1];
+				//log.info("------- id="+id+" value="+v);
+				team.setWorkedOfDay(v);
+			}
+		}
 	}
 	
 	public List<Team> getTeams(String token) {

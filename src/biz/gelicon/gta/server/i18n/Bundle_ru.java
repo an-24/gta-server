@@ -87,8 +87,10 @@ public class Bundle_ru extends ListResourceBundle {
 		  {"label.signed","Подписан"},
 		  {"label.cert","Сертификат ЭП"},
 		  {"message.certneeded","У текущего пользователя отсутствует сертификат"},
-		  {"message.signcheckerror","Подпись не прошла проверку"}
-
+		  {"message.signcheckerror","Подпись не прошла проверку"},
+		  {"label.subjectCN","Владелец сертификата"},
+		  {"label.issuer","Издатель"},
+		  {"label.date","Дата"}
 	};
 	
 	@Override

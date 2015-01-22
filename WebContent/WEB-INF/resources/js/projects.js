@@ -10,10 +10,10 @@ function loadProjectSheet(teamId,token,tabActive) {
         	tab1.find("#id").val(obj.id);
         	tab1.find("#createDate").val(obj.createDate);
         	tab1.find("#limit").val(obj.limit ||"");
-        	tab1.find("#workedOfDay").text(obj.workedOfDay ||"");
-        	tab1.find("#workedOfWeek").text(obj.workedOfWeek ||"");
-        	tab1.find("#workedOfMonth").text(obj.workedOfMonth ||"");
-        	tab1.find("#workedOfBeginProject").text(obj.workedOfBeginProject ||"");
+        	tab1.find("#workedOfDay").text(obj.workedOfDay?obj.workedOfDay.toFixed(1):""); 
+        	tab1.find("#workedOfWeek").text(obj.workedOfWeek?obj.workedOfWeek.toFixed(1):"");
+        	tab1.find("#workedOfMonth").text(obj.workedOfMonth?obj.workedOfMonth.toFixed(1):"");
+        	tab1.find("#workedOfBeginProject").text(obj.workedOfBeginProject?obj.workedOfBeginProject.toFixed(1):"");
         	if(obj.managerCurrentUser) {
         		tab1.find("#limit").removeAttr("readonly");
         		tab1.find("#updTeamBtn").css("display","table-cell");
